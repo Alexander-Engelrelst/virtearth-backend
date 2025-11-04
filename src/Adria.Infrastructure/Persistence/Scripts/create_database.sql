@@ -5,7 +5,15 @@ create table users (
     username NVARCHAR(40) NOT NULL UNIQUE,
     avatar NVARCHAR(20),
     INDEX idx_username (username)
-); 
+);
+
+ALTER TABLE `users`
+    ADD CONSTRAINT chk_username_valid
+        CHECK (
+            CHAR_LENGTH(username) BETWEEN 3 AND 40
+                AND username REGEXP '^[a-zA-Z0-9._-]+$'
+    );
+
 
 INSERT INTO `users` (`id`, `username`) VALUES
 ('550e8400-e29b-41d4-a716-446655440000', 'AliceSmith'),
