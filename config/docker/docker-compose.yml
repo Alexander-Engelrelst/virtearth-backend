@@ -1,4 +1,17 @@
 # This file is used to define all the services that make up your application.
-# In this case, we only need a database (mysql) service to run this .NET 8 application on localhost.
+# In this case, we only need a database service.
+services:
+  taskly-db.adria:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: adria
+      MYSQL_DATABASE: virtEarth
+      MYSQL_USER: adria
+      MYSQL_PASSWORD: adria
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql_data:/var/lib/mysql
 
-# Create a MySQL service using the official MySQL image from Docker Hub.
+volumes:
+  mysql_data:
