@@ -2,7 +2,7 @@ using Adria.Domain.Users;
 
 namespace Adria.Application.Contracts;
 
-public interface IUserByIdQuery
+public interface IUserByNameQuery
 {
-    Task<User> Fetch(Guid id);
+    Task<bool> Fetch(string username);
 }
