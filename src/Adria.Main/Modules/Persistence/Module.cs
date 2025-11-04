@@ -56,7 +56,7 @@ public static class PersistenceModule
         IServiceProvider serviceProvider = app.Services.CreateScope().ServiceProvider;
         DbProviderFactory factory = serviceProvider.GetRequiredService<DbProviderFactory>();
         string connectionString = serviceProvider.GetRequiredService<IConfiguration>()["Persistence:ConnectionString"]!;
-
+        //TODO add the connection string here
         using DbConnection connection = factory.CreateConnection()!;
         connection.ConnectionString = connectionString;
         connection.Open();
