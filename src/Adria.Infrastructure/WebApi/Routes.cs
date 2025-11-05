@@ -38,8 +38,15 @@ public static class Routes
         
         userRoutes
             .MapGet("/exists", CheckUserExistsController.Invoke)
-            .WithDescription("Create a new todo list.")
+            .WithDescription("Check if a user with a given username exists.")
             .WithName(nameof(CheckUserExistsController))
+            .WithOpenApi();
+
+        userRoutes
+            .MapPost("/", CreateUserController.Invoke)
+            .WithDescription("Create a new user")
+            .WithName(nameof(CreateUserController))
+            .WithMetadata(new ConsumesAttribute(APPLICATION_JSON))
             .WithOpenApi();
     }
 }

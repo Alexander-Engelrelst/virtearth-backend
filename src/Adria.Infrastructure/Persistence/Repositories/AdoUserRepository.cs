@@ -1,7 +1,9 @@
 ﻿using System.Data.Common;
+using Adria.Domain.Shared.Exceptions;
 using Adria.Domain.Users;
 using Adria.Infrastructure.Persistence.Shared;
 using Microsoft.Extensions.Logging;
+using MySql.Data.MySqlClient;
 
 namespace Adria.Infrastructure.Persistence.Repositories;
 
@@ -13,6 +15,7 @@ public sealed class AdoUserRepository : AbstractAdoRepository, IUserRepository
     private const string COL_ID = "id";
     private const string COL_NAME = "username";
     private const string COL_AVATAR = "avatar";
+    private const int MYSQL_DUPLICATE_ENTRY_STATUS_CODE = 1062;
 
     private const string INSERT_USER = $@"
         INSERT INTO {TABLE_USERS} ({COL_ID}, {COL_NAME}, {COL_AVATAR})
@@ -61,6 +64,15 @@ public sealed class AdoUserRepository : AbstractAdoRepository, IUserRepository
 
             await ExecuteNonQueryAsync(userQuery, parameters);
 
+        }
+        /* this will catch it if for some reason the client manages to send a username that is already in the database
+           The reason we don't precheck this is because this way we avoid any race conditions causing issues
+           since raceconditions can still occur when we add try to do it this way
+           the name still should get prechecked in the client to render a correct error message before saving */
+        catch (MySqlException ex) when (ex.Number == MYSQL_DUPLICATE_ENTRY_STATUS_CODE)
+        {
+            _logger.LogError(ex, "Failed to save user with ID {UserId} to database.", user.Id);
+            throw new UsernameAlreadyExistsException(user.Username, ex);
         }
         catch (DbException ex)
         {
