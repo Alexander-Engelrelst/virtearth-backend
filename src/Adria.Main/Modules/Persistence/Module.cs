@@ -1,14 +1,22 @@
+using System.Configuration;
 using System.Data.Common;
+using Adria.Application.Contracts;
+using Adria.Infrastructure.Persistence.Queries;
 
 namespace Adria.Main.Modules.Persistence;
 
 public static class PersistenceModule
 {
+    private static string _connectionString = string.Empty;
+    
     public static IServiceCollection AddPersistenceModule(
         this IServiceCollection services,
         IConfiguration configuration
     )
     {
+        _connectionString = configuration["Persistence:ConnectionString"]
+                            ?? throw new ConfigurationErrorsException("Persistence:ConnectionString was not found");
+        
         return services
             .AddAdoServices(configuration)
             .AddRepositories()
@@ -33,7 +41,14 @@ public static class PersistenceModule
     )
     {
         // Configure queries here.
-        return services;
+        return services.AddScoped<IUserExistsQuery, UserExistsQuery>(serviceProvider =>
+        {
+            return new UserExistsQuery(
+                serviceProvider.GetRequiredService<DbProviderFactory>(),
+                _connectionString,
+                serviceProvider.GetRequiredService<ILogger<UserExistsQuery>>()
+            );
+        });
     }
 
     private static IServiceCollection AddAdoServices(
