@@ -1,5 +1,6 @@
 using Adria.Application.Contracts;
 using Adria.Application.Users;
+using Adria.Domain.Users;
 
 namespace Adria.Main.Modules.UseCases;
 
@@ -7,6 +8,8 @@ public static class UseCases
 {
     public static IServiceCollection AddUseCases(this IServiceCollection services)
     {
-        return services.AddScoped<IUseCase<CheckUsernameInUseInput, Task<bool>>, CheckUsernameInUse>();
+        return services
+            .AddScoped<IUseCase<CheckUsernameInUseInput, Task<bool>>, CheckUsernameInUse>()
+            .AddScoped<IUseCase<CreateUserInput, Task<User>>, CreateUser>();
     }
 }

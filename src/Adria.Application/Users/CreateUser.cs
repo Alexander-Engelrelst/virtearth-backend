@@ -6,7 +6,7 @@ namespace Adria.Application.Users;
 
 public sealed record CreateUserInput(
     string UserName,
-    Avatar Avatar
+    Avatar? Avatar
 );
 
 public sealed class CreateUser : IUseCase<CreateUserInput, Task<User>>
@@ -23,8 +23,13 @@ public sealed class CreateUser : IUseCase<CreateUserInput, Task<User>>
         _logger = logger;
     }
     
-    public Task<User> Execute(CreateUserInput input)
+    public async Task<User> Execute(CreateUserInput input)
     {
-        throw new NotImplementedException();
+        User user = new(input.UserName, input.Avatar);
+
+        await _repository.Save(user);
+
+        _logger.LogInformation("user {username} created", input.UserName);
+        return user;
     }
 }
