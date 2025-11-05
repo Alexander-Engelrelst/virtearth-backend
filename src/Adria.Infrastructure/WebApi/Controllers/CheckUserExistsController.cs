@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Adria.Infrastructure.WebApi.Controllers;
 
-public class CheckUserExistsController
+public sealed class CheckUserExistsController
 {
     public static async Task<Results<NoContent, Conflict, BadRequest>> Invoke(
         [FromQuery] string username,

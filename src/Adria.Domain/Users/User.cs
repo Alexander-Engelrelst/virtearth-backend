@@ -18,12 +18,13 @@ public sealed class User
 
     public User(
         string username,
-        Avatar avatar
+        Avatar? avatar,
+        Guid userId = default
     )
     {
         EnsureValidUsername(username);
         
-        Id = Guid.NewGuid();
+        Id = userId == Guid.Empty ?  Guid.NewGuid() : userId;
         Username = username;
         Avatar = avatar;
     }

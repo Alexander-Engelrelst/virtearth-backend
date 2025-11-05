@@ -16,11 +16,11 @@ public abstract class AbstractAdoRepository
         _connectionString = connectionString;
     }
 
-    protected DbParameter CreateParameter(string name, object value)
+    protected DbParameter CreateParameter(string name, object? value)
     {
         DbParameter parameter = _factory.CreateParameter()!;
         parameter.ParameterName = name;
-        parameter.Value = value;
+        parameter.Value = value ??  DBNull.Value;
         return parameter;
     }
 
