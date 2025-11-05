@@ -30,24 +30,24 @@ public sealed class UserExistsQuery : IUserExistsQuery
     {
         _logger.LogInformation("Checking if user with username {username} exists", username);
 
-        using var connection = _factory.CreateConnection() 
-                               ?? throw new InvalidOperationException("DbProviderFactory returned a null DbConnection.");
+        using DbConnection connection = _factory.CreateConnection()
+                                        ?? throw new InvalidOperationException(
+                                            "DbProviderFactory returned a null DbConnection.");
         connection.ConnectionString = _connectionString;
         await connection.OpenAsync();
 
-        using (var command = connection.CreateCommand())
-        {
-            command.CommandText = QRY;
-                
-            DbParameter parameter = command.CreateParameter();
-            parameter.ParameterName = "@username";
-            parameter.Value = username;
+        using var command = connection.CreateCommand();
+    
+        command.CommandText = QRY;
             
-            command.Parameters.Add(parameter);
-            
-            _logger.LogInformation("Query finished: {username} already exists", username);
-            
-            return Convert.ToBoolean(await command.ExecuteScalarAsync());
-        }
+        DbParameter parameter = command.CreateParameter();
+        parameter.ParameterName = "@username";
+        parameter.Value = username;
+        
+        command.Parameters.Add(parameter);
+        
+        _logger.LogInformation("Query finished: {username} already exists", username);
+        
+        return Convert.ToBoolean(await command.ExecuteScalarAsync());
     }
 }
