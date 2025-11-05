@@ -27,7 +27,7 @@ public sealed class CheckUserExistsController
 
             }
         }
-        catch (InvalidUsernameException ex)
+        catch (InvalidUsernameException)
         {
             return TypedResults.BadRequest();
         }

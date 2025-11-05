@@ -1,12 +1,16 @@
 ﻿using System.Data.Common;
+using MySql.Data.MySqlClient;
 
 namespace Adria.Infrastructure.Persistence.Shared;
 
 public abstract class AbstractAdoRepository
 {
+    private const int MYSQL_DUPLICATE_ENTRY_STATUS_CODE = 1062;
+
+    
     protected readonly DbProviderFactory _factory;
     protected readonly string _connectionString;
-
+    
     protected AbstractAdoRepository(
         DbProviderFactory factory,
         string connectionString
@@ -34,8 +38,12 @@ public abstract class AbstractAdoRepository
             command.Parameters.AddRange(parameters);
             await command.ExecuteNonQueryAsync();
         }
-        catch (DbException ex)
+        catch (MySqlException ex) when (ex.Number == MYSQL_DUPLICATE_ENTRY_STATUS_CODE)
         {
+            throw;
+        }
+        catch (DbException ex)
+        {   
             throw new VirtEarthDatabaseException("Database operation failed.", ex);
         }
         catch (ArgumentException ex)

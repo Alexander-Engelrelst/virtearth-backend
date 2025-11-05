@@ -1,4 +1,5 @@
-﻿using Adria.Application.Contracts;
+﻿using System.Data.Common;
+using Adria.Application.Contracts;
 using Adria.Application.Users;
 using Adria.Domain.Shared.Exceptions;
 using Adria.Domain.Users;
@@ -6,6 +7,7 @@ using Adria.Infrastructure.Persistence.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using MySql.Data.MySqlClient;
 
 namespace Adria.Infrastructure.WebApi.Controllers;
 
@@ -22,15 +24,15 @@ public class CreateUserController
         {
             return TypedResults.Ok(await createUser.Execute(new CreateUserInput(body.Username, avatar)));
         }
-        catch (InvalidUsernameException ex)
+        catch (InvalidUsernameException)
         {
             return TypedResults.BadRequest();
         }
-        catch (UsernameAlreadyExistsException ex)
+        catch (UsernameAlreadyExistsException)
         {
             return TypedResults.Conflict();
         }
-        catch (VirtEarthDatabaseException ex)
+        catch (VirtEarthDatabaseException)
         {
             return TypedResults.Problem(
                 title: "Database Error",
