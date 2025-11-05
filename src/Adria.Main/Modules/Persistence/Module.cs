@@ -1,7 +1,9 @@
 using System.Configuration;
 using System.Data.Common;
 using Adria.Application.Contracts;
+using Adria.Domain.Users;
 using Adria.Infrastructure.Persistence.Queries;
+using Adria.Infrastructure.Persistence.Repositories;
 
 namespace Adria.Main.Modules.Persistence;
 
@@ -33,7 +35,14 @@ public static class PersistenceModule
     )
     {
         // Configure repositories here.
-        return services;
+        return services.AddScoped<IUserRepository, AdoUserRepository>(serviceProvider =>
+        {
+            return new AdoUserRepository(
+                serviceProvider.GetRequiredService<DbProviderFactory>(),
+                _connectionString,
+                serviceProvider.GetRequiredService<ILogger<AdoUserRepository>>()
+            );
+        });
     }
 
     private static IServiceCollection AddQueries(

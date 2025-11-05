@@ -1,0 +1,30 @@
+﻿using Adria.Application.Contracts;
+using Adria.Domain.Users;
+using Microsoft.Extensions.Logging;
+
+namespace Adria.Application.Users;
+
+public sealed record CreateUserInput(
+    string UserName,
+    Avatar Avatar
+);
+
+public sealed class CreateUser : IUseCase<CreateUserInput, Task<User>>
+{
+    private readonly IUserRepository _repository;
+    private readonly ILogger<CreateUser> _logger;
+
+    public CreateUser(
+        IUserRepository repository,
+        ILogger<CreateUser> logger
+    )
+    {
+        _repository = repository;
+        _logger = logger;
+    }
+    
+    public Task<User> Execute(CreateUserInput input)
+    {
+        throw new NotImplementedException();
+    }
+}
