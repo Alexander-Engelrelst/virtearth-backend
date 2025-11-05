@@ -43,6 +43,8 @@ public sealed class UserExistsQuery : IUserExistsQuery
             parameter.ParameterName = "@username";
             parameter.Value = username;
             
+            command.Parameters.Add(parameter);
+            
             _logger.LogInformation("Query finished: {username} already exists", username);
             
             return Convert.ToBoolean(await command.ExecuteScalarAsync());

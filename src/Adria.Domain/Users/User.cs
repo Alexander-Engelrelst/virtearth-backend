@@ -28,7 +28,7 @@ public sealed class User
         Avatar = avatar;
     }
 
-    private static void EnsureValidUsername(string username)
+    public static void EnsureValidUsername(string username)
     {
         if (string.IsNullOrWhiteSpace(username) ||
             username.Length < MINIMUM_USERNAME_LENGTH ||
