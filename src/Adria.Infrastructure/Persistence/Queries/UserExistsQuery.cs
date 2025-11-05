@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Adria.Infrastructure.Persistence.Queries;
 
-public sealed class UserByNameQuery : IUserByNameQuery
+public sealed class UserExistsQuery : IUserExistsQuery
 {
     private const string QRY = @"
         SELECT EXISTS (
@@ -16,10 +16,10 @@ public sealed class UserByNameQuery : IUserByNameQuery
     private readonly ILogger _logger;
     private readonly string _connectionString;
     private readonly DbProviderFactory _factory;
-    public UserByNameQuery(
+    public UserExistsQuery(
         DbProviderFactory factory,
         string connectionString,
-        ILogger<UserByNameQuery> logger
+        ILogger<UserExistsQuery> logger
     )
     {
         _factory = factory;

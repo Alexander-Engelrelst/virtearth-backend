@@ -2,7 +2,7 @@ using Adria.Domain.Users;
 
 namespace Adria.Application.Contracts;
 
-public interface IUserByNameQuery
+public interface IUserExistsQuery
 {
     Task<bool> Fetch(string username);
 }

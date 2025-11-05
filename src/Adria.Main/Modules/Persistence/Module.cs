@@ -41,12 +41,12 @@ public static class PersistenceModule
     )
     {
         // Configure queries here.
-        return services.AddScoped<IUserByNameQuery, UserByNameQuery>(serviceProvider =>
+        return services.AddScoped<IUserExistsQuery, UserExistsQuery>(serviceProvider =>
         {
-            return new UserByNameQuery(
+            return new UserExistsQuery(
                 serviceProvider.GetRequiredService<DbProviderFactory>(),
                 _connectionString,
-                serviceProvider.GetRequiredService<ILogger<UserByNameQuery>>()
+                serviceProvider.GetRequiredService<ILogger<UserExistsQuery>>()
             );
         });
     }
