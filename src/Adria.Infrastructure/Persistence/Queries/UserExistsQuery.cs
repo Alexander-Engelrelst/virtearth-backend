@@ -46,8 +46,10 @@ public sealed class UserExistsQuery : IUserExistsQuery
         
         command.Parameters.Add(parameter);
         
-        _logger.LogInformation("Query finished: {username} already exists", username);
+        bool exists =  Convert.ToBoolean(await command.ExecuteScalarAsync());
         
-        return Convert.ToBoolean(await command.ExecuteScalarAsync());
+        if (exists) _logger.LogInformation("Query finished: {username} already exists", username);
+        
+        return exists;
     }
 }
