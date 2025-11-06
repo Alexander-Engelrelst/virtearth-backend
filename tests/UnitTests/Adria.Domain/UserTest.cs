@@ -41,6 +41,7 @@ public class UserTest
     public void ValidUserName()
     {
         User user = new("valid._-", Avatar.AlbertEinstein);
+        Assert.NotNull(user);
     }
     
 }

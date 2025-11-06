@@ -11,7 +11,7 @@ using MySql.Data.MySqlClient;
 
 namespace Adria.Infrastructure.WebApi.Controllers;
 
-public class CreateUserController
+public static class CreateUserController
 {
     public static async Task<Results<Ok<User>, BadRequest, Conflict, ProblemHttpResult>> Invoke(
         [FromBody] CreateUserBody body,

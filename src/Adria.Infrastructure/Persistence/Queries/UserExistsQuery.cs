@@ -28,7 +28,7 @@ public sealed class UserExistsQuery : IUserExistsQuery
     }
     public async Task<bool> Fetch(string username)
     {
-        _logger.LogInformation("Checking if user with username {username} exists", username);
+        _logger.LogInformation("Checking if user with username {Username} exists", username);
 
         using DbConnection connection = _factory.CreateConnection()
                                         ?? throw new InvalidOperationException(
@@ -48,7 +48,7 @@ public sealed class UserExistsQuery : IUserExistsQuery
         
         bool exists =  Convert.ToBoolean(await command.ExecuteScalarAsync());
         
-        if (exists) _logger.LogInformation("Query finished: {username} already exists", username);
+        if (exists) _logger.LogInformation("Query finished: {Username} already exists", username);
         
         return exists;
     }

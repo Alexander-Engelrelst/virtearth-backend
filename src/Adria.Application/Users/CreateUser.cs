@@ -29,7 +29,7 @@ public sealed class CreateUser : IUseCase<CreateUserInput, Task<User>>
 
         await _repository.Save(user);
 
-        _logger.LogInformation("user {username} created", input.UserName);
+        _logger.LogInformation("user {Username} created", input.UserName);
         return user;
     }
 }

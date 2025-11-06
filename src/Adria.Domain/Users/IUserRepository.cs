@@ -4,5 +4,5 @@ public interface IUserRepository
 {
     Task Save(User user);
     
-    Task<User?> ById(Guid id);
+    Task<User?> ById(Guid userId);
 }

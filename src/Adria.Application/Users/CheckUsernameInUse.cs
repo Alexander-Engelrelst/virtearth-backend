@@ -24,7 +24,7 @@ public sealed class CheckUsernameInUse : IUseCase<CheckUsernameInUseInput, Task<
     
     public async Task<bool> Execute(CheckUsernameInUseInput input)
     {
-        _logger.LogInformation("Checking if username {username} exists", input.Username);
+        _logger.LogInformation("Checking if username {Username} exists", input.Username);
         
         User.EnsureValidUsername(input.Username);
         
