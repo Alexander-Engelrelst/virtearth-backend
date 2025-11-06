@@ -45,7 +45,7 @@ public static class Routes
 
         userRoutes
             .MapPost("/", CreateUserController.Invoke)
-            .WithDescription("Create a new user")
+            .WithDescription("Register a new username and id")
             .WithName(nameof(CreateUserController))
             .WithMetadata(new ConsumesAttribute(APPLICATION_JSON))
             .WithOpenApi();

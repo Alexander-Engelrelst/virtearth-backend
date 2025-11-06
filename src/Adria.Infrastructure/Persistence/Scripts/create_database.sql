@@ -3,7 +3,6 @@ DROP TABLE IF EXISTS users;
 create table users (
     id CHAR(36) NOT NULL PRIMARY KEY ,
     username NVARCHAR(40) NOT NULL UNIQUE,
-    avatar NVARCHAR(20),
     INDEX idx_username (username)
 );
 

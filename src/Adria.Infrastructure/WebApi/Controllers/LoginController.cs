@@ -8,7 +8,7 @@ namespace Adria.Infrastructure.WebApi.Controllers.Responses;
 public class LoginController
 {
     public static async Task<JwtSecurityToken> Invoke(
-        [FromBody] LoginBody body,
+        [FromRoute] LoginBody body,
         [FromServices] IUseCase<LoginInput, JwtSecurityToken> login
     )
     {

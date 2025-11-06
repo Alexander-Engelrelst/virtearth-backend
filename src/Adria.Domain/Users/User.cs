@@ -11,11 +11,9 @@ public sealed partial class User
     private static partial Regex UsernameRegex(); 
     public Guid Id { get; private init; }
     public string Username { get; private init; }
-    public Avatar? Avatar { get; private init; }
 
     public User(
         string username,
-        Avatar? avatar,
         Guid userId = default
     )
     {
@@ -23,7 +21,6 @@ public sealed partial class User
         
         Id = userId == Guid.Empty ?  Guid.NewGuid() : userId;
         Username = username;
-        Avatar = avatar;
     }
 
     public static void EnsureValidUsername(string username)

@@ -5,8 +5,7 @@ using Microsoft.Extensions.Logging;
 namespace Adria.Application.Users;
 
 public sealed record CreateUserInput(
-    string UserName,
-    Avatar? Avatar
+    string UserName
 );
 
 public sealed class CreateUser : IUseCase<CreateUserInput, Task<User>>
@@ -25,7 +24,7 @@ public sealed class CreateUser : IUseCase<CreateUserInput, Task<User>>
     
     public async Task<User> Execute(CreateUserInput input)
     {
-        User user = new(input.UserName, input.Avatar);
+        User user = new(input.UserName);
 
         await _repository.Save(user);
 

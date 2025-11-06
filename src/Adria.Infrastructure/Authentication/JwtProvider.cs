@@ -12,7 +12,7 @@ public class JwtProvider : IJwtProvider
 {
     public string GenerateToken(User user)
     {
-        List<Claim> claims =
+        /*List<Claim> claims =
         [
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()), // Subject is standardized for unique identifiers
             new Claim(JwtRegisteredClaimNames.PreferredUsername, user.Username)
@@ -29,6 +29,7 @@ public class JwtProvider : IJwtProvider
             signingCredentials: creds
         );
 
-        return new JwtSecurityTokenHandler().WriteToken(token);
+        return new JwtSecurityTokenHandler().WriteToken(token);*/
+        return "";
     }
 }

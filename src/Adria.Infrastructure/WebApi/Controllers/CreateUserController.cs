@@ -18,11 +18,9 @@ public static class CreateUserController
         [FromServices] IUseCase<CreateUserInput, Task<User>> createUser
     )
     {
-        Avatar? avatar = Enum.TryParse(body.Avatar, true, out Avatar result) ? result : null;
-
         try
         {
-            return TypedResults.Ok(await createUser.Execute(new CreateUserInput(body.Username, avatar)));
+            return TypedResults.Ok(await createUser.Execute(new CreateUserInput(body.Username)));
         }
         catch (InvalidUsernameException)
         {
@@ -44,6 +42,5 @@ public static class CreateUserController
 }
 
 public sealed record CreateUserBody(
-    string Username,
-    string? Avatar
+    string Username
 );
