@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using Adria.Application.Contracts;
 using Adria.Application.Users;
 using Adria.Domain.Users;
@@ -10,6 +11,7 @@ public static class UseCases
     {
         return services
             .AddScoped<IUseCase<CheckUsernameInUseInput, Task<bool>>, CheckUsernameInUse>()
-            .AddScoped<IUseCase<CreateUserInput, Task<User>>, CreateUser>();
+            .AddScoped<IUseCase<CreateUserInput, Task<User>>, CreateUser>()
+            .AddScoped<IUseCase<LoginInput, JwtSecurityToken>, Login>();
     }
 }

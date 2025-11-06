@@ -1,4 +1,5 @@
 using Adria.Infrastructure.WebApi.Controllers;
+using Adria.Infrastructure.WebApi.Controllers.Responses;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -47,6 +48,12 @@ public static class Routes
             .WithDescription("Create a new user")
             .WithName(nameof(CreateUserController))
             .WithMetadata(new ConsumesAttribute(APPLICATION_JSON))
+            .WithOpenApi();
+
+        userRoutes
+            .MapGet("/login", LoginController.Invoke)
+            .WithDescription("Login a user to get a JWT token")
+            .WithName(nameof(LoginController))
             .WithOpenApi();
     }
 }

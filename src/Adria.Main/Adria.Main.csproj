@@ -12,6 +12,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.10" />
     <PackageReference Include="Mysql.Data" Version="9.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.14.0" />
   </ItemGroup>
 
   <PropertyGroup>
