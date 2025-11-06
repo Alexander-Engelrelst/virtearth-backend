@@ -1,5 +1,4 @@
 using Adria.Infrastructure.WebApi.Controllers;
-using Adria.Infrastructure.WebApi.Controllers.Responses;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
