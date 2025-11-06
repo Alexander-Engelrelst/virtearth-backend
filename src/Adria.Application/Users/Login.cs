@@ -26,7 +26,13 @@ public sealed class Login : IUseCase<Guid, Task<string>>
     
     public async Task<string> Execute(Guid id)
     {
-        User user = await _userRepository.ById(id) ?? throw new ElementNotFoundException($"User with id {id} not found");
+        _logger.LogInformation("Generating token for user {id}", id);
+        User? user = await _userRepository.ById(id);
+        if (user is null)
+        {
+            _logger.LogInformation("User {id} not found", id);
+            throw new ElementNotFoundException($"User with id {id} not found");
+        }
         return _jwtProvider.GenerateToken(user);
     }
 }
