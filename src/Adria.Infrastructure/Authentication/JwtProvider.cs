@@ -10,7 +10,6 @@ namespace Adria.Infrastructure;
 
 public class JwtProvider : IJwtProvider
 {
-    private static readonly JwtConfiguration _jwtConfiguration = new JwtConfiguration();
     public string GenerateToken(User user)
     {
         List<Claim> claims =
@@ -19,14 +18,14 @@ public class JwtProvider : IJwtProvider
             new Claim(JwtRegisteredClaimNames.PreferredUsername, user.Username)
         ];
         
-        SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfiguration.Secret));
+        SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtConfiguration.Secret));
         SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
         
-        var token = new JwtSecurityToken(
-            issuer: _jwtConfiguration.Issuer,
-            audience: _jwtConfiguration.Audience,
+        JwtSecurityToken token = new JwtSecurityToken(
+            issuer: JwtConfiguration.Issuer,
+            audience: JwtConfiguration.Audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddDays(_jwtConfiguration.ExpireDays),
+            expires: DateTime.UtcNow.AddDays(JwtConfiguration.ExpireDays),
             signingCredentials: creds
         );
 
@@ -34,10 +33,10 @@ public class JwtProvider : IJwtProvider
     }
 }
 
-public record JwtConfiguration
+public abstract record JwtConfiguration
 {
-    public string Secret { get; set; } = "L7dLr6B6K9M+f0Ogbbuv9y8RnWUVVYqJ7Zn1jZy4WGi8sVtzjQw1v5XvT4Qy2x+O9U9JvUdxW1BvJQnHVpEtDw==";
-    public string Issuer { get; set; } = "VirtEarth server";
-    public string Audience { get; set; } = "VirtEarth player";
-    public int ExpireDays { get; set; } = 7;
+    public static string Secret = "L7dLr6B6K9M+f0Ogbbuv9y8RnWUVVYqJ7Zn1jZy4WGi8sVtzjQw1v5XvT4Qy2x+O9U9JvUdxW1BvJQnHVpEtDw==";
+    public static string Issuer = "VirtEarth server";
+    public static string Audience = "VirtEarth player";
+    public static int ExpireDays = 7;
 }

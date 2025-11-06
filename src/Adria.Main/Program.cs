@@ -1,3 +1,4 @@
+using Adria.Main.Modules.Authentication;
 using Adria.Main.Modules.Persistence;
 using Adria.Main.Modules.UseCases;
 using Adria.Main.Modules.WebApi;
@@ -9,7 +10,8 @@ builder
     .Services
         .AddPersistenceModule(configuration)
         .AddWebApiModule(configuration)
-        .AddUseCases();
+        .AddUseCases()
+        .AddAuth(); // called this because AddAuthentication already exists
 
 await builder
     .Build()

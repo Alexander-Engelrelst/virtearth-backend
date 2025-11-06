@@ -5,9 +5,7 @@ namespace Adria.Main.Modules.Authentication;
 
 public static class Module
 {
-    private static IServiceCollection AddAdoServices(
-        this IServiceCollection services
-    )
+    public static IServiceCollection AddAuth(this IServiceCollection services)
     {
         return services.AddScoped<IJwtProvider, JwtProvider>();
     }

@@ -51,7 +51,7 @@ public static class Routes
             .WithOpenApi();
 
         userRoutes
-            .MapGet("/login", LoginController.Invoke)
+            .MapGet("/login/{id}", LoginController.Invoke)
             .WithDescription("Login a user to get a JWT token")
             .WithName(nameof(LoginController))
             .WithOpenApi();

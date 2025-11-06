@@ -7,14 +7,14 @@ namespace Adria.Infrastructure.WebApi.Controllers.Responses;
 
 public class LoginController
 {
-    public static async Task<JwtSecurityToken> Invoke(
-        [FromRoute] LoginBody body,
-        [FromServices] IUseCase<LoginInput, JwtSecurityToken> login
+    public static async Task<string> Invoke(
+        [FromRoute] Guid id,
+        [FromServices] IUseCase<Guid, Task<string>> login
     )
     {
         try
         {
-            return login.Execute(new LoginInput(body.Id, body.Username));
+            return await login.Execute(id);
         }
         catch (Exception e)
         {
@@ -23,8 +23,3 @@ public class LoginController
         }
     }
 }
-
-public sealed record LoginBody(
-    Guid Id,
-    string Username
-    );
