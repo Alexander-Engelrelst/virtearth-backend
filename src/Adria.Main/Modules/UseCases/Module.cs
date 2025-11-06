@@ -11,7 +11,7 @@ public static class UseCases
     {
         return services
             .AddScoped<IUseCase<CheckUsernameInUseInput, Task<bool>>, CheckUsernameInUse>()
-            .AddScoped<IUseCase<CreateUserInput, Task<User>>, CreateUser>()
+            .AddScoped<IUseCase<CreateUserInput, Task<CreateUserResult>>, CreateUser>()
             .AddScoped<IUseCase<Guid, Task<string>>, Login>();
     }
 }
