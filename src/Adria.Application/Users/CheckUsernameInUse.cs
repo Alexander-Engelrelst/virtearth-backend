@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using Adria.Application.Contracts;
+using Adria.Application.Contracts.Data;
 using Adria.Domain.Users;
 using Microsoft.Extensions.Logging;
 

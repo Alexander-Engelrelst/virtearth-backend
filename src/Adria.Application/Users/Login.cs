@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using Adria.Application.Authentication;
 using Adria.Application.Contracts;
+using Adria.Application.Contracts.Data;
 using Adria.Domain.Shared.Exceptions;
 using Adria.Domain.Users;
 using Microsoft.Extensions.Logging;
@@ -8,7 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace Adria.Application.Users;
 
 
-public sealed class Login : IUseCase<Guid, Task<string>>
+public sealed class Login : IUseCase<Guid, Task<UserData>>
 {
     private readonly IUserRepository _userRepository;
     private readonly ILogger<Login> _logger;
@@ -24,7 +25,7 @@ public sealed class Login : IUseCase<Guid, Task<string>>
         _jwtProvider = provider;
     }
     
-    public async Task<string> Execute(Guid id)
+    public async Task<UserData> Execute(Guid id)
     {
         _logger.LogInformation("Generating token for user {id}", id);
         User? user = await _userRepository.ById(id);
@@ -33,6 +34,7 @@ public sealed class Login : IUseCase<Guid, Task<string>>
             _logger.LogInformation("User {id} not found", id);
             throw new ElementNotFoundException($"User with id {id} not found");
         }
-        return _jwtProvider.GenerateToken(user);
+        
+        return new UserData(user, _jwtProvider.GenerateToken(user));
     }
 }
