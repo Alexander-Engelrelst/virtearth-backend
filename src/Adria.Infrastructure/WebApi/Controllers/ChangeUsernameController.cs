@@ -12,7 +12,7 @@ namespace Adria.Infrastructure.WebApi.Controllers;
 
 public static class ChangeUsernameController
 {
-    public static async Task<Results<Ok<UserDto>, NotFound<string>, ProblemHttpResult, Conflict, BadRequest>> Invoke(
+    public static async Task<Results<Ok<UserDto>, NotFound<string>, ProblemHttpResult, Conflict<string>, BadRequest>> Invoke(
         [FromRoute] Guid id,
         [FromQuery] string newUsername,
         [FromServices] IUseCase<ChangeUserNameInput, Task<UserData>> changeUsername
@@ -30,7 +30,7 @@ public static class ChangeUsernameController
         }
         catch (UsernameAlreadyExistsException)
         {
-            return TypedResults.Conflict();
+            return TypedResults.Conflict("test");
         }
         catch (InvalidUsernameException)
         {

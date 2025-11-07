@@ -11,10 +11,14 @@ builder
         .AddPersistenceModule(configuration)
         .AddWebApiModule(configuration)
         .AddUseCases()
-        .AddAuth(); // called this because AddAuthentication already exists
+        .AddJwtAuthentication();
 
-await builder
-    .Build()
+WebApplication app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
+    
+await app
     .UsePersistenceModule()
     .UseWebApiModule()
     .RunAsync();

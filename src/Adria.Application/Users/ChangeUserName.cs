@@ -28,19 +28,19 @@ public sealed class ChangeUserName : IUseCase<ChangeUserNameInput, Task<UserData
     }
     public async Task<UserData> Execute(ChangeUserNameInput input)
     {
-        _logger.LogInformation("Executing user change request for id {id}", input.Id);
+        _logger.LogInformation("Executing user change request for id {Id}", input.Id);
         User? user = await _repository.ById(input.Id);
 
         if (user is null)
         {
-            _logger.LogError("User with id {id} was not found", input.Id);
+            _logger.LogError("User with id {Id} was not found", input.Id);
             throw ElementNotFoundException.ForId<User>(input.Id);
         }
         
         bool usernameAlreadyExists = await _userExistsQuery.Fetch(input.NewName);
         if (usernameAlreadyExists)
         {
-            _logger.LogError("User with name {name} already exists", input.NewName);
+            _logger.LogError("User with name {Name} already exists", input.NewName);
             throw new UsernameAlreadyExistsException(input.NewName);
         }
 
@@ -50,7 +50,7 @@ public sealed class ChangeUserName : IUseCase<ChangeUserNameInput, Task<UserData
         }
         catch (InvalidUsernameException)
         {
-            _logger.LogError("Invalid username: {username}", input.NewName);
+            _logger.LogError("Invalid username: {Username}", input.NewName);
         }
 
         await _repository.Save(user);

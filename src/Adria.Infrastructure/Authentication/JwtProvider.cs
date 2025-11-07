@@ -15,7 +15,6 @@ public sealed class JwtProvider : IJwtProvider
         List<Claim> claims =
         [
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()), // Subject is standardized for unique identifiers
-            new Claim(JwtRegisteredClaimNames.PreferredUsername, user.Username)
         ];
         
         SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtConfiguration.Secret));

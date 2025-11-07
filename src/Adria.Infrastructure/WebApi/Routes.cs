@@ -54,5 +54,12 @@ public static class Routes
             .WithDescription("Login a user to get a JWT token")
             .WithName(nameof(LoginController))
             .WithOpenApi();
+        
+        userRoutes
+            .MapPatch("/{id}", ChangeUsernameController.Invoke)
+            .WithDescription("Login a user to get a JWT token")
+            .RequireAuthorization()
+            .WithName(nameof(ChangeUsernameController))
+            .WithOpenApi();
     }
 }
