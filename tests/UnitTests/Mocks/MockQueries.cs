@@ -12,8 +12,7 @@ public class MockUserExistsQuery : IUserExistsQuery
         {
             throw new UsernameAlreadyExistsException(username);
         }
-        else {
-            return Task.FromResult(false);
-        }
+
+        return Task.FromResult(false);
     }
 }

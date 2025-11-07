@@ -8,7 +8,7 @@ using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegiste
 
 namespace Adria.Infrastructure;
 
-public class JwtProvider : IJwtProvider
+public sealed class JwtProvider : IJwtProvider
 {
     public string GenerateToken(User user)
     {
