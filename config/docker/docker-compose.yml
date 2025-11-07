@@ -1,5 +1,4 @@
 # This file is used to define all the services that make up your application.
-# In this case, we only need a database service.
 services:
   taskly-db.adria:
     image: mysql:latest
@@ -12,6 +11,26 @@ services:
       - 3306:3306
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-padria"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 30s
+
+  taskly-api.adria:
+    build:
+      context: ../../
+      dockerfile: ./config/docker/Dockerfile
+    ports:
+      - 8000:8000
+    environment:
+      - Persistence__ConnectionString=Server=taskly-db.adria;Port=3306;Database=virtEarth;User=adria;Password=adria;
+    depends_on:
+      taskly-db.adria:
+        condition: service_healthy
+    restart: on-failure
 
 volumes:
   mysql_data:
