@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using Adria.Application.Authentication;
 using Adria.Application.Contracts;
+using Adria.Application.Contracts.Data;
 using Adria.Domain.Users;
 using Microsoft.Extensions.Logging;
 
@@ -9,10 +10,7 @@ namespace Adria.Application.Users;
 public sealed record CreateUserInput(
     string UserName
 );
-
-public sealed record CreateUserResult(User User, string JwtToken);
-
-public sealed class CreateUser : IUseCase<CreateUserInput, Task<CreateUserResult>>
+public sealed class CreateUser : IUseCase<CreateUserInput, Task<UserData>>
 {
     private readonly IUserRepository _repository;
     private readonly ILogger<CreateUser> _logger;
@@ -28,7 +26,7 @@ public sealed class CreateUser : IUseCase<CreateUserInput, Task<CreateUserResult
         _jwtProvider = jwtProvider;
     }
     
-    public async Task<CreateUserResult> Execute(CreateUserInput input)
+    public async Task<UserData> Execute(CreateUserInput input)
     {
         User user = new(input.UserName);
 
@@ -37,6 +35,6 @@ public sealed class CreateUser : IUseCase<CreateUserInput, Task<CreateUserResult
         _logger.LogInformation("user {Username} created", input.UserName);
 
         string token = _jwtProvider.GenerateToken(user);
-        return  new CreateUserResult(user, token); 
+        return  new UserData(user, token); 
     }
 }

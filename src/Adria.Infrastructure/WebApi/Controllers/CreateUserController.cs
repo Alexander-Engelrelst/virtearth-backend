@@ -1,5 +1,6 @@
 ﻿using System.Data.Common;
 using Adria.Application.Contracts;
+using Adria.Application.Contracts.Data;
 using Adria.Application.Users;
 using Adria.Domain.Shared.Exceptions;
 using Adria.Domain.Users;
@@ -16,13 +17,13 @@ public static class CreateUserController
 {
     public static async Task<Results<Ok<UserDto>, BadRequest, Conflict, ProblemHttpResult>> Invoke(
         [FromBody] CreateUserBody body,
-        [FromServices] IUseCase<CreateUserInput, Task<CreateUserResult>> createUser
+        [FromServices] IUseCase<CreateUserInput, Task<UserData>> createUser
     )
     {
         try
         {
-            CreateUserResult result = await createUser.Execute(new CreateUserInput(body.Username));
-            return TypedResults.Ok(new UserDto(result.User.Id, result.User.Username, result.JwtToken));
+            UserData data = await createUser.Execute(new CreateUserInput(body.Username));
+            return TypedResults.Ok(new UserDto(data.User.Id, data.User.Username, data.JwtToken));
         }
         catch (InvalidUsernameException)
         {
