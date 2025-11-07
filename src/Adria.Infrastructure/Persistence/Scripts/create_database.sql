@@ -13,6 +13,15 @@ ALTER TABLE `users`
                 AND username REGEXP '^[a-zA-Z0-9._-]+$'
     );
 
+create table games(
+    id CHAR(36) NOT NULL  PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    latitute DECIMAL(6,4),
+    longitude DECIMAL(7,4),
+    CONSTRAINT chk_latitute CHECK ( latitute BETWEEN -90 AND 90),
+    CONSTRAINT chk_longitude CHECK ( longitude BETWEEN -180 AND 180)
+);
+
 
 INSERT INTO `users` (`id`, `username`) VALUES
 ('550e8400-e29b-41d4-a716-446655440000', 'AliceSmith'),
@@ -67,3 +76,12 @@ INSERT INTO `users` (`id`, `username`) VALUES
 ('550e8400-e29b-41d4-a716-446655440031', 'XenaYoung'),
 ('550e8400-e29b-41d4-a716-446655440032', 'YusufZimmerman'),
 ('550e8400-e29b-41d4-a716-446655440033', 'ZaraAllen');
+
+-- TODO remove excess location this is just to check if the query can get them all as intended with the loop
+INSERT INTO `games` (`id`, `name`, `latitute`, `longitude`)
+VALUES
+    ("550e8400-e29b-41d4-a716-446655440034", "Minotaur maze", 35.2989, 25.1636),
+    ("550e8400-e29b-41d4-a716-446655440035", "Minotaur maze", 35.2989, 25.1636),
+    ("550e8400-e29b-41d4-a716-446655440036", "Minotaur maze", 35.2989, 25.1636),
+    ("550e8400-e29b-41d4-a716-446655440037", "Minotaur maze", 35.2989, 25.1636),
+    ("550e8400-e29b-41d4-a716-446655440038", "Minotaur maze", 35.2989, 25.1636)

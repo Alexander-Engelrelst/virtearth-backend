@@ -50,8 +50,6 @@ public static class Module
 
                         Guid id = new Guid(idClaim);
                         
-                        Console.WriteLine(id);
-
                         if (!context.HttpContext.Request.RouteValues.TryGetValue("id", out object? routeIdObj))
                         {
                             Console.WriteLine("issue");
@@ -61,8 +59,7 @@ public static class Module
                         Console.WriteLine(routeIdObj);
                         if (routeIdObj is null) throw new ArgumentNullException(nameof(routeIdObj));
                         Guid routeId = Guid.Parse(routeIdObj.ToString()!);
-                        Console.WriteLine(id);
-                        Console.WriteLine(routeId);
+
                         if (routeId == id)
                         {
                             context.Success();

@@ -25,6 +25,7 @@ public static class Routes
     public static WebApplication MapRoutes(this WebApplication app)
     {
         MapUserRoutes(app);
+        MapGameRoutes(app);
         
         return app;
     }
@@ -33,7 +34,7 @@ public static class Routes
     {
         var userRoutes = app.MapGroup("/api/users")
             .WithTags("Users")
-            .WithDescription("All endpoints related to Taskly todolists.")
+            .WithDescription("All endpoints related to users")
             .WithOpenApi();
         
         userRoutes
@@ -60,6 +61,20 @@ public static class Routes
             .WithDescription("Login a user to get a JWT token")
             .RequireAuthorization()
             .WithName(nameof(ChangeUsernameController))
+            .WithOpenApi();
+    }
+
+    private static void MapGameRoutes(WebApplication app)
+    {
+        var gameRoutes = app.MapGroup("/api/game")
+            .WithTags("Games")
+            .WithDescription("All endpoints related to games")
+            .WithOpenApi();
+
+        gameRoutes
+            .MapGet("/", GetGamesController.Invoke)
+            .WithDescription("Get all games")
+            .WithName(nameof(GetGamesController))
             .WithOpenApi();
     }
 }
