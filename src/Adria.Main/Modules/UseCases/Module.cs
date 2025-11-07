@@ -13,6 +13,7 @@ public static class UseCases
         return services
             .AddScoped<IUseCase<CheckUsernameInUseInput, Task<bool>>, CheckUsernameInUse>()
             .AddScoped<IUseCase<CreateUserInput, Task<UserData>>, CreateUser>()
-            .AddScoped<IUseCase<Guid, Task<UserData>>, Login>();
+            .AddScoped<IUseCase<Guid, Task<UserData>>, Login>()
+            .AddScoped<IUseCase<ChangeUserNameInput, Task<UserData>>, ChangeUserName>();
     }
 }

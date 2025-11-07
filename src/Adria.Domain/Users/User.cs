@@ -10,7 +10,7 @@ public sealed partial class User
     [GeneratedRegex(@"^[a-zA-Z0-9._-]{3,40}$")]
     private static partial Regex UsernameRegex(); 
     public Guid Id { get; private init; }
-    public string Username { get; private init; }
+    public string Username { get; private set; }
 
     public User(
         string username,
@@ -32,5 +32,12 @@ public sealed partial class User
         {
             throw new InvalidUsernameException(username);
         }
+    }
+
+    public void UpdateUserName(string inputNewName)
+    {
+        EnsureValidUsername(inputNewName);
+        
+        Username =  inputNewName;
     }
 }
