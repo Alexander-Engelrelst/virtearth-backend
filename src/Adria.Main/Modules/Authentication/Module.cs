@@ -40,7 +40,8 @@ public static class Module
                 {
                     OnTokenValidated = context =>
                     {
-                        var idClaim = context.Principal?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+                        var idClaim = context.Principal?.FindFirst("Guid")?.Value;
+
                         if (idClaim is null)
                         {
                             context.Fail("Missing id in token");
@@ -48,15 +49,20 @@ public static class Module
                         }
 
                         Guid id = new Guid(idClaim);
+                        
+                        Console.WriteLine(id);
 
                         if (!context.HttpContext.Request.RouteValues.TryGetValue("id", out object? routeIdObj))
                         {
+                            Console.WriteLine("issue");
                             context.Fail("Missing route ID");
                             return Task.CompletedTask;
                         }
-
+                        Console.WriteLine(routeIdObj);
                         if (routeIdObj is null) throw new ArgumentNullException(nameof(routeIdObj));
                         Guid routeId = Guid.Parse(routeIdObj.ToString()!);
+                        Console.WriteLine(id);
+                        Console.WriteLine(routeId);
                         if (routeId == id)
                         {
                             context.Success();
