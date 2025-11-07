@@ -5,7 +5,7 @@ namespace UnitTests.Mocks;
 
 public class MockUserExistsQuery : IUserExistsQuery
 {
-    private readonly string _existingUserName = "jeffken";
+    public static readonly string _existingUserName = "jeffken";
     public Task<bool> Fetch(string username)
     {
         if (username == _existingUserName)

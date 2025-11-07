@@ -11,12 +11,12 @@ public sealed record ChangeUserNameInput(Guid Id, string NewName);
 public sealed class ChangeUserName : IUseCase<ChangeUserNameInput, Task<UserData>>
 {
     private readonly IUserRepository _repository;
-    private readonly ILogger<CreateUser> _logger;
+    private readonly ILogger<ChangeUserName> _logger;
     private readonly IJwtProvider _jwtProvider;
     private readonly IUserExistsQuery _userExistsQuery;
     public ChangeUserName(
         IUserRepository repository,
-        ILogger<CreateUser> logger,
+        ILogger<ChangeUserName> logger,
         IJwtProvider jwtProvider,
         IUserExistsQuery userExistsQuery
     )
@@ -36,6 +36,12 @@ public sealed class ChangeUserName : IUseCase<ChangeUserNameInput, Task<UserData
             _logger.LogError("User with id {Id} was not found", input.Id);
             throw ElementNotFoundException.ForId<User>(input.Id);
         }
+
+        if (user.Username == input.NewName)
+        {
+            throw new ArgumentException();
+        }
+        
         
         bool usernameAlreadyExists = await _userExistsQuery.Fetch(input.NewName);
         if (usernameAlreadyExists)
@@ -51,6 +57,7 @@ public sealed class ChangeUserName : IUseCase<ChangeUserNameInput, Task<UserData
         catch (InvalidUsernameException)
         {
             _logger.LogError("Invalid username: {Username}", input.NewName);
+            throw;
         }
 
         await _repository.Save(user);
