@@ -4,6 +4,7 @@ using Adria.Application.Authentication;
 using Adria.Infrastructure;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Adria.Main.Modules.Authentication;
@@ -50,16 +51,20 @@ public static class Module
 
                         Guid id = new Guid(idClaim);
                         
-                        if (!context.HttpContext.Request.RouteValues.TryGetValue("id", out object? routeIdObj))
+                        if (!context.HttpContext.Request.Query.TryGetValue("id", out StringValues idFromQuery))
                         {
                             context.Fail("Missing route ID");
                             return Task.CompletedTask;
                         }
+                        if (idFromQuery.Count != 1) throw new ArgumentOutOfRangeException("please enter exactly one id");
+                        if (!Guid.TryParse(idFromQuery[0], out Guid userGivenId))
+                        {
+                            context.Fail("Invalid route ID");
+                            return Task.CompletedTask;
+                        }
                         
-                        if (routeIdObj is null) throw new ArgumentNullException(nameof(routeIdObj));
-                        Guid routeId = Guid.Parse(routeIdObj.ToString()!);
 
-                        if (routeId == id)
+                        if (userGivenId == id)
                         {
                             context.Success();
                         }

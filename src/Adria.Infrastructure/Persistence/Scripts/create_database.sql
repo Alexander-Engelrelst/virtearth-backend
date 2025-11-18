@@ -1,9 +1,9 @@
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS games
+DROP TABLE IF EXISTS games;
 
 create table users (
-    id CHAR(36) NOT NULL PRIMARY KEY ,
-    username NVARCHAR(40) NOT NULL UNIQUE,
+    id CHAR(36) NOT NULL PRIMARY KEY,
+    username VARCHAR(40) NOT NULL UNIQUE,
     INDEX idx_username (username)
 );
 

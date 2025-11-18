@@ -1,7 +1,9 @@
 using System.IdentityModel.Tokens.Jwt;
 using Adria.Application.Contracts;
 using Adria.Application.Contracts.Data;
+using Adria.Application.games;
 using Adria.Application.Users;
+using Adria.Domain.games;
 using Adria.Domain.Users;
 
 namespace Adria.Main.Modules.UseCases;
@@ -14,6 +16,7 @@ public static class UseCases
             .AddScoped<IUseCase<CheckUsernameInUseInput, Task<bool>>, CheckUsernameInUse>()
             .AddScoped<IUseCase<CreateUserInput, Task<UserData>>, CreateUser>()
             .AddScoped<IUseCase<Guid, Task<UserData>>, Login>()
-            .AddScoped<IUseCase<ChangeUserNameInput, Task<UserData>>, ChangeUserName>();
+            .AddScoped<IUseCase<ChangeUserNameInput, Task<UserData>>, ChangeUserName>()
+            .AddScoped<IUseCase<IReadOnlyCollection<GameLocation>>, GetGamesLocations>();
     }
 }

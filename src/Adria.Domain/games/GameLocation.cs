@@ -34,5 +34,6 @@ public sealed class GameLocation
         GameId = gameId;
         Latitude = latitude;
         Longitude = longitude;
+        GameName = gameName;
     }
 }

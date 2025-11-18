@@ -13,7 +13,7 @@ namespace Adria.Infrastructure.WebApi.Controllers;
 public static class ChangeUsernameController
 {
     public static async Task<Results<Ok<UserDto>, NotFound<string>, ProblemHttpResult, Conflict<string>, BadRequest<string>>> Invoke(
-        [FromRoute] Guid id,
+        [FromQuery] Guid id,
         [FromQuery] string newUsername,
         [FromServices] IUseCase<ChangeUserNameInput, Task<UserData>> changeUsername
     )

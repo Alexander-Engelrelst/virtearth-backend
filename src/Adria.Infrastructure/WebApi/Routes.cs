@@ -57,7 +57,7 @@ public static class Routes
             .WithOpenApi();
         
         userRoutes
-            .MapPatch("/{id}", ChangeUsernameController.Invoke)
+            .MapPatch("/", ChangeUsernameController.Invoke)
             .WithDescription("Login a user to get a JWT token")
             .RequireAuthorization()
             .WithName(nameof(ChangeUsernameController))
@@ -66,7 +66,7 @@ public static class Routes
 
     private static void MapGameRoutes(WebApplication app)
     {
-        var gameRoutes = app.MapGroup("/api/game")
+        var gameRoutes = app.MapGroup("/api/games")
             .WithTags("Games")
             .WithDescription("All endpoints related to games")
             .WithOpenApi();
@@ -74,6 +74,7 @@ public static class Routes
         gameRoutes
             .MapGet("/", GetGamesController.Invoke)
             .WithDescription("Get all games")
+            .RequireAuthorization()
             .WithName(nameof(GetGamesController))
             .WithOpenApi();
     }
