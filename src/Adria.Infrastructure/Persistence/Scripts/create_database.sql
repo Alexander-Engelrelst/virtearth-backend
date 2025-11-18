@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS games
 
 create table users (
     id CHAR(36) NOT NULL PRIMARY KEY ,
@@ -16,8 +17,8 @@ ALTER TABLE `users`
 create table games(
     id CHAR(36) NOT NULL  PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    latitute DECIMAL(6,4),
-    longitude DECIMAL(7,4),
+    latitute DOUBLE,
+    longitude DOUBLE(7,4),
     CONSTRAINT chk_latitute CHECK ( latitute BETWEEN -90 AND 90),
     CONSTRAINT chk_longitude CHECK ( longitude BETWEEN -180 AND 180)
 );

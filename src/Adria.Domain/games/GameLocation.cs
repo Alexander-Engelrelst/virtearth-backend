@@ -6,11 +6,18 @@ public sealed class GameLocation
     public double Latitude { get; }
     public double Longitude { get; }
     
-    public GameLocation(Guid gameId, double latitude, double longitude)
+    public string GameName { get; }
+    
+    public GameLocation(Guid gameId, string gameName ,double latitude, double longitude)
     {
         if (gameId == Guid.Empty)
         {
             throw new ArgumentNullException(nameof(gameId), "Game ID cannot be empty.");
+        }
+
+        if (string.IsNullOrWhiteSpace(gameName))
+        {
+            throw new ArgumentNullException(nameof(gameName), "Game name cannot be empty.");
         }
 
         if (latitude < -90 || latitude > 90)

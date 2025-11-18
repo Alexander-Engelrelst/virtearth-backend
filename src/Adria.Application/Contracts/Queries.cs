@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using Adria.Domain.games;
 using Adria.Domain.Users;
 
@@ -10,5 +11,5 @@ public interface IUserExistsQuery
 
 public interface IGameLocationsQuery
 {
-    Task<List<GameLocation>> Fetch();
+    Task<ReadOnlyCollection<GameLocation>> Fetch();
 }
