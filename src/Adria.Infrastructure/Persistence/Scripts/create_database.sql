@@ -78,7 +78,6 @@ INSERT INTO `users` (`id`, `username`) VALUES
 ('550e8400-e29b-41d4-a716-446655440032', 'YusufZimmerman'),
 ('550e8400-e29b-41d4-a716-446655440033', 'ZaraAllen');
 
--- TODO remove excess location this is just to check if the query can get them all as intended with the loop
 INSERT INTO `games` (`id`, `name`, `latitute`, `longitude`)
 VALUES
     ("550e8400-e29b-41d4-a716-446655440034", "Minotaur maze", 35.2989, 25.1636)

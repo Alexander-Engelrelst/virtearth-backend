@@ -2,6 +2,7 @@
 using System.Text;
 using Adria.Application.Authentication;
 using Adria.Infrastructure;
+using Adria.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Primitives;
@@ -19,15 +20,15 @@ public static class Module
         
         services.AddScoped<IJwtProvider, JwtProvider>();
         
-        return services.AddAuthentication(x =>
+        return services.AddAuthentication(options =>
             {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer(x =>
+            .AddJwtBearer(options =>
             {
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
@@ -38,8 +39,8 @@ public static class Module
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtConfiguration.Secret)),
                     RequireExpirationTime = true,
                 };
-
-                x.Events = new JwtBearerEvents
+                // TODO remove this event and just grab the uuid from the request in my controller lol
+                options.Events = new JwtBearerEvents
                 {
                     OnTokenValidated = context =>
                     {
