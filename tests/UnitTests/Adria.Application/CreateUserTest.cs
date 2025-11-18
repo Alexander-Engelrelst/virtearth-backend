@@ -5,7 +5,7 @@ using UnitTests.Mocks;
 
 namespace UnitTests.Adria.Application;
 
-public class Users
+public class CreateUserTest
 {
     [Fact]
     public async Task ExecuteUsernameSearchWithExistingUserThrows()

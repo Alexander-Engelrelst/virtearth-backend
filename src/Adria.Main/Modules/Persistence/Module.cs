@@ -57,6 +57,14 @@ public static class PersistenceModule
                 _connectionString,
                 serviceProvider.GetRequiredService<ILogger<UserExistsQuery>>()
             );
+        })
+        .AddScoped<IGameLocationsQuery, GameLocationsQuery>(serviceProvider =>
+        {
+            return new GameLocationsQuery(
+                serviceProvider.GetRequiredService<DbProviderFactory>(),
+                _connectionString,
+                serviceProvider.GetRequiredService<ILogger<GameLocationsQuery>>()
+            );
         });
     }
 

@@ -1,4 +1,6 @@
-﻿using Adria.Application.Contracts;
+﻿using System.IdentityModel.Tokens.Jwt;
+using Adria.Application.Contracts;
+using Adria.Application.Contracts.Data;
 using Adria.Domain.Users;
 using Microsoft.Extensions.Logging;
 
@@ -24,7 +26,7 @@ public sealed class CheckUsernameInUse : IUseCase<CheckUsernameInUseInput, Task<
     
     public async Task<bool> Execute(CheckUsernameInUseInput input)
     {
-        _logger.LogInformation("Checking if username {username} exists", input.Username);
+        _logger.LogInformation("Checking if username {Username} exists", input.Username);
         
         User.EnsureValidUsername(input.Username);
         

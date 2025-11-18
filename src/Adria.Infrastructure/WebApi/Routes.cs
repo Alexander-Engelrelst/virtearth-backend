@@ -25,6 +25,7 @@ public static class Routes
     public static WebApplication MapRoutes(this WebApplication app)
     {
         MapUserRoutes(app);
+        MapGameRoutes(app);
         
         return app;
     }
@@ -33,7 +34,7 @@ public static class Routes
     {
         var userRoutes = app.MapGroup("/api/users")
             .WithTags("Users")
-            .WithDescription("All endpoints related to Taskly todolists.")
+            .WithDescription("All endpoints related to users")
             .WithOpenApi();
         
         userRoutes
@@ -44,9 +45,37 @@ public static class Routes
 
         userRoutes
             .MapPost("/", CreateUserController.Invoke)
-            .WithDescription("Create a new user")
+            .WithDescription("Register a new username and id")
             .WithName(nameof(CreateUserController))
             .WithMetadata(new ConsumesAttribute(APPLICATION_JSON))
+            .WithOpenApi();
+
+        userRoutes
+            .MapGet("/login/{id}", LoginController.Invoke)
+            .WithDescription("Login a user to get a JWT token")
+            .WithName(nameof(LoginController))
+            .WithOpenApi();
+        
+        userRoutes
+            .MapPatch("/", ChangeUsernameController.Invoke)
+            .WithDescription("Login a user to get a JWT token")
+            .RequireAuthorization()
+            .WithName(nameof(ChangeUsernameController))
+            .WithOpenApi();
+    }
+
+    private static void MapGameRoutes(WebApplication app)
+    {
+        var gameRoutes = app.MapGroup("/api/games")
+            .WithTags("Games")
+            .WithDescription("All endpoints related to games")
+            .WithOpenApi();
+
+        gameRoutes
+            .MapGet("/", GetGamesController.Invoke)
+            .WithDescription("Get all games")
+            .RequireAuthorization()
+            .WithName(nameof(GetGamesController))
             .WithOpenApi();
     }
 }

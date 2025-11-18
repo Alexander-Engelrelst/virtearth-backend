@@ -1,9 +1,11 @@
 ﻿using System.Data.Common;
 using Adria.Application.Contracts;
+using Adria.Application.Contracts.Data;
 using Adria.Application.Users;
 using Adria.Domain.Shared.Exceptions;
 using Adria.Domain.Users;
 using Adria.Infrastructure.Persistence.Shared;
+using Adria.Infrastructure.WebApi.Controllers.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -11,18 +13,17 @@ using MySql.Data.MySqlClient;
 
 namespace Adria.Infrastructure.WebApi.Controllers;
 
-public class CreateUserController
+public static class CreateUserController
 {
-    public static async Task<Results<Ok<User>, BadRequest, Conflict, ProblemHttpResult>> Invoke(
+    public static async Task<Results<Ok<UserDto>, BadRequest, Conflict, ProblemHttpResult>> Invoke(
         [FromBody] CreateUserBody body,
-        [FromServices] IUseCase<CreateUserInput, Task<User>> createUser
+        [FromServices] IUseCase<CreateUserInput, Task<UserData>> createUser
     )
     {
-        Avatar? avatar = Enum.TryParse(body.Avatar, true, out Avatar result) ? result : null;
-
         try
         {
-            return TypedResults.Ok(await createUser.Execute(new CreateUserInput(body.Username, avatar)));
+            UserData data = await createUser.Execute(new CreateUserInput(body.Username));
+            return TypedResults.Ok(new UserDto(data.User.Id, data.User.Username, data.JwtToken));
         }
         catch (InvalidUsernameException)
         {
@@ -44,6 +45,5 @@ public class CreateUserController
 }
 
 public sealed record CreateUserBody(
-    string Username,
-    string? Avatar
+    string Username
 );

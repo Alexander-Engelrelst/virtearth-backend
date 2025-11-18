@@ -14,23 +14,22 @@ public sealed class AdoUserRepository : AbstractAdoRepository, IUserRepository
     private const string TABLE_USERS = "users";
     private const string COL_ID = "id";
     private const string COL_NAME = "username";
-    private const string COL_AVATAR = "avatar";
     private const int MYSQL_DUPLICATE_ENTRY_STATUS_CODE = 1062;
 
     private const string INSERT_USER = $@"
-        INSERT INTO {TABLE_USERS} ({COL_ID}, {COL_NAME}, {COL_AVATAR})
-        VALUES (@Id, @Name, @Avatar);
+        INSERT INTO {TABLE_USERS} ({COL_ID}, {COL_NAME})
+        VALUES (@Id, @Name);
     ";
 
     private const string SELECT_USER_BY_ID = $@"
-        SELECT {COL_ID}, {COL_NAME}, {COL_AVATAR}
+        SELECT {COL_ID}, {COL_NAME}
         FROM {TABLE_USERS}
         WHERE {COL_ID} = @Id;
     ";
     
     private static readonly string UPDATE_USER = $@"
         UPDATE {TABLE_USERS}
-        SET {COL_NAME} = @Name, {COL_AVATAR}  = @Avatar
+        SET {COL_NAME} = @Name
         WHERE {COL_ID} = @Id;
     ";
 
@@ -59,7 +58,6 @@ public sealed class AdoUserRepository : AbstractAdoRepository, IUserRepository
             [
                 CreateParameter("@Id", user.Id.ToString().ToLower()),
                 CreateParameter("@Name", user.Username),
-                CreateParameter("@Avatar", user.Avatar?.ToString() ?? null)
             ];
 
             await ExecuteNonQueryAsync(userQuery, parameters);
@@ -90,15 +88,8 @@ public sealed class AdoUserRepository : AbstractAdoRepository, IUserRepository
         {
             if (await dbDataReader.ReadAsync())
             {
-                string avatarString = dbDataReader.GetString(dbDataReader.GetOrdinal(COL_AVATAR));
-
-                Avatar? avatar = Enum.TryParse<Avatar>(avatarString, true ,out Avatar result)
-                    ? result
-                    : null;
-                
                 return new User(
                     dbDataReader.GetString(dbDataReader.GetOrdinal(COL_NAME)),
-                    avatar,
                     dbDataReader.GetGuid(dbDataReader.GetOrdinal(COL_ID))
                 );
             }

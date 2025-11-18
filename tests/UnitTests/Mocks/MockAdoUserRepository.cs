@@ -10,6 +10,13 @@ public class MockAdoUserRepository : IUserRepository
     {
         ArgumentNullException.ThrowIfNull(user);
         
+        // this is to mock updating a user
+        var existingUser = _users.FirstOrDefault(u => u.Id == user.Id);
+        if (existingUser != null)
+        {
+            _users.Remove(existingUser);
+        }
+        
         if (_users.Any(u => u.Username == user.Username))
         {
             throw new UsernameAlreadyExistsException(user.Username);
