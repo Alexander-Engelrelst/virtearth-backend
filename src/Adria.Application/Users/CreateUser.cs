@@ -35,6 +35,6 @@ public sealed class CreateUser : IUseCase<CreateUserInput, Task<UserData>>
         _logger.LogInformation("user {Username} created", input.UserName);
 
         string token = _jwtProvider.GenerateToken(user);
-        return  new UserData(user, token); 
+        return new UserData(user, token); 
     }
 }

@@ -39,7 +39,7 @@ public sealed class ChangeUserName : IUseCase<ChangeUserNameInput, Task<UserData
 
         if (user.Username == input.NewName)
         {
-            throw new ArgumentException();
+            throw new ArgumentException("You cannot change your name to your current name");
         }
         
         
@@ -54,9 +54,9 @@ public sealed class ChangeUserName : IUseCase<ChangeUserNameInput, Task<UserData
         {
             user.UpdateUserName(input.NewName);
         }
-        catch (InvalidUsernameException)
+        catch (InvalidUsernameException ex)
         {
-            _logger.LogError("Invalid username: {Username}", input.NewName);
+            _logger.LogError(ex, "Invalid username: {Username}", input.NewName);
             throw;
         }
 

@@ -10,5 +10,5 @@ public interface IUseCase<in Input, out Output>
 
 public interface IUseCase<out Output>
 {
-    Task<IReadOnlyCollection<GameLocation>> Execute();
+    Output Execute();
 }

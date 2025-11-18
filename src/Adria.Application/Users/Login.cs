@@ -27,11 +27,11 @@ public sealed class Login : IUseCase<Guid, Task<UserData>>
     
     public async Task<UserData> Execute(Guid id)
     {
-        _logger.LogInformation("Generating token for user {id}", id);
+        _logger.LogInformation("Generating token for user {Id}", id);
         User? user = await _userRepository.ById(id);
         if (user is null)
         {
-            _logger.LogInformation("User {id} not found", id);
+            _logger.LogInformation("User {Id} not found", id);
             throw new ElementNotFoundException($"User with id {id} not found");
         }
         

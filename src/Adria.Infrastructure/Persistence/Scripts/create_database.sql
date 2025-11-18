@@ -81,8 +81,4 @@ INSERT INTO `users` (`id`, `username`) VALUES
 -- TODO remove excess location this is just to check if the query can get them all as intended with the loop
 INSERT INTO `games` (`id`, `name`, `latitute`, `longitude`)
 VALUES
-    ("550e8400-e29b-41d4-a716-446655440034", "Minotaur maze", 35.2989, 25.1636),
-    ("550e8400-e29b-41d4-a716-446655440035", "Minotaur maze", 35.2989, 25.1636),
-    ("550e8400-e29b-41d4-a716-446655440036", "Minotaur maze", 35.2989, 25.1636),
-    ("550e8400-e29b-41d4-a716-446655440037", "Minotaur maze", 35.2989, 25.1636),
-    ("550e8400-e29b-41d4-a716-446655440038", "Minotaur maze", 35.2989, 25.1636)
+    ("550e8400-e29b-41d4-a716-446655440034", "Minotaur maze", 35.2989, 25.1636)

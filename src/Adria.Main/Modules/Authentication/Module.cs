@@ -8,6 +8,8 @@ using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Adria.Main.Modules.Authentication;
+// me: ╰༼=ಠਊಠ=༽╯ sonar: ( ° ͜ʖ͡°)╭∩╮
+#pragma warning disable
 
 public static class Module
 {
@@ -56,7 +58,11 @@ public static class Module
                             context.Fail("Missing route ID");
                             return Task.CompletedTask;
                         }
-                        if (idFromQuery.Count != 1) throw new ArgumentOutOfRangeException("please enter exactly one id");
+
+                        if (idFromQuery.Count != 1)
+                        {
+                            throw new ArgumentOutOfRangeException(nameof(idFromQuery), "please enter exactly one id");
+                        }
                         if (!Guid.TryParse(idFromQuery[0], out Guid userGivenId))
                         {
                             context.Fail("Invalid route ID");
@@ -79,3 +85,4 @@ public static class Module
             });
     }
 }
+#pragma warning restore

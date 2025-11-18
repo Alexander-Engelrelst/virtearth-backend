@@ -34,8 +34,10 @@ public sealed class JwtProvider : IJwtProvider
 
 public abstract record JwtConfiguration
 {
-    public static string Secret = "L7dLr6B6K9M+f0Ogbbuv9y8RnWUVVYqJ7Zn1jZy4WGi8sVtzjQw1v5XvT4Qy2x+O9U9JvUdxW1BvJQnHVpEtDw==";
-    public static string Issuer = "VirtEarth server";
-    public static string Audience = "VirtEarth player";
-    public static int ExpireDays = 7;
+    public static string Secret { get; } =
+        "L7dLr6B6K9M+f0Ogbbuv9y8RnWUVVYqJ7Zn1jZy4WGi8sVtzjQw1v5XvT4Qy2x+O9U9JvUdxW1BvJQnHVpEtDw==";
+
+    public static string Issuer { get; } = "VirtEarth server";
+    public static string Audience { get; } = "VirtEarth player";
+    public static int ExpireDays { get; } = 7;
 }

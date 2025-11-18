@@ -11,10 +11,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Adria.Infrastructure.WebApi.Controllers;
 
-public sealed class GetGamesController
+public static class GetGamesController
 {
     public static async Task<Results<Ok<IReadOnlyCollection<GameLocation>>, ProblemHttpResult>> Invoke(
-        [FromServices] IUseCase<IReadOnlyCollection<GameLocation>> getGames,
+        [FromServices] IUseCase<Task<IReadOnlyCollection<GameLocation>>> getGames,
         [FromQuery] Guid id
     )
     {
