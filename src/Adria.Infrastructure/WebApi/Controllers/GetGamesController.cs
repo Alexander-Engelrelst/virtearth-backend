@@ -14,8 +14,7 @@ namespace Adria.Infrastructure.WebApi.Controllers;
 public static class GetGamesController
 {
     public static async Task<Results<Ok<IReadOnlyCollection<GameLocation>>, ProblemHttpResult>> Invoke(
-        [FromServices] IUseCase<Task<IReadOnlyCollection<GameLocation>>> getGames,
-        [FromQuery] Guid id
+        [FromServices] IUseCase<Task<IReadOnlyCollection<GameLocation>>> getGames
     )
     {
         try

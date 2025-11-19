@@ -9,8 +9,6 @@ using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Adria.Main.Modules.Authentication;
-// me: ╰༼=ಠਊಠ=༽╯ sonar: ( ° ͜ʖ͡°)╭∩╮
-#pragma warning disable
 
 public static class Module
 {
@@ -30,8 +28,8 @@ public static class Module
                 options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = JwtConfiguration.Issuer,
@@ -39,51 +37,6 @@ public static class Module
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtConfiguration.Secret)),
                     RequireExpirationTime = true,
                 };
-                // TODO remove this event and just grab the uuid from the request in my controller lol
-                options.Events = new JwtBearerEvents
-                {
-                    OnTokenValidated = context =>
-                    {
-                        var idClaim = context.Principal?.FindFirst("Guid")?.Value;
-
-                        if (idClaim is null)
-                        {
-                            context.Fail("Missing id in token");
-                            return Task.CompletedTask;
-                        }
-
-                        Guid id = new Guid(idClaim);
-                        
-                        if (!context.HttpContext.Request.Query.TryGetValue("id", out StringValues idFromQuery))
-                        {
-                            context.Fail("Missing route ID");
-                            return Task.CompletedTask;
-                        }
-
-                        if (idFromQuery.Count != 1)
-                        {
-                            throw new ArgumentOutOfRangeException(nameof(idFromQuery), "please enter exactly one id");
-                        }
-                        if (!Guid.TryParse(idFromQuery[0], out Guid userGivenId))
-                        {
-                            context.Fail("Invalid route ID");
-                            return Task.CompletedTask;
-                        }
-                        
-
-                        if (userGivenId == id)
-                        {
-                            context.Success();
-                        }
-                        else
-                        {
-                            context.Fail("UserId in route and in token are not the same");
-                        }
-
-                        return Task.CompletedTask;
-                    }
-                };
             });
     }
 }
-#pragma warning restore

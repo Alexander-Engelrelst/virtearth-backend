@@ -8,6 +8,7 @@ var configuration = builder.Configuration;
 
 builder
     .Services
+        .AddHttpContextAccessor()
         .AddPersistenceModule(configuration)
         .AddWebApiModule(configuration)
         .AddUseCases()

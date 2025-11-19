@@ -22,7 +22,7 @@ public class ChangeUsernameTest
             new MockUserExistsQuery()
         );
         
-        var input = new ChangeUserNameInput(Guid.NewGuid(), "jeff");
+        var input = new ChangeUserNameInput(new User("kaas", Guid.NewGuid()), "jeff");
         await Assert.ThrowsAsync<ElementNotFoundException>(() => usecase.Execute(input));
     } 
     
@@ -40,7 +40,7 @@ public class ChangeUsernameTest
         Guid id  = Guid.NewGuid();
         await mockRepository.Save(new User("jeff", id));
         
-        var input = new ChangeUserNameInput(id, MockUserExistsQuery._existingUserName);
+        var input = new ChangeUserNameInput(new User("kaas", Guid.NewGuid()), MockUserExistsQuery._existingUserName);
         await Assert.ThrowsAsync<UsernameAlreadyExistsException>(() => usecase.Execute(input));
     } 
     
@@ -58,7 +58,7 @@ public class ChangeUsernameTest
         Guid id  = Guid.NewGuid();
         await mockRepository.Save(new User("jeff", id));
         
-        var input = new ChangeUserNameInput(id, "thisIsNotValid{]");
+        var input = new ChangeUserNameInput(new User("kaas", Guid.NewGuid()), "thisIsNotValid{]");
         await Assert.ThrowsAsync<InvalidUsernameException>(() => usecase.Execute(input));
     } 
     
@@ -77,7 +77,7 @@ public class ChangeUsernameTest
         User user = new User("jeff", id);
         await mockRepository.Save(user);
         
-        var input = new ChangeUserNameInput(id, "validname");
+        var input = new ChangeUserNameInput(new User("kaas", Guid.NewGuid()), "validname");
         UserData data = await usecase.Execute(input);
         Assert.NotNull(data);
         Assert.Equal("validname", data.User.Username);

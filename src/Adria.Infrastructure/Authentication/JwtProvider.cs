@@ -13,7 +13,7 @@ public sealed class JwtProvider : IJwtProvider
     {
         List<Claim> claims =
         [
-            new Claim("Guid", user.Id.ToString()), // Subject is standardized for unique identifiers
+            new Claim("guid", user.Id.ToString())
         ];
         
         SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtConfiguration.Secret));

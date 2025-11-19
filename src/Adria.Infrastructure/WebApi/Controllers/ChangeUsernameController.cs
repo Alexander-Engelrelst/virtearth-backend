@@ -1,7 +1,9 @@
-﻿using Adria.Application.Contracts;
+﻿using System.Security.Claims;
+using Adria.Application.Contracts;
 using Adria.Application.Contracts.Data;
 using Adria.Application.Users;
 using Adria.Domain.Shared.Exceptions;
+using Adria.Domain.Users;
 using Adria.Infrastructure.Persistence.Shared;
 using Adria.Infrastructure.WebApi.Controllers.Responses;
 using Microsoft.AspNetCore.Http;
@@ -13,20 +15,35 @@ namespace Adria.Infrastructure.WebApi.Controllers;
 public static class ChangeUsernameController
 {
     public static async Task<Results<Ok<UserDto>, NotFound<string>, ProblemHttpResult, Conflict<string>, BadRequest<string>>> Invoke(
-        [FromQuery] Guid id,
         [FromQuery] string newUsername,
-        [FromServices] IUseCase<ChangeUserNameInput, Task<UserData>> changeUsername
+        [FromServices] IUseCase<Guid, Task<User>> getUser,
+        [FromServices] IUseCase<ChangeUserNameInput, Task<UserData>> changeUsername,
+        [FromServices] IHttpContextAccessor httpContextAccessor
     )
     {
+        Claim? userClaim = httpContextAccessor.HttpContext?.User.FindFirst("guid");
+
+        if (userClaim is null || !Guid.TryParse(userClaim.Value, out Guid id))
+        {
+            return TypedResults.BadRequest("Please provide a valid user id");
+        }
+
+        User user;
+        Console.WriteLine(id.ToString());
         try
         {
-            UserData data = await changeUsername.Execute(new ChangeUserNameInput(id, newUsername));
-            UserDto user = new(data.User.Id, data.User.Username, data.JwtToken);
-            return TypedResults.Ok(user);
+            user = await getUser.Execute(id);
         }
         catch (ElementNotFoundException)
         {
-            return TypedResults.NotFound($"User with id {id} not found");
+            return TypedResults.NotFound("There is no use with the given id");
+        }
+
+        try
+        {
+            UserData data = await changeUsername.Execute(new ChangeUserNameInput(user, newUsername));
+            UserDto userDto = new(data.User.Id, data.User.Username, data.JwtToken);
+            return TypedResults.Ok(userDto);
         }
         catch (UsernameAlreadyExistsException)
         {
