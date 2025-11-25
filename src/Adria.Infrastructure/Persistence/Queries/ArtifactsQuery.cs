@@ -12,7 +12,7 @@ public class ArtifactsQuery : IArtifactsQuery
     private const string QRY = @"
     SELECT `id`, `name`, `description`
     FROM `artifacts`
-    WHERE `id` = @id";
+    WHERE `game_id` = @id";
     
     private readonly ILogger<ArtifactsQuery> _logger;
     private readonly string _connectionString;
@@ -30,6 +30,7 @@ public class ArtifactsQuery : IArtifactsQuery
     
     public async Task<ReadOnlyCollection<MazeArtifact>> Fetch(Guid id)
     {
+        Console.WriteLine(id);
         _logger.LogInformation("Fetching all artifacts for game {Id}", id);
 
         await using var connection = _factory.CreateConnection()
@@ -45,7 +46,7 @@ public class ArtifactsQuery : IArtifactsQuery
         
         var parameter = command.CreateParameter();
         parameter.ParameterName = "@id";
-        parameter.Value = id;
+        parameter.Value = id.ToString();
         command.Parameters.Add(parameter);
         
         var artifacts = new List<MazeArtifact>();
@@ -56,12 +57,12 @@ public class ArtifactsQuery : IArtifactsQuery
         {
             var idOrd = reader.GetOrdinal("id");
             var nameOrd = reader.GetOrdinal("name");
-            var latituteOrd = reader.GetOrdinal("description");
+            var descriptionOrd = reader.GetOrdinal("description");
             
             artifacts.Add(new MazeArtifact(
                 reader.GetGuid(idOrd),
                 reader.GetString(nameOrd),
-                reader.GetString(latituteOrd)
+                reader.GetString(descriptionOrd)
             ));
         }
 

@@ -9,6 +9,6 @@ public enum GameTypes
 }
 public abstract class Game(Guid userId, Guid gameId)
 {
-    private Guid UserId { get; init; } = userId;
-    private Guid GameId { get; init; } = gameId;
+    public Guid UserId { get; } = userId;
+    public Guid GameId { get; } = gameId;
 }

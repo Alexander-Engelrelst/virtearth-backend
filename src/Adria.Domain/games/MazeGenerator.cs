@@ -2,8 +2,11 @@
 
 namespace Adria.Domain.games;
 
-public class MazeGenerator
+public static class MazeGenerator
 {
+    private const int MinimumCellsBetweenArtifacts = 5;
+    private const int MazeSizeSafetyFactor = 2;
+
     /*
      * The algorithm to construct a maze consists out of 2 distinct steps.
      * They are adding the actual paths the user will be able to walk and adding the artifacts in the maze
@@ -36,9 +39,9 @@ public class MazeGenerator
      * It is highly unlikely and maybe even impossible to come into a situation where adding artifacts fail
      * this is because the maze is purposefully made large, but I'd rather be safe than sorry if someone decided to change anything
      */
-    public static MazeElement?[,] GenerateMaze(IList<MazeArtifact> artifacts, int minimumCellsBetweenArtifacts)
+    public static MazeElement?[,] GenerateMaze(IList<MazeArtifact> artifacts)
     {
-        int size = (int) Math.Sqrt(artifacts.Count * Math.Pow(minimumCellsBetweenArtifacts, 2) * minimumCellsBetweenArtifacts);
+        int size = (int) Math.Sqrt(artifacts.Count * Math.Pow(MinimumCellsBetweenArtifacts, 2) * MazeSizeSafetyFactor);
         MazeElement?[,] maze = new MazeElement?[2 * size + 1, 2 * size + 1];
 
         FillMazeWithWalls(maze, new MazeWall());
@@ -53,7 +56,7 @@ public class MazeGenerator
                 throw new MazeGenerationException("Maximum number of attempts to place artifacts exceeded");
             }
             
-            artifactsAdded = AddArtifacts(maze, artifacts, minimumCellsBetweenArtifacts);
+            artifactsAdded = AddArtifacts(maze, artifacts, MinimumCellsBetweenArtifacts);
             attempts++;
         } while (!artifactsAdded);
         

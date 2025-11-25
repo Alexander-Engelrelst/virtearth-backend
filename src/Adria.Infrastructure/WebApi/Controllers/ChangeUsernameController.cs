@@ -35,7 +35,7 @@ public static class ChangeUsernameController
         }
         catch (ElementNotFoundException)
         {
-            return TypedResults.NotFound("There is no use with the given id");
+            return TypedResults.NotFound("There is no user with the given id");
         }
 
         try

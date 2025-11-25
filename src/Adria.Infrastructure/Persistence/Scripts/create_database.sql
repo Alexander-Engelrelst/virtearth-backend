@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS games;
 DROP TABLE IF EXISTS artifacts;
+DROP TABLE IF EXISTS games;
 
 create table users (
     id CHAR(36) NOT NULL PRIMARY KEY,
@@ -90,9 +90,8 @@ INSERT INTO `users` (`id`, `username`) VALUES
 
 INSERT INTO `games` (`id`, `name`, `latitute`, `longitude`, `type`)
 VALUES
-    ("550e8400-e29b-41d4-a716-446655440034", "Minotaur maze", 35.2989, 25.1636, "Maze");
+    ('550e8400-e29b-41d4-a716-446655440034', 'Minotaur maze', 35.2989, 25.1636, 'Maze');
 
-INSERT INTO `artifacts` (id, game_id, name, description) VALUES
 INSERT INTO artifacts (id, game_id, name, description) VALUES
     ('550e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440034', 'artifact1', 'description1'),
     ('550e8400-e29b-41d4-a716-446655440001', '550e8400-e29b-41d4-a716-446655440034', 'artifact2', 'description2'),
