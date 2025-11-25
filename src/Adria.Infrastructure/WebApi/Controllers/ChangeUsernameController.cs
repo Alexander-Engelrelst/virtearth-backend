@@ -29,7 +29,6 @@ public static class ChangeUsernameController
         }
 
         User user;
-        Console.WriteLine(id.ToString());
         try
         {
             user = await getUser.Execute(id);

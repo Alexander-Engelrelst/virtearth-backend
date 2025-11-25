@@ -17,7 +17,7 @@ public sealed class GameLocation
 
         if (string.IsNullOrWhiteSpace(gameName))
         {
-            throw new ArgumentNullException(nameof(gameName), "Game name cannot be empty.");
+            throw new ArgumentException("GameName cannot be empty.", nameof(gameName));
         }
 
         if (latitude < -90 || latitude > 90)

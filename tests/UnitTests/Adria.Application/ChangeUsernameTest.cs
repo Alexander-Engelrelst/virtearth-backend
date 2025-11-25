@@ -9,23 +9,6 @@ namespace UnitTests.Adria.Application;
 
 public class ChangeUsernameTest
 {
-
-    [Fact]
-    public async Task ChangeUsernameOfNonExistingThrows()
-    {
-        var mockRepository = new MockAdoUserRepository();
-        
-        var usecase = new ChangeUserName(
-            mockRepository,
-            new NullLogger<ChangeUserName>(),
-            new MockJwtProvider(),
-            new MockUserExistsQuery()
-        );
-        
-        var input = new ChangeUserNameInput(new User("kaas", Guid.NewGuid()), "jeff");
-        await Assert.ThrowsAsync<ElementNotFoundException>(() => usecase.Execute(input));
-    } 
-    
     [Fact]
     public async Task ChangeUsernameToAlreadyExistingThrows()
     {

@@ -84,7 +84,7 @@ public class MazeGame : Game
                 (int x, int y) neighbour = unvisitedNeighbours[random.Next(unvisitedNeighbours.Count)];
                 stack.Push((neighbour.x, neighbour.y));
                 visitedNodes[neighbour.x, neighbour.y] = true;
-                Console.WriteLine(currentCell.x + " " + currentCell.y + " " + neighbour.x + " " + neighbour.y);
+
                 // we map our visited nodes to our maze nodes to remove the wall
                 maze[
                     ((2 * currentCell.x + 1) + (2 * neighbour.x + 1)) / 2,
