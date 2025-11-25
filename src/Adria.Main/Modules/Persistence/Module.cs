@@ -51,6 +51,14 @@ public static class PersistenceModule
                 _connectionString,
                 serviceProvider.GetRequiredService<ILogger<AdoGameRepository>>()
             );
+        })
+        .AddScoped<IArtifactsQuery, ArtifactsQuery>(serviceProvider =>
+        {
+            return new ArtifactsQuery(
+                serviceProvider.GetRequiredService<DbProviderFactory>(),
+                _connectionString,
+                serviceProvider.GetRequiredService<ILogger<ArtifactsQuery>>()
+            );
         });
     }
 
@@ -60,29 +68,21 @@ public static class PersistenceModule
     {
         // Configure queries here.
         return services.AddScoped<IUserExistsQuery, UserExistsQuery>(serviceProvider =>
-        {
-            return new UserExistsQuery(
-                serviceProvider.GetRequiredService<DbProviderFactory>(),
-                _connectionString,
-                serviceProvider.GetRequiredService<ILogger<UserExistsQuery>>()
-            );
-        })
-        .AddScoped<IGameLocationsQuery, GameLocationsQuery>(serviceProvider =>
-        {
-            return new GameLocationsQuery(
-                serviceProvider.GetRequiredService<DbProviderFactory>(),
-                _connectionString,
-                serviceProvider.GetRequiredService<ILogger<GameLocationsQuery>>()
-            );
-        })
-        .AddScoped<IGameTypeQuery, GameTypeQuery>(serviceProvider =>
-        {
-            return new GameTypeQuery(
-                serviceProvider.GetRequiredService<DbProviderFactory>(),
-                _connectionString,
-                serviceProvider.GetRequiredService<ILogger<GameTypeQuery>>()
-            );
-        });
+            {
+                return new UserExistsQuery(
+                    serviceProvider.GetRequiredService<DbProviderFactory>(),
+                    _connectionString,
+                    serviceProvider.GetRequiredService<ILogger<UserExistsQuery>>()
+                );
+            })
+            .AddScoped<IGameLocationsQuery, GameLocationsQuery>(serviceProvider =>
+            {
+                return new GameLocationsQuery(
+                    serviceProvider.GetRequiredService<DbProviderFactory>(),
+                    _connectionString,
+                    serviceProvider.GetRequiredService<ILogger<GameLocationsQuery>>()
+                );
+            });
     }
 
     private static IServiceCollection AddAdoServices(

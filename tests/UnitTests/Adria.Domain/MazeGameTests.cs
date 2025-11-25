@@ -21,7 +21,7 @@ public class MazeGameTest
         IList<MazeArtifact> artifacts = new List<MazeArtifact>();
         for (int i = 0; i < 40; i++)
         {
-            artifacts.Add(new MazeArtifact());
+            artifacts.Add(new MazeArtifact(Guid.NewGuid(), "name", "description"));
         }
         MazeGame game = new MazeGame(Guid.NewGuid(), Guid.NewGuid(), artifacts);
         _testOutputHelper.WriteLine(game.MazeToString());

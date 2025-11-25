@@ -1,6 +1,8 @@
 ﻿namespace Adria.Domain.games;
 
-public class MazeArtifact : MazeElement
+public class MazeArtifact(Guid id, string name, string description) : MazeElement
 {
-    // TODO add the needed data here and the equals method
+    private Guid Id { get; } = id;
+    private string Name { get; } = name;
+    private string Description { get; } = description;
 }

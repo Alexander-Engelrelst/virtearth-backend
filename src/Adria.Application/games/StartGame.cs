@@ -1,4 +1,5 @@
-﻿using Adria.Application.Contracts;
+﻿using System.Diagnostics;
+using Adria.Application.Contracts;
 using Adria.Domain.games;
 using Microsoft.Extensions.Logging;
 
@@ -9,22 +10,22 @@ public sealed record StartGameInput(Guid GameId, Guid UserId);
 //TODO add the correct addscoped for this when the class is finished
 public sealed class StartGame : IUseCase<StartGameInput, Task<Game>>
 {
-    private readonly IGameTypeQuery _gameTypeQuery;
     private readonly ILogger<StartGame> _logger;
-
+    private readonly IGameRepository _gameRepository;
     public StartGame(
-        IGameTypeQuery gameTypeQuery,
-        ILogger<StartGame> logger
+        ILogger<StartGame> logger,
+        IGameRepository gameRepository
     )
     {
-        _gameTypeQuery = gameTypeQuery;
         _logger = logger;
+        _gameRepository = gameRepository;
     }
     
     public async Task<Game> Execute(StartGameInput input)
     {
-        GameTypes gameType = await _gameTypeQuery.Fetch(input.GameId);
-        throw new NotImplementedException();
-        //todo finish this lol
+        IList<MazeArtifact> artifacts = new List<MazeArtifact>();
+        Game game = new MazeGame(input.GameId, input.UserId, artifacts);
+        ActiveGames.AddGame(game);
+        return game;
     }
 }

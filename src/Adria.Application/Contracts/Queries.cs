@@ -13,7 +13,7 @@ public interface IGameLocationsQuery
     Task<ReadOnlyCollection<GameLocation>> Fetch();
 }
 
-public interface IGameTypeQuery
+public interface IArtifactsQuery
 {
-    Task<GameTypes> Fetch(Guid id);
+    Task<ReadOnlyCollection<MazeArtifact>> Fetch(Guid id);
 }

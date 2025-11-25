@@ -1,6 +1,6 @@
 ﻿namespace Adria.Domain.games;
 
-public class ActiveGames
+public static class ActiveGames
 {
     private static IList<Game> Games { get; } = new List<Game>();
 

@@ -1,34 +1,36 @@
 ﻿using System.Collections.ObjectModel;
 using System.Data.Common;
+using System.Runtime.InteropServices.JavaScript;
 using Adria.Application.Contracts;
 using Adria.Domain.games;
 using Microsoft.Extensions.Logging;
 
 namespace Adria.Infrastructure.Persistence.Queries;
 
-public class GameLocationsQuery : IGameLocationsQuery
+public class ArtifactsQuery : IArtifactsQuery
 {
-
     private const string QRY = @"
-    SELECT `id`, `name`, `latitute`, `longitude`
-    FROM `games`";
+    SELECT `id`, `name`, `description`
+    FROM `artifacts`
+    WHERE `id` = @id";
     
-    private readonly ILogger _logger;
+    private readonly ILogger<ArtifactsQuery> _logger;
     private readonly string _connectionString;
     private readonly DbProviderFactory _factory;
-    public GameLocationsQuery(
+    public ArtifactsQuery(
         DbProviderFactory factory,
         string connectionString,
-        ILogger<GameLocationsQuery> logger
+        ILogger<ArtifactsQuery> logger
     )
     {
         _factory = factory;
         _connectionString = connectionString;
         _logger = logger;
     }
-    public async Task<ReadOnlyCollection<GameLocation>> Fetch()
+    
+    public async Task<ReadOnlyCollection<MazeArtifact>> Fetch(Guid id)
     {
-        _logger.LogInformation("Fetching all games");
+        _logger.LogInformation("Fetching all artifacts for game {Id}", id);
 
         await using var connection = _factory.CreateConnection()
                                      ?? throw new InvalidOperationException(
@@ -40,8 +42,13 @@ public class GameLocationsQuery : IGameLocationsQuery
         await using var command = connection.CreateCommand();
     
         command.CommandText = QRY;
-
-        var games = new List<GameLocation>();
+        
+        var parameter = command.CreateParameter();
+        parameter.ParameterName = "@id";
+        parameter.Value = id;
+        command.Parameters.Add(parameter);
+        
+        var artifacts = new List<MazeArtifact>();
 
         await using var reader = await command.ExecuteReaderAsync();
 
@@ -49,20 +56,17 @@ public class GameLocationsQuery : IGameLocationsQuery
         {
             var idOrd = reader.GetOrdinal("id");
             var nameOrd = reader.GetOrdinal("name");
-            var latituteOrd = reader.GetOrdinal("latitute");
-            var longitudeOrd = reader.GetOrdinal("longitude");
+            var latituteOrd = reader.GetOrdinal("description");
             
-            // TODO also insert a year and continent property to a game
-            games.Add(new GameLocation(
+            artifacts.Add(new MazeArtifact(
                 reader.GetGuid(idOrd),
                 reader.GetString(nameOrd),
-                reader.GetDouble(latituteOrd),
-                reader.GetDouble(longitudeOrd)
-                ));
+                reader.GetString(latituteOrd)
+            ));
         }
 
-        _logger.LogInformation("Fetched {Count} games locations", games.Count);
+        _logger.LogInformation("Fetched {Count} artifacts", artifacts.Count);
 
-        return games.AsReadOnly();
+        return artifacts.AsReadOnly();
     }
 }

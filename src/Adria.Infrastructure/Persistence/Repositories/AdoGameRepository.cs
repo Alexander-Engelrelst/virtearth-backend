@@ -17,9 +17,4 @@ public sealed class AdoGameRepository : AbstractAdoRepository, IGameRepository
     {
         _logger = logger;
     }
-
-    public MazeGameData GetMazeGameData(Guid id)
-    {
-        throw new NotImplementedException();
-    }
 }
