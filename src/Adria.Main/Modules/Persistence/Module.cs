@@ -1,6 +1,7 @@
 using System.Configuration;
 using System.Data.Common;
 using Adria.Application.Contracts;
+using Adria.Domain.games;
 using Adria.Domain.Users;
 using Adria.Infrastructure.Persistence.Queries;
 using Adria.Infrastructure.Persistence.Repositories;
@@ -41,6 +42,14 @@ public static class PersistenceModule
                 serviceProvider.GetRequiredService<DbProviderFactory>(),
                 _connectionString,
                 serviceProvider.GetRequiredService<ILogger<AdoUserRepository>>()
+            );
+        })
+        .AddScoped<IGameRepository, AdoGameRepository>(serviceProvider =>
+        {
+            return new AdoGameRepository(
+                serviceProvider.GetRequiredService<DbProviderFactory>(),
+                _connectionString,
+                serviceProvider.GetRequiredService<ILogger<AdoGameRepository>>()
             );
         });
     }

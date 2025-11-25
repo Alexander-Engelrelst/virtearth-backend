@@ -79,6 +79,30 @@ public abstract class AbstractAdoRepository
             throw new VirtEarthDatabaseException("Invalid operation during database access.", ex);
         }
     }
+    
+    protected async Task<object?> ExecuteScalarAsync(string commandText, DbParameter[] parameters)
+    {
+        try
+        {
+            var connection = await OpenConnection();
+            var command = connection.CreateCommand();
+            command.CommandText = commandText;
+            command.Parameters.AddRange(parameters);
+            return await command.ExecuteScalarAsync();
+        }
+        catch (DbException ex)
+        {
+            throw new VirtEarthDatabaseException("Database operation failed.", ex);
+        }
+        catch (ArgumentException ex)
+        {
+            throw new VirtEarthDatabaseException("Invalid argument for database operation.", ex);
+        }
+        catch (InvalidOperationException ex)
+        {
+            throw new VirtEarthDatabaseException("Invalid operation during database access.", ex);
+        }
+    }
 
     protected async Task<DbConnection> OpenConnection()
     {

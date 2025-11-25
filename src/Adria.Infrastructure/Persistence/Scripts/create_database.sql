@@ -19,6 +19,7 @@ create table games(
     name VARCHAR(100) NOT NULL,
     latitute DOUBLE,
     longitude DOUBLE(7,4),
+    type VARCHAR(50),
     CONSTRAINT chk_latitute CHECK ( latitute BETWEEN -90 AND 90),
     CONSTRAINT chk_longitude CHECK ( longitude BETWEEN -180 AND 180)
 );
@@ -78,6 +79,6 @@ INSERT INTO `users` (`id`, `username`) VALUES
 ('550e8400-e29b-41d4-a716-446655440032', 'YusufZimmerman'),
 ('550e8400-e29b-41d4-a716-446655440033', 'ZaraAllen');
 
-INSERT INTO `games` (`id`, `name`, `latitute`, `longitude`)
+INSERT INTO `games` (`id`, `name`, `latitute`, `longitude`, `type`)
 VALUES
-    ("550e8400-e29b-41d4-a716-446655440034", "Minotaur maze", 35.2989, 25.1636)
+    ("550e8400-e29b-41d4-a716-446655440034", "Minotaur maze", 35.2989, 25.1636, "Maze")

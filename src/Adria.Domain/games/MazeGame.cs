@@ -1,5 +1,7 @@
 ﻿namespace Adria.Domain.games;
 
+public record MazeGameData(Guid Id, string Name);
+
 public class MazeGame : Game
 
 {   private const int MinimumCellsBetweenArtifacts = 5;

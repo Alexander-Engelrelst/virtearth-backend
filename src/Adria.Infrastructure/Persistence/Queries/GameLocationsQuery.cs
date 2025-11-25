@@ -55,8 +55,8 @@ public class GameLocationsQuery : IGameLocationsQuery
             games.Add(new GameLocation(
                 reader.GetGuid(idOrd),
                 reader.GetString(nameOrd),
-                reader.GetDouble(longitudeOrd),
-                reader.GetDouble(latituteOrd)
+                reader.GetDouble(latituteOrd),
+                reader.GetDouble(longitudeOrd)
                 ));
         }
 
