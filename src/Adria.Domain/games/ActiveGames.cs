@@ -9,8 +9,8 @@ public class ActiveGames
         return Games.AsReadOnly();
     }
 
-    public static void AddGame()
+    public static void AddGame(Game game)
     {
-        // TODO implement this
+        Games.Add(game);
     }
 }
