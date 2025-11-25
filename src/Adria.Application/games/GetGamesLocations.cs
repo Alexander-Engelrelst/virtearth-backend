@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Adria.Application.games;
 
-public class GetGamesLocations : IUseCase<Task<IReadOnlyCollection<GameLocation>>>
+public sealed class GetGamesLocations : IUseCase<Task<IReadOnlyCollection<GameLocation>>>
 {
     private readonly IGameLocationsQuery _gameLocationsQuery;
     private readonly ILogger<GetGamesLocations> _logger;

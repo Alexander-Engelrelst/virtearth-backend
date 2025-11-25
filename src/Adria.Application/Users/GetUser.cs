@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Adria.Application.Users;
 
-public class GetUser : IUseCase<Guid, Task<User>>
+public sealed class GetUser : IUseCase<Guid, Task<User>>
 {
     private readonly IUserRepository _repository;
     private readonly ILogger<ChangeUserName> _logger;

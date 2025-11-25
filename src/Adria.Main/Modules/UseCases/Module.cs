@@ -18,7 +18,6 @@ public static class UseCases
             .AddScoped<IUseCase<Guid, Task<UserData>>, Login>()
             .AddScoped<IUseCase<ChangeUserNameInput, Task<UserData>>, ChangeUserName>()
             .AddScoped<IUseCase<Task<IReadOnlyCollection<GameLocation>>>, GetGamesLocations>()
-            .AddScoped<IUseCase<Guid, Task<User>>, GetUser>()
-            .AddScoped<IUseCase<Guid, MazeGame>, StartMazeGame>();
+            .AddScoped<IUseCase<Guid, Task<User>>, GetUser>();
     }
 }

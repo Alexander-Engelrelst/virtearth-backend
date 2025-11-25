@@ -30,7 +30,7 @@ public class GameLocationsQuery : IGameLocationsQuery
     {
         _logger.LogInformation("Fetching all games");
         
-        using DbConnection connection = _factory.CreateConnection()
+        using var connection = _factory.CreateConnection()
                                         ?? throw new InvalidOperationException(
                                             "DbProviderFactory returned a null DbConnection.");
         
@@ -52,6 +52,7 @@ public class GameLocationsQuery : IGameLocationsQuery
             var latituteOrd = reader.GetOrdinal("latitute");
             var longitudeOrd = reader.GetOrdinal("longitude");
             
+            // TODO also insert a year and continent property to a game
             games.Add(new GameLocation(
                 reader.GetGuid(idOrd),
                 reader.GetString(nameOrd),

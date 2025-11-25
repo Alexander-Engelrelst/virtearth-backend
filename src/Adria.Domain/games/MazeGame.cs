@@ -1,6 +1,6 @@
 ﻿namespace Adria.Domain.games;
 
-public record MazeGameData(Guid Id, string Name);
+public record MazeGameData(Guid UserId, Guid GameId, IList<MazeArtifact> Artifacts);
 
 public class MazeGame : Game
 

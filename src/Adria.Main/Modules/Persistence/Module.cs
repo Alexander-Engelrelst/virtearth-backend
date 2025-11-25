@@ -74,6 +74,14 @@ public static class PersistenceModule
                 _connectionString,
                 serviceProvider.GetRequiredService<ILogger<GameLocationsQuery>>()
             );
+        })
+        .AddScoped<IGameTypeQuery, GameTypeQuery>(serviceProvider =>
+        {
+            return new GameTypeQuery(
+                serviceProvider.GetRequiredService<DbProviderFactory>(),
+                _connectionString,
+                serviceProvider.GetRequiredService<ILogger<GameTypeQuery>>()
+            );
         });
     }
 
