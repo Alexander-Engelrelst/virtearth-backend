@@ -21,38 +21,5 @@ public class MazeGame : Game
             Artifacts.Add(artifact);
         }
     }
-    
-    public string MazeToString()
-    {
-        int width = Maze.GetLength(0);
-        int height = Maze.GetLength(1);
-        System.Text.StringBuilder sb = new System.Text.StringBuilder();
-
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < height; y++)
-            {
-                if (Maze[x, y] == null)
-                {
-                    sb.Append(" "); // empty / path
-                }
-                else if (Maze[x, y] is MazeWall)
-                {
-                    sb.Append("W"); // wall
-                }
-                else if (Maze[x, y] is MazeArtifact)
-                {
-                    sb.Append("A"); // artifact
-                }
-                else
-                {
-                    sb.Append("?"); // unknown element
-                }
-            }
-            sb.AppendLine();
-        }
-
-        return sb.ToString();
-    }
 
 }
