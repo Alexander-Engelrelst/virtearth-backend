@@ -30,7 +30,6 @@ public class ArtifactsQuery : IArtifactsQuery
     
     public async Task<ReadOnlyCollection<MazeArtifact>> Fetch(Guid id)
     {
-        Console.WriteLine(id);
         _logger.LogInformation("Fetching all artifacts for game {Id}", id);
 
         await using var connection = _factory.CreateConnection()

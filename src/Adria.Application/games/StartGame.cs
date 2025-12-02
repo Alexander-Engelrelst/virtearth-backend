@@ -22,6 +22,9 @@ public sealed class StartGame : IUseCase<StartGameInput, Task<Game>>
     
     public async Task<Game> Execute(StartGameInput input)
     {
+        /* normally this would be made more robust and safe for other types of games,
+         * I was planning on doing this first but second guessed my decision until I was able to ask if this was expected
+         * I was told during the code review that I did not have to do this, so I didn't, but I also didn't refactor everything to simplify*/
         IList<MazeArtifact> artifacts = await _artifactsQuery.Fetch(input.GameId);
         Game game = new MazeGame(input.GameId, input.UserId, artifacts);
         ActiveGames.AddGame(game);
