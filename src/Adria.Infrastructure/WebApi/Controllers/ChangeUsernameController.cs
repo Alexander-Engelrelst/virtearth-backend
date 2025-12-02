@@ -14,7 +14,7 @@ namespace Adria.Infrastructure.WebApi.Controllers;
 
 public static class ChangeUsernameController
 {
-    public static async Task<Results<Ok<UserDto>, NotFound<string>, ProblemHttpResult, Conflict<string>, BadRequest<string>>> Invoke(
+    public static async Task<Results<Ok<UserDto>, UnauthorizedHttpResult, ProblemHttpResult, Conflict<string>, BadRequest<string>>> Invoke(
         [FromQuery] string newUsername,
         [FromServices] IUseCase<Guid, Task<User>> getUser,
         [FromServices] IUseCase<ChangeUserNameInput, Task<UserData>> changeUsername,
@@ -35,7 +35,7 @@ public static class ChangeUsernameController
         }
         catch (ElementNotFoundException)
         {
-            return TypedResults.NotFound("There is no user with the given id");
+            return TypedResults.Unauthorized();
         }
 
         try

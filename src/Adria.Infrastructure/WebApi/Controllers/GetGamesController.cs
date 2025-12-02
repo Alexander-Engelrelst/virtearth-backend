@@ -15,7 +15,7 @@ namespace Adria.Infrastructure.WebApi.Controllers;
 
 public static class GetGamesController
 {
-    public static async Task<Results<Ok<GameLocationDto[]>, ProblemHttpResult, BadRequest<string>, NotFound<string>>> Invoke(
+    public static async Task<Results<Ok<GameLocationDto[]>, ProblemHttpResult, BadRequest<string>, UnauthorizedHttpResult>> Invoke(
         [FromServices] IUseCase<Guid, Task<IReadOnlyCollection<GameLocation>>> getGames,
         [FromServices] IUseCase<Guid, Task<User>> getUser,
         [FromServices] IHttpContextAccessor httpContextAccessor
@@ -34,7 +34,7 @@ public static class GetGamesController
         }
         catch (ElementNotFoundException)
         {
-            return TypedResults.NotFound("There is no user with the given id");
+            return TypedResults.Unauthorized();
         }
         
         
