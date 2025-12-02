@@ -55,15 +55,15 @@ public class ElementNotFoundExceptionTests
         var id = Guid.NewGuid();
         
         // Act
-        var exception = ElementNotFoundException.ForId<TodoList>(id);
+        var exception = ElementNotFoundException.ForId<Game>(id);
         
         // Assert
-        Assert.Contains("Element of type TodoList", exception.Message);
+        Assert.Contains($"Element of type Game with ID {id}", exception.Message);
         Assert.Contains(id.ToString(), exception.Message);
         Assert.Contains("not found", exception.Message);
     }
 
     // Helper classes for generic type testing
     private class User { }
-    private class TodoList { }
+    private class Game { }
 }
