@@ -2,7 +2,6 @@
 
 public abstract class Game
 {
-    // TODO ensure the constructor throws an error for invalid ids
     public Guid UserId { get; }
     public Guid GameId { get; }
 
