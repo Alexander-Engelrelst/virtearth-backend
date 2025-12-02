@@ -18,5 +18,22 @@ public class MazeArtifactDto
         X = xCord;
         Y = yCord;
     }
-    
+
+    protected bool Equals(MazeArtifactDto other)
+    {
+        return Id.Equals(other.Id) && Name == other.Name && Description == other.Description && X == other.X && Y == other.Y;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is null) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != GetType()) return false;
+        return Equals((MazeArtifactDto)obj);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Id, Name, Description, X, Y);
+    }
 }

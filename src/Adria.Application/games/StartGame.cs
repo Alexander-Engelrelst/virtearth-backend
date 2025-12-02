@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Adria.Application.Contracts;
+﻿using Adria.Application.Contracts;
 using Adria.Domain.games;
 using Microsoft.Extensions.Logging;
 
