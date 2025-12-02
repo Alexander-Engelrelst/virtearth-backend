@@ -5,43 +5,68 @@ namespace UnitTests.Adria.Domain;
 public class GameLocationTests
 {
     [Fact]
-    public void InvalidLatituteTest()
+    public void EmptyGuidThrows()
     {
-        Assert.Throws<ArgumentOutOfRangeException>(() => new GameLocation(
-            Guid.NewGuid(), "DitIsEenPrachtigeNaam", 91.00001, 0, Continent.Africa, 0
-            ));
-        Assert.Throws<ArgumentOutOfRangeException>(() => new GameLocation(
-            Guid.NewGuid(), "DitIsEenPrachtigeNaam", -91.00001, 0, Continent.Africa, 0
-            ));
-    }
-    
-    [Fact]
-    public void InvalidLongituteTest()
-    {
-        Assert.Throws<ArgumentOutOfRangeException>(() => new GameLocation(
-            Guid.NewGuid(), "DitIsEenPrachtigeNaam", 0, 180.00001, Continent.Africa, 0
-            ));
-        Assert.Throws<ArgumentOutOfRangeException>(() => new GameLocation(
-            Guid.NewGuid(), "DitIsEenPrachtigeNaam", 0, -180.00001, Continent.Africa, 0
-            ));
+        var exception = Assert.Throws<ArgumentException>(
+            () => new GameLocation(Guid.Empty, "name", 0, 0, Continent.Africa, 0)
+        );
+        Assert.Equal("gameId", exception.ParamName);
     }
 
     [Fact]
-    public void EmptyGuidTest()
+    public void EmptyNameThrows()
     {
-        Assert.Throws<ArgumentNullException>(() => new GameLocation(
-            Guid.Empty, "DitIsEenPrachtigeNaam", 0, 0, Continent.Africa, 0
-            ));
+        var exception = Assert.Throws<ArgumentException>(() =>
+            new GameLocation(Guid.NewGuid(), string.Empty, 0, 0, Continent.Africa, 0)
+        );
+        Assert.Equal("gameName", exception.ParamName);
     }
 
     [Fact]
-    public void InvalidNameTest()
+    public void WhitespaceNameThrows()
     {
-        Assert.Throws<ArgumentException>(() => new GameLocation(
-            Guid.NewGuid(), "", 0, 0, Continent.Africa, 0
-            ));
-        Assert.Throws<ArgumentException>(() => new GameLocation(
-            Guid.NewGuid(), "   ", 0, 0, Continent.Africa, 0
-            ));
+        var exception = Assert.Throws<ArgumentException>(
+            () => new GameLocation(Guid.NewGuid(), " ", 0, 0, Continent.Africa, 0)
+        );
+        Assert.Equal("gameName", exception.ParamName);
+    }
+
+    [Fact]
+    public void TooLowLatituteThrows()
+    {
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() =>
+            new GameLocation(Guid.NewGuid(), "name", -90.01, 0, Continent.Africa, 0)
+        );
+        
+        Assert.Equal("latitude", exception.ParamName);
+    }
+
+    [Fact]
+    public void TooHighLatituteThrows()
+    {
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() =>
+            new GameLocation(Guid.NewGuid(), "name", 90.01, 0, Continent.Africa, 0)
+        );
+        Assert.Equal("latitude", exception.ParamName);
+    }
+
+    [Fact]
+    public void TooLowLongitudeThrows()
+    {
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() =>
+            new GameLocation(Guid.NewGuid(), "name", 0, -180.01, Continent.Africa, 0)
+        );
+        
+        Assert.Equal("longitude", exception.ParamName);
+    }
+
+    [Fact]
+    public void TooHighLongitudeThrows()
+    {
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() =>
+            new GameLocation(Guid.NewGuid(), "name", 0, 180.01, Continent.Africa, 0)
+        );
+        
+        Assert.Equal("longitude", exception.ParamName);
     }
 }

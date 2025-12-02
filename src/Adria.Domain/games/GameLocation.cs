@@ -23,7 +23,7 @@ public sealed class GameLocation
     {
         if (gameId == Guid.Empty)
         {
-            throw new ArgumentNullException(nameof(gameId), "Game ID cannot be empty.");
+            throw new ArgumentException("gameId cannot be empty.", nameof(gameId));
         }
 
         if (string.IsNullOrWhiteSpace(gameName))
