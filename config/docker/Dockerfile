@@ -20,7 +20,6 @@ COPY src/Adria.Infrastructure/Adria.Infrastructure.csproj ./src/Adria.Infrastruc
 COPY tests/UnitTests/UnitTests.csproj ./tests/UnitTests/
 
 # Clear any existing NuGet configuration to avoid Windows-specific paths
-
 RUN dotnet nuget locals all --clear
 
 # Restore dependencies

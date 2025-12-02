@@ -13,13 +13,16 @@ namespace Adria.Infrastructure.WebApi.Controllers;
 
 public static class GetGamesController
 {
-    public static async Task<Results<Ok<IReadOnlyCollection<GameLocation>>, ProblemHttpResult>> Invoke(
+    public static async Task<Results<Ok<GameLocationDto[]>, ProblemHttpResult>> Invoke(
         [FromServices] IUseCase<Task<IReadOnlyCollection<GameLocation>>> getGames
     )
     {
         try
         {
-            return TypedResults.Ok(await getGames.Execute());
+            IReadOnlyCollection<GameLocation> gameLocations = await getGames.Execute();
+            return TypedResults.Ok(
+                gameLocations.Select(location => new GameLocationDto(location)).ToArray()
+                );
         }
         catch (VirtEarthDatabaseException)
         {

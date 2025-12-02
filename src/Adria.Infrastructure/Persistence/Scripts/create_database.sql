@@ -18,9 +18,11 @@ ALTER TABLE `users`
 create table games(
     id CHAR(36) NOT NULL  PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    latitute DOUBLE,
-    longitude DOUBLE(7,4),
-    type VARCHAR(50),
+    latitute DOUBLE(7,4) not null,
+    longitude DOUBLE(7,4) not null,
+    type VARCHAR(50) not null ,
+    continent VARCHAR(15) not null,
+    year int not null,
     CONSTRAINT chk_latitute CHECK ( latitute BETWEEN -90 AND 90),
     CONSTRAINT chk_longitude CHECK ( longitude BETWEEN -180 AND 180)
 );
@@ -88,9 +90,9 @@ INSERT INTO `users` (`id`, `username`) VALUES
 ('550e8400-e29b-41d4-a716-446655440032', 'YusufZimmerman'),
 ('550e8400-e29b-41d4-a716-446655440033', 'ZaraAllen');
 
-INSERT INTO `games` (`id`, `name`, `latitute`, `longitude`, `type`)
+INSERT INTO `games` (`id`, `name`, `latitute`, `longitude`, `type`, `continent`, year)
 VALUES
-    ('550e8400-e29b-41d4-a716-446655440034', 'Minotaur maze', 35.2989, 25.1636, 'Maze');
+    ('550e8400-e29b-41d4-a716-446655440034', 'Minotaur maze', 35.2989, 25.1636, 'Maze', 'NorthAmerica', -1800);
 
 INSERT INTO artifacts (id, game_id, name, description) VALUES
     ('550e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440034', 'artifact1', 'description1'),

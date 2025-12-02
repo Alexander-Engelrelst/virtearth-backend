@@ -3,7 +3,6 @@ using Adria.Domain.games;
 
 namespace Adria.Infrastructure.WebApi.Controllers.Responses;
 
-// TODO implement this shit
 public sealed class MazeGameDto
 {
     public Guid GameId { get; set; }

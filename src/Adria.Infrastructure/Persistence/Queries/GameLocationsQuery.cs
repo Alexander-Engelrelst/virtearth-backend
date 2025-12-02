@@ -1,5 +1,8 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Data;
 using System.Data.Common;
+using System.Text.RegularExpressions;
 using Adria.Application.Contracts;
 using Adria.Domain.games;
 using Microsoft.Extensions.Logging;
@@ -10,7 +13,7 @@ public class GameLocationsQuery : IGameLocationsQuery
 {
 
     private const string QRY = @"
-    SELECT `id`, `name`, `latitute`, `longitude`
+    SELECT `id`, `name`, `latitute`, `longitude`, `continent`, `year`
     FROM `games`";
     
     private readonly ILogger _logger;
@@ -26,7 +29,7 @@ public class GameLocationsQuery : IGameLocationsQuery
         _connectionString = connectionString;
         _logger = logger;
     }
-    public async Task<ReadOnlyCollection<GameLocation>> Fetch()
+    public async Task<IReadOnlyCollection<GameLocation>> Fetch()
     {
         _logger.LogInformation("Fetching all games");
 
@@ -51,13 +54,31 @@ public class GameLocationsQuery : IGameLocationsQuery
             var nameOrd = reader.GetOrdinal("name");
             var latituteOrd = reader.GetOrdinal("latitute");
             var longitudeOrd = reader.GetOrdinal("longitude");
+            var continentOrd = reader.GetOrdinal("continent");
+            var yearOrd = reader.GetOrdinal("year");
             
-            // TODO also insert a year and continent property to a game
+            string continentAsString = reader.GetString(continentOrd);
+            if (!Enum.TryParse<Continent>(continentAsString, out Continent continent))
+            {
+                _logger.LogCritical(
+                    "Continent {Continent} doesn't exist but is in the database for id {Id}",
+                    continentAsString,
+                    reader.GetGuid(idOrd));
+                
+                throw new InvalidEnumArgumentException(
+                    argumentName: nameof(continentAsString),
+                    invalidValue: -1,                 // must be an int!  
+                    enumClass: typeof(Continent)
+                );
+            }
+            
             games.Add(new GameLocation(
                 reader.GetGuid(idOrd),
                 reader.GetString(nameOrd),
                 reader.GetDouble(latituteOrd),
-                reader.GetDouble(longitudeOrd)
+                reader.GetDouble(longitudeOrd),
+                continent,
+                reader.GetInt32(yearOrd)
                 ));
         }
 
