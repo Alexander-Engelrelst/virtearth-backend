@@ -8,7 +8,8 @@ public sealed class MazeGameDto
     public Guid GameId { get; set; }
     // for some reason serialization doesn't allow int[,]
     public int[][] Maze { get; set; }
-    
+    public IList<MazeArtifactDto> Artifacts { get; } = new List<MazeArtifactDto>();
+
     public MazeGameDto(MazeGame game)
     {
         GameId = game.GameId;
@@ -23,16 +24,24 @@ public sealed class MazeGameDto
 
             for (int j = 0; j < game.Maze.GetLength(1); j++)
             {
-                Maze[i][j] = maze[i, j] switch
+                switch(maze[i, j])
                 {
-                    null => 0,
-                    MazeArtifact => 0,
-                    MazeWall => 1,
-                    _ => throw new ArgumentOutOfRangeException(
-                        nameof(maze),
-                        maze[i, j],
-                        "Unexpected element found in the maze.")
-                };
+                    case null:
+                        Maze[i][j] = 0;
+                        break;
+                    case MazeWall:
+                        Maze[i][j] = 1;
+                        break;
+                    case MazeArtifact:
+                        Maze[i][j] = 0;
+                        Artifacts.Add(new MazeArtifactDto((MazeArtifact) maze[i, j]!, i , j));
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(
+                            nameof(maze),
+                            maze[i, j],
+                            "Unexpected element found in the maze.");
+                }
             }
         }
     }
