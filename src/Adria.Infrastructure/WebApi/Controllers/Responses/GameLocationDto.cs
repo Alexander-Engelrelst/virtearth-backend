@@ -4,7 +4,7 @@ using Microsoft.OpenApi.Extensions;
 
 namespace Adria.Infrastructure.WebApi.Controllers.Responses;
 
-public class GameLocation
+public class GameLocationDto
 {
     public Guid GameId { get; }
     public double Latitude { get; }
@@ -14,7 +14,7 @@ public class GameLocation
     public int Year { get; }
     public string GameName { get; }
 
-    public GameLocation(Domain.games.GameLocation gameLocation)
+    public GameLocationDto(GameLocation gameLocation)
     {
         GameId = gameLocation.GameId;
         Latitude = gameLocation.Latitude;

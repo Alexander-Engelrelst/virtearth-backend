@@ -3,7 +3,7 @@ using Adria.Domain.Users;
 
 namespace UnitTests.Adria.Domain;
 
-public class UserTest
+public class UserTests
 {
     [Fact]
     public void UserWithToShortNameThrows()

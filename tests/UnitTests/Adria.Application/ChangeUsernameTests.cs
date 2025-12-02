@@ -7,7 +7,7 @@ using UnitTests.Mocks;
 
 namespace UnitTests.Adria.Application;
 
-public class ChangeUsernameTest
+public class ChangeUsernameTests
 {
     [Fact]
     public async Task ChangeUsernameToAlreadyExistingThrows()
