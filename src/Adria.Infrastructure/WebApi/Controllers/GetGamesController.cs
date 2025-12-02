@@ -8,20 +8,21 @@ using Adria.Infrastructure.WebApi.Controllers.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using GameLocation = Adria.Infrastructure.WebApi.Controllers.Responses.GameLocation;
 
 namespace Adria.Infrastructure.WebApi.Controllers;
 
 public static class GetGamesController
 {
-    public static async Task<Results<Ok<GameLocationDto[]>, ProblemHttpResult>> Invoke(
-        [FromServices] IUseCase<Task<IReadOnlyCollection<GameLocation>>> getGames
+    public static async Task<Results<Ok<GameLocation[]>, ProblemHttpResult>> Invoke(
+        [FromServices] IUseCase<Task<IReadOnlyCollection<Domain.games.GameLocation>>> getGames
     )
     {
         try
         {
-            IReadOnlyCollection<GameLocation> gameLocations = await getGames.Execute();
+            IReadOnlyCollection<Domain.games.GameLocation> gameLocations = await getGames.Execute();
             return TypedResults.Ok(
-                gameLocations.Select(location => new GameLocationDto(location)).ToArray()
+                gameLocations.Select(location => new GameLocation(location)).ToArray()
                 );
         }
         catch (VirtEarthDatabaseException)

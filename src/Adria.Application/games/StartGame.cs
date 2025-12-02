@@ -10,16 +10,13 @@ public sealed record StartGameInput(Guid GameId, Guid UserId);
 public sealed class StartGame : IUseCase<StartGameInput, Task<Game>>
 {
     private readonly ILogger<StartGame> _logger;
-    private readonly IGameRepository _gameRepository;
     private readonly IArtifactsQuery  _artifactsQuery;
     public StartGame(
         ILogger<StartGame> logger,
-        IGameRepository gameRepository,
         IArtifactsQuery artifactsQuery
     )
     {
         _logger = logger;
-        _gameRepository = gameRepository;
         _artifactsQuery = artifactsQuery;
     }
     

@@ -44,14 +44,6 @@ public static class PersistenceModule
                 serviceProvider.GetRequiredService<ILogger<AdoUserRepository>>()
             );
         })
-        .AddScoped<IGameRepository, AdoGameRepository>(serviceProvider =>
-        {
-            return new AdoGameRepository(
-                serviceProvider.GetRequiredService<DbProviderFactory>(),
-                _connectionString,
-                serviceProvider.GetRequiredService<ILogger<AdoGameRepository>>()
-            );
-        })
         .AddScoped<IArtifactsQuery, ArtifactsQuery>(serviceProvider =>
         {
             return new ArtifactsQuery(
