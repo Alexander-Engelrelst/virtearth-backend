@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS completed_games;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS artifacts;
 DROP TABLE IF EXISTS games;
@@ -33,6 +34,14 @@ create table artifacts(
     name VARCHAR(100) NOT NULL,
     description VARCHAR(1000) NOT NULL,
     CONSTRAINT fk_game FOREIGN KEY (game_id) references games(id)
+);
+
+create table completed_games(
+    user_id CHAR(36) NOT NULL,
+    game_id CHAR(36) NOT NULL,
+    CONSTRAINT pk_completed_games PRIMARY KEY (user_id, game_id),
+    CONSTRAINT fk_completed_games_game_id FOREIGN KEY (game_id) REFERENCES games(id),
+    CONSTRAINT fk_completed_games_user_id FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 
@@ -93,7 +102,6 @@ INSERT INTO `users` (`id`, `username`) VALUES
 INSERT INTO `games` (`id`, `name`, `latitute`, `longitude`, `type`, `continent`, year)
 VALUES
     ('550e8400-e29b-41d4-a716-446655440034', 'Minotaur maze', 35.2989, 25.1636, 'Maze', 'NorthAmerica', -1800);
-
 INSERT INTO artifacts (id, game_id, name, description) VALUES
     ('550e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440034', 'artifact1', 'description1'),
     ('550e8400-e29b-41d4-a716-446655440001', '550e8400-e29b-41d4-a716-446655440034', 'artifact2', 'description2'),

@@ -13,6 +13,8 @@ public class GameLocationDto
     public string Continent { get; }
     public int Year { get; }
     public string GameName { get; }
+    
+    public bool Completed { get; }
 
     public GameLocationDto(GameLocation gameLocation)
     {
@@ -22,5 +24,6 @@ public class GameLocationDto
         Continent = Regex.Replace(gameLocation.Continent.ToString(), "(?<!^)([A-Z])", " $1");
         Year = gameLocation.Year;
         GameName = gameLocation.GameName;
+        Completed = gameLocation.Completed;
     }
 }

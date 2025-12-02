@@ -10,7 +10,16 @@ public sealed class GameLocation
     public int Year { get; }
     public string GameName { get; }
     
-    public GameLocation(Guid gameId, string gameName ,double latitude, double longitude, Continent continent, int year)
+    public bool Completed { get; }
+    
+    public GameLocation(
+        Guid gameId,
+        string gameName ,
+        double latitude,
+        double longitude,
+        Continent continent,
+        int year,
+        bool completed = false)
     {
         if (gameId == Guid.Empty)
         {
@@ -39,5 +48,6 @@ public sealed class GameLocation
         GameName = gameName;
         Continent = continent;
         Year = year;
+        Completed = completed;
     }
 }

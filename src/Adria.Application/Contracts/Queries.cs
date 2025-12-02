@@ -10,7 +10,7 @@ public interface IUserExistsQuery
 
 public interface IGameLocationsQuery
 {
-    Task<IReadOnlyCollection<GameLocation>> Fetch();
+    Task<IReadOnlyCollection<GameLocation>> Fetch(Guid userId);
 }
 
 public interface IArtifactsQuery

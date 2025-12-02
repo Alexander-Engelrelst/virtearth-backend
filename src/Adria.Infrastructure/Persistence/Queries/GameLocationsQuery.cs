@@ -13,8 +13,10 @@ public class GameLocationsQuery : IGameLocationsQuery
 {
 
     private const string QRY = @"
-    SELECT `id`, `name`, `latitute`, `longitude`, `continent`, `year`
-    FROM `games`";
+    SELECT g.id, g.name, g.latitute, g.longitude, g.continent, g.year, cg.user_id
+    FROM `games` AS g
+    LEFT JOIN `completed_games` AS cg ON g.id = cg.game_id
+    WHERE cg.user_id = @userId OR cg.user_id IS NULL";
     
     private readonly ILogger _logger;
     private readonly string _connectionString;
@@ -29,7 +31,7 @@ public class GameLocationsQuery : IGameLocationsQuery
         _connectionString = connectionString;
         _logger = logger;
     }
-    public async Task<IReadOnlyCollection<GameLocation>> Fetch()
+    public async Task<IReadOnlyCollection<GameLocation>> Fetch(Guid userId)
     {
         _logger.LogInformation("Fetching all games");
 
@@ -43,7 +45,12 @@ public class GameLocationsQuery : IGameLocationsQuery
         await using var command = connection.CreateCommand();
     
         command.CommandText = QRY;
-
+        
+        var parameter = command.CreateParameter();
+        parameter.ParameterName = "@userId";
+        parameter.Value = userId;
+        command.Parameters.Add(parameter);
+        
         var games = new List<GameLocation>();
 
         await using var reader = await command.ExecuteReaderAsync();
@@ -56,9 +63,10 @@ public class GameLocationsQuery : IGameLocationsQuery
             var longitudeOrd = reader.GetOrdinal("longitude");
             var continentOrd = reader.GetOrdinal("continent");
             var yearOrd = reader.GetOrdinal("year");
+            var userIdOrd = reader.GetOrdinal("user_id");
             
             string continentAsString = reader.GetString(continentOrd);
-            if (!Enum.TryParse<Continent>(continentAsString, out Continent continent))
+            if (!Enum.TryParse(continentAsString, out Continent continent))
             {
                 _logger.LogCritical(
                     "Continent {Continent} doesn't exist but is in the database for id {Id}",
@@ -78,7 +86,8 @@ public class GameLocationsQuery : IGameLocationsQuery
                 reader.GetDouble(latituteOrd),
                 reader.GetDouble(longitudeOrd),
                 continent,
-                reader.GetInt32(yearOrd)
+                reader.GetInt32(yearOrd),
+                !reader.IsDBNull(userIdOrd)
                 ));
         }
 

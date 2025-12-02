@@ -1,8 +1,10 @@
-﻿using Adria.Application.Contracts;
+﻿using System.Security.Claims;
+using Adria.Application.Contracts;
 using Adria.Application.Contracts.Data;
 using Adria.Application.Users;
 using Adria.Domain.games;
 using Adria.Domain.Shared.Exceptions;
+using Adria.Domain.Users;
 using Adria.Infrastructure.Persistence.Shared;
 using Adria.Infrastructure.WebApi.Controllers.Responses;
 using Microsoft.AspNetCore.Http;
@@ -13,13 +15,32 @@ namespace Adria.Infrastructure.WebApi.Controllers;
 
 public static class GetGamesController
 {
-    public static async Task<Results<Ok<GameLocationDto[]>, ProblemHttpResult>> Invoke(
-        [FromServices] IUseCase<Task<IReadOnlyCollection<Domain.games.GameLocation>>> getGames
+    public static async Task<Results<Ok<GameLocationDto[]>, ProblemHttpResult, BadRequest<string>, NotFound<string>>> Invoke(
+        [FromServices] IUseCase<Guid, Task<IReadOnlyCollection<GameLocation>>> getGames,
+        [FromServices] IUseCase<Guid, Task<User>> getUser,
+        [FromServices] IHttpContextAccessor httpContextAccessor
     )
     {
+        Claim? userClaim = httpContextAccessor.HttpContext?.User.FindFirst("guid");
+
+        if (userClaim is null || !Guid.TryParse(userClaim.Value, out Guid id))
+        {
+            return TypedResults.BadRequest("Please provide a valid user id");
+        }
+
         try
         {
-            IReadOnlyCollection<Domain.games.GameLocation> gameLocations = await getGames.Execute();
+            await getUser.Execute(id);
+        }
+        catch (ElementNotFoundException)
+        {
+            return TypedResults.NotFound("There is no user with the given id");
+        }
+        
+        
+        try
+        {
+            IReadOnlyCollection<GameLocation> gameLocations = await getGames.Execute(id);
             return TypedResults.Ok(
                 gameLocations.Select(location => new GameLocationDto(location)).ToArray()
                 );

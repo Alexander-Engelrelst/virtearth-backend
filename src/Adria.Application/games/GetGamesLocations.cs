@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Adria.Application.games;
 
-public sealed class GetGamesLocations : IUseCase<Task<IReadOnlyCollection<GameLocation>>>
+public sealed class GetGamesLocations : IUseCase<Guid,Task<IReadOnlyCollection<GameLocation>>>
 {
     private readonly IGameLocationsQuery _gameLocationsQuery;
     private readonly ILogger<GetGamesLocations> _logger;
@@ -19,9 +19,9 @@ public sealed class GetGamesLocations : IUseCase<Task<IReadOnlyCollection<GameLo
     }
     
     
-    public async Task<IReadOnlyCollection<GameLocation>> Execute()
+    public async Task<IReadOnlyCollection<GameLocation>> Execute(Guid userId)
     {
         _logger.LogInformation("Getting games locations");
-        return await _gameLocationsQuery.Fetch();
+        return await _gameLocationsQuery.Fetch(userId);
     }
 }
