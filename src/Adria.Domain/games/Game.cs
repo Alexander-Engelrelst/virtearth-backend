@@ -13,4 +13,22 @@ public abstract class Game
         UserId = userId;
         GameId = gameId;
     }
+
+    protected bool Equals(Game other)
+    {
+        return UserId.Equals(other.UserId) && GameId.Equals(other.GameId);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is null) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != GetType()) return false;
+        return Equals((Game)obj);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(UserId, GameId);
+    }
 }
