@@ -5,7 +5,6 @@ namespace UnitTests.Adria.Domain;
 
 public class MazeGameTest
 {
-    // TODO write actual tests lol (maybe a flood algorithm to check if every artifacts is reachable from any starting point in the maze
     [Fact]
     public void MazeGameWithEmptyGameIdThrows()
     {

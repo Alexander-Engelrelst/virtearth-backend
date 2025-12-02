@@ -4,17 +4,6 @@ namespace UnitTests.Adria.Domain;
 
 public class MazeArtifactTests
 {
-    /*public MazeArtifact(Guid id, string name, string description)
-    {
-        if (id == Guid.Empty) throw new ArgumentException("id cannot be empty");
-        if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("name cannot be empty");
-        if (string.IsNullOrWhiteSpace(description)) throw new ArgumentException("description cannot be empty");
-        
-        Id = id;
-        Name = name;
-        Description = description;
-    }*/
-
     [Fact]
     public void EmptyGuidThrows()
     {
