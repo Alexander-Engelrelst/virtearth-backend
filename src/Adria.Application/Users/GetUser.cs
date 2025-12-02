@@ -6,15 +6,15 @@ using Adria.Domain.Users;
 using Microsoft.Extensions.Logging;
 
 namespace Adria.Application.Users;
-
+// TODO edit that all calls involving an id from the jwt token are called from a helper function (will be done in a separate issue)
 public sealed class GetUser : IUseCase<Guid, Task<User>>
 {
     private readonly IUserRepository _repository;
-    private readonly ILogger<ChangeUserName> _logger;
+    private readonly ILogger<GetUser> _logger;
     
     public GetUser(
         IUserRepository repository,
-        ILogger<ChangeUserName> logger
+        ILogger<GetUser> logger
     )
     {
         _repository = repository;

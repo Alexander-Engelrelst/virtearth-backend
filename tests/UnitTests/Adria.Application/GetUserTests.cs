@@ -1,7 +1,32 @@
-﻿namespace UnitTests.Adria.Application;
+﻿using Adria.Application.Users;
+using Adria.Domain.Shared.Exceptions;
+using Adria.Domain.Users;
+using Microsoft.Extensions.Logging.Abstractions;
+using UnitTests.Mocks;
+
+namespace UnitTests.Adria.Application;
 
 public class GetUserTests
 {
-    // TODO yk what to do (test for the get user usecase I suppose)
-    // even though we can only test if it throws one exception. Long live minimum coverage
-}
+    [Fact]
+    public async Task NonExistingUserThrows()
+    {
+        Guid id =  Guid.NewGuid();
+        var usecase = new GetUser(new MockAdoUserRepository(), new NullLogger<GetUser>());
+        var exception = await Assert.ThrowsAsync<ElementNotFoundException>(() => usecase.Execute(id));
+        Assert.Equal($"user with id {id} not found", exception.Message);
+    }
+
+    [Fact]
+    public async Task ExistingUserWorks()
+    {
+        Guid id =  Guid.NewGuid();
+        User user = new("coolusername", id);
+        
+        var repository = new MockAdoUserRepository();
+        await repository.Save(user);
+        
+        var usecase = new GetUser(repository, new NullLogger<GetUser>());
+        Assert.Equal(user, await usecase.Execute(id));
+    }
+} 
