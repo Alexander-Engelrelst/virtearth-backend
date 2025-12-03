@@ -1,4 +1,5 @@
-﻿using Adria.Domain.games;
+﻿using System.Collections.Immutable;
+using Adria.Domain.games;
 using Adria.Infrastructure.WebApi.Controllers.Responses;
 
 namespace UnitTests.Adria.Infrastructure;
@@ -9,14 +10,14 @@ public class GameDtoTests
     [Fact]
     public void MazeGameDtoMazeGetsMappedCorrectly()
     {
-        IList<MazeArtifact> artifacts = new List<MazeArtifact>();
+        ISet<MazeArtifact> artifacts = new HashSet<MazeArtifact>();
 
         for (int i = 0; i < 2; i++)
         {
             artifacts.Add(new MazeArtifact(Guid.NewGuid(), $"artifact{i}", $"description{i}"));
         }
         
-        MazeGame game = new(Guid.NewGuid(), Guid.NewGuid(), artifacts);
+        MazeGame game = new(Guid.NewGuid(), Guid.NewGuid(), artifacts.ToImmutableHashSet());
         MazeGameDto dto = new(game);
 
         MazeElement?[,] maze = game.Maze;

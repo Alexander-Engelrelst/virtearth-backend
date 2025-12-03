@@ -7,8 +7,8 @@ public abstract class Game
 
     protected Game(Guid userId, Guid gameId)
     {
-        if (gameId == Guid.Empty) throw new ArgumentException("gameId cannot be empty");
-        if (userId == Guid.Empty) throw new ArgumentException("userId cannot be empty");
+        if (gameId == Guid.Empty) throw new ArgumentException("gameId cannot be empty", nameof(gameId));
+        if (userId == Guid.Empty) throw new ArgumentException("userId cannot be empty", nameof(userId));
         
         UserId = userId;
         GameId = gameId;

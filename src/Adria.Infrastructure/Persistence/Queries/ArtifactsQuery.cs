@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using System.Data.Common;
 using System.Runtime.InteropServices.JavaScript;
 using Adria.Application.Contracts;
@@ -28,7 +29,7 @@ public class ArtifactsQuery : IArtifactsQuery
         _logger = logger;
     }
     
-    public async Task<ReadOnlyCollection<MazeArtifact>> Fetch(Guid id)
+    public async Task<IReadOnlySet<MazeArtifact>> Fetch(Guid id)
     {
         _logger.LogInformation("Fetching all artifacts for game {Id}", id);
 
@@ -48,7 +49,7 @@ public class ArtifactsQuery : IArtifactsQuery
         parameter.Value = id.ToString();
         command.Parameters.Add(parameter);
         
-        var artifacts = new List<MazeArtifact>();
+        var artifacts = new HashSet<MazeArtifact>();
 
         await using var reader = await command.ExecuteReaderAsync();
 
@@ -67,6 +68,6 @@ public class ArtifactsQuery : IArtifactsQuery
 
         _logger.LogInformation("Fetched {Count} artifacts", artifacts.Count);
 
-        return artifacts.AsReadOnly();
+        return artifacts.ToImmutableHashSet();
     }
 }

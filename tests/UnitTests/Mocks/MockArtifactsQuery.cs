@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using Adria.Application.Contracts;
 using Adria.Domain.games;
 
@@ -7,9 +8,9 @@ namespace UnitTests.Mocks;
 public class MockArtifactsQuery : IArtifactsQuery
 {
     public Guid GameWithoutArtifactsId { get;  } = Guid.NewGuid();
-    public Task<ReadOnlyCollection<MazeArtifact>> Fetch(Guid id)
+    public Task<IReadOnlySet<MazeArtifact>> Fetch(Guid id)
     {
-        IList<MazeArtifact> artifacts = new List<MazeArtifact>();
+        ISet<MazeArtifact> artifacts = new HashSet<MazeArtifact>();
 
         if (id != GameWithoutArtifactsId)
         {
@@ -19,6 +20,6 @@ public class MockArtifactsQuery : IArtifactsQuery
             }
         }
         
-        return Task.FromResult(artifacts.AsReadOnly());
+        return Task.FromResult<IReadOnlySet<MazeArtifact>>(artifacts.ToImmutableHashSet());
     }
 }

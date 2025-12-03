@@ -1,4 +1,5 @@
-﻿using Adria.Domain.games;
+﻿using System.Collections.Immutable;
+using Adria.Domain.games;
 
 namespace UnitTests.Adria.Domain;
 
@@ -15,13 +16,13 @@ public class MazeGeneratorTests
     {
         for (int count = 0; count < 10; count++)
         {
-            IList<MazeArtifact> artifacts = new List<MazeArtifact>();
-            IList<MazeArtifact> artifactsFoundInMaze = new List<MazeArtifact>();
+            ISet<MazeArtifact> artifacts = new HashSet<MazeArtifact>();
+            ISet<MazeArtifact> artifactsFoundInMaze = new HashSet<MazeArtifact>();
             for (int i = 0; i < 100; i++)
             {
                 artifacts.Add(new MazeArtifact(Guid.NewGuid(), $"artifact{i}", $"description{i}"));
             }
-            var maze = MazeGenerator.GenerateMaze(artifacts);
+            var maze = MazeGenerator.GenerateMaze(artifacts.ToImmutableHashSet());
             int rows = maze.GetLength(0);
             int cols = maze.GetLength(1);
     

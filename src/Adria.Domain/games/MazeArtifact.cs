@@ -8,9 +8,9 @@ public class MazeArtifact : MazeElement
     
     public MazeArtifact(Guid id, string name, string description)
     {
-        if (id == Guid.Empty) throw new ArgumentException("id cannot be empty");
-        if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("name cannot be empty");
-        if (string.IsNullOrWhiteSpace(description)) throw new ArgumentException("description cannot be empty");
+        if (id == Guid.Empty) throw new ArgumentException("id cannot be empty", nameof(id));
+        if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("name cannot be empty", nameof(name));
+        if (string.IsNullOrWhiteSpace(description)) throw new ArgumentException("description cannot be empty",  nameof(description));
         
         Id = id;
         Name = name;

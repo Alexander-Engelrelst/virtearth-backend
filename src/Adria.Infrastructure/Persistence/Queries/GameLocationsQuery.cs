@@ -75,7 +75,7 @@ public class GameLocationsQuery : IGameLocationsQuery
                 
                 throw new InvalidEnumArgumentException(
                     argumentName: nameof(continentAsString),
-                    invalidValue: -1,                 // must be an int!  
+                    invalidValue: -1,
                     enumClass: typeof(Continent)
                 );
             }

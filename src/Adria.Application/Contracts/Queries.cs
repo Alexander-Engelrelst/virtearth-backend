@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using Adria.Domain.games;
 
@@ -15,5 +16,5 @@ public interface IGameLocationsQuery
 
 public interface IArtifactsQuery
 {
-    Task<ReadOnlyCollection<MazeArtifact>> Fetch(Guid id);
+    Task<IReadOnlySet<MazeArtifact>> Fetch(Guid id);
 }

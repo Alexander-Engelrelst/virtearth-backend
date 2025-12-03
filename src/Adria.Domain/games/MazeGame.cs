@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Immutable;
+using System.Text.Json.Serialization;
 
 namespace Adria.Domain.games;
 
@@ -10,16 +11,13 @@ public class MazeGame : Game
     
     public MazeElement?[,] Maze { get; }
     private ISet<MazeArtifact> FoundArtifacts { get; } = new HashSet<MazeArtifact>();
-    private ISet<MazeArtifact> Artifacts { get; } = new HashSet<MazeArtifact>();
-    public MazeGame(Guid gameId, Guid userId, IList<MazeArtifact> artifacts) : base(gameId, userId)
+    private IReadOnlySet<MazeArtifact> Artifacts { get; }
+    public MazeGame(Guid gameId, Guid userId, IReadOnlySet<MazeArtifact> artifacts) : base(gameId, userId)
     {
-        if (artifacts.Count < 1) throw new ArgumentOutOfRangeException(nameof(artifacts), "Must have at least 1 artifact");
+        if (artifacts.Count == 0) throw new ArgumentOutOfRangeException(nameof(artifacts), "Must have at least 1 artifact");
         
         Maze = MazeGenerator.GenerateMaze(artifacts);
-        foreach (MazeArtifact artifact in artifacts)
-        {
-            Artifacts.Add(artifact);
-        }
+        Artifacts = artifacts;
     }
 
 }

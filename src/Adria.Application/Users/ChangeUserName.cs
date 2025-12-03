@@ -32,7 +32,7 @@ public sealed class ChangeUserName : IUseCase<ChangeUserNameInput, Task<UserData
 
         if (input.User.Username == input.NewName)
         {
-            throw new ArgumentException("You cannot change your name to your current name");
+            throw new ArgumentException("You cannot change your name to your current name", nameof(input.NewName));
         }
         
         

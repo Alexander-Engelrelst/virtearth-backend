@@ -1,4 +1,5 @@
-﻿using Adria.Domain.games;
+﻿using System.Collections.Immutable;
+using Adria.Domain.games;
 using Xunit.Abstractions;
 
 namespace UnitTests.Adria.Domain;
@@ -24,14 +25,14 @@ public class MazeGameTest
     }
 
     // TODO here will be more tests added in further issues
-    private IList<MazeArtifact> GetMockArtifacts(int numberOfArtifacts)
+    private ImmutableHashSet<MazeArtifact> GetMockArtifacts(int numberOfArtifacts)
     {
-        IList<MazeArtifact> artifacts = new List<MazeArtifact>();
+        ISet<MazeArtifact> artifacts = new HashSet<MazeArtifact>();
         for (int i = 0; i < numberOfArtifacts; i++)
         {
             artifacts.Add(new MazeArtifact(Guid.NewGuid(), $"artifact{i}", $"description{i}"));
         }
 
-        return artifacts;
+        return artifacts.ToImmutableHashSet();
     }
 }

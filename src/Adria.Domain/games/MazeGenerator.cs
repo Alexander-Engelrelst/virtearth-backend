@@ -39,7 +39,7 @@ public static class MazeGenerator
      * It is highly unlikely and maybe even impossible to come into a situation where adding artifacts fail
      * this is because the maze is purposefully made large, but I'd rather be safe than sorry if someone decided to change anything
      */
-    public static MazeElement?[,] GenerateMaze(IList<MazeArtifact> artifacts)
+    public static MazeElement?[,] GenerateMaze(IReadOnlySet<MazeArtifact> artifacts)
     {
         int size = (int) Math.Sqrt(artifacts.Count * Math.Pow(MinimumCellsBetweenArtifacts, 2) * MazeSizeSafetyFactor);
         MazeElement?[,] maze = new MazeElement?[2 * size + 1, 2 * size + 1];
@@ -132,7 +132,7 @@ public static class MazeGenerator
         return unVisitedNeighbours;
     }
 
-    private static bool AddArtifacts(MazeElement?[,] maze, IList<MazeArtifact> artifacts, int minimumCellsBetweenArtifacts)
+    private static bool AddArtifacts(MazeElement?[,] maze, IReadOnlySet<MazeArtifact> artifacts, int minimumCellsBetweenArtifacts)
     {
         bool[,] availableSpaces = GetBaseAvailableSpaces(maze);
         Random random = new Random();
