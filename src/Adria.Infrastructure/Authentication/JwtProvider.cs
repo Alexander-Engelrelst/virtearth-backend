@@ -4,9 +4,8 @@ using System.Text;
 using Adria.Application.Authentication;
 using Adria.Domain.Users;
 using Microsoft.IdentityModel.Tokens;
-using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
-namespace Adria.Infrastructure;
+namespace Adria.Infrastructure.Authentication;
 
 public sealed class JwtProvider : IJwtProvider
 {
@@ -14,7 +13,7 @@ public sealed class JwtProvider : IJwtProvider
     {
         List<Claim> claims =
         [
-            new Claim("Guid", user.Id.ToString()), // Subject is standardized for unique identifiers
+            new Claim("guid", user.Id.ToString())
         ];
         
         SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtConfiguration.Secret));
@@ -32,9 +31,11 @@ public sealed class JwtProvider : IJwtProvider
     }
 }
 
-public abstract record JwtConfiguration
+public static class JwtConfiguration
 {
-    public static string Secret = "L7dLr6B6K9M+f0Ogbbuv9y8RnWUVVYqJ7Zn1jZy4WGi8sVtzjQw1v5XvT4Qy2x+O9U9JvUdxW1BvJQnHVpEtDw==";
+    public static string Secret =
+        "L7dLr6B6K9M+f0Ogbbuv9y8RnWUVVYqJ7Zn1jZy4WGi8sVtzjQw1v5XvT4Qy2x+O9U9JvUdxW1BvJQnHVpEtDw==";
+
     public static string Issuer = "VirtEarth server";
     public static string Audience = "VirtEarth player";
     public static int ExpireDays = 7;

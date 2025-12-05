@@ -79,7 +79,7 @@ public abstract class AbstractAdoRepository
             throw new VirtEarthDatabaseException("Invalid operation during database access.", ex);
         }
     }
-
+    
     protected async Task<DbConnection> OpenConnection()
     {
         var connection = _factory.CreateConnection() ??

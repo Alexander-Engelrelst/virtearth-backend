@@ -15,7 +15,7 @@ namespace Adria.Infrastructure.WebApi.Controllers;
 
 public static class LoginController
 {
-    public static async Task<Results<Ok<UserDto>, NotFound<string>, ProblemHttpResult>> Invoke(
+    public static async Task<Results<Ok<UserDto>, UnauthorizedHttpResult, ProblemHttpResult>> Invoke(
         [FromRoute] Guid id,
         [FromServices] IUseCase<Guid, Task<UserData>> login
     )
@@ -28,7 +28,7 @@ public static class LoginController
         }
         catch (ElementNotFoundException)
         {
-            return TypedResults.NotFound($"User with id {id} not found");
+            return TypedResults.Unauthorized();
         }
         catch (VirtEarthDatabaseException)
         {

@@ -6,18 +6,29 @@ public sealed class GameLocation
     public double Latitude { get; }
     public double Longitude { get; }
     
+    public Continent Continent { get; }
+    public int Year { get; }
     public string GameName { get; }
     
-    public GameLocation(Guid gameId, string gameName ,double latitude, double longitude)
+    public bool Completed { get; }
+    
+    public GameLocation(
+        Guid gameId,
+        string gameName ,
+        double latitude,
+        double longitude,
+        Continent continent,
+        int year,
+        bool completed = false)
     {
         if (gameId == Guid.Empty)
         {
-            throw new ArgumentNullException(nameof(gameId), "Game ID cannot be empty.");
+            throw new ArgumentException("gameId cannot be empty.", nameof(gameId));
         }
 
         if (string.IsNullOrWhiteSpace(gameName))
         {
-            throw new ArgumentNullException(nameof(gameName), "Game name cannot be empty.");
+            throw new ArgumentException("GameName cannot be empty.", nameof(gameName));
         }
 
         if (latitude < -90 || latitude > 90)
@@ -35,5 +46,8 @@ public sealed class GameLocation
         Latitude = latitude;
         Longitude = longitude;
         GameName = gameName;
+        Continent = continent;
+        Year = year;
+        Completed = completed;
     }
 }

@@ -40,4 +40,19 @@ public sealed partial class User
         
         Username =  inputNewName;
     }
+
+    private bool Equals(User other)
+    {
+        return Id.Equals(other.Id);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return ReferenceEquals(this, obj) || obj is User other && Equals(other);
+    }
+
+    public override int GetHashCode()
+    {
+        return Id.GetHashCode();
+    }
 }

@@ -19,18 +19,19 @@ services:
       retries: 10
       start_period: 30s
 
-  taskly-api.adria:
-    build:
-      context: ../../
-      dockerfile: ./config/docker/Dockerfile
-    ports:
-      - 8000:8000
-    environment:
-      - Persistence__ConnectionString=Server=taskly-db.adria;Port=3306;Database=virtEarth;User=adria;Password=adria;
-    depends_on:
-      taskly-db.adria:
-        condition: service_healthy
-    restart: on-failure
+#  taskly-api.adria:
+#    build:
+#      context: ../../
+#      dockerfile: ./config/docker/Dockerfile
+#    ports:
+#      - 8000:8000
+#    environment:
+#      - Persistence__ConnectionString=Server=taskly-db.adria;Port=3306;Database=virtEarth;User=adria;Password=adria;
+#      - ASPNETCORE_ENVIRONMENT=Production
+#    depends_on:
+#      taskly-db.adria:
+#        condition: service_healthy
+#    restart: on-failure
 
 volumes:
   mysql_data:

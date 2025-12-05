@@ -77,5 +77,12 @@ public static class Routes
             .RequireAuthorization()
             .WithName(nameof(GetGamesController))
             .WithOpenApi();
+        
+        gameRoutes
+            .MapPost("/{gameId}", StartGameController.Invoke)
+            .WithDescription("Start a new game")
+            .RequireAuthorization()
+            .WithName(nameof(StartGameController))
+            .WithOpenApi();
     }
 }

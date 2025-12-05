@@ -47,7 +47,7 @@ public sealed class AdoUserRepository : AbstractAdoRepository, IUserRepository
         _logger.LogInformation("Saving user with ID {UserId} to database.", user.Id);
         string userQuery = INSERT_USER;
 
-        if ((await ById(user.Id)) != null)
+        if (await ById(user.Id) != null)
         {
             userQuery = UPDATE_USER;
         }

@@ -30,17 +30,17 @@ public sealed class UserExistsQuery : IUserExistsQuery
     {
         _logger.LogInformation("Checking if user with username {Username} exists", username);
 
-        using DbConnection connection = _factory.CreateConnection()
-                                        ?? throw new InvalidOperationException(
-                                            "DbProviderFactory returned a null DbConnection.");
+        await using var connection = _factory.CreateConnection()
+                                     ?? throw new InvalidOperationException(
+                                         "DbProviderFactory returned a null DbConnection.");
         connection.ConnectionString = _connectionString;
         await connection.OpenAsync();
 
-        using var command = connection.CreateCommand();
+        await using var command = connection.CreateCommand();
     
         command.CommandText = QRY;
             
-        DbParameter parameter = command.CreateParameter();
+        var parameter = command.CreateParameter();
         parameter.ParameterName = "@username";
         parameter.Value = username;
         

@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Adria.Application.Users;
 
-public sealed record ChangeUserNameInput(Guid Id, string NewName);
+public sealed record ChangeUserNameInput(User User, string NewName);
 public sealed class ChangeUserName : IUseCase<ChangeUserNameInput, Task<UserData>>
 {
     private readonly IUserRepository _repository;
@@ -28,18 +28,11 @@ public sealed class ChangeUserName : IUseCase<ChangeUserNameInput, Task<UserData
     }
     public async Task<UserData> Execute(ChangeUserNameInput input)
     {
-        _logger.LogInformation("Executing user change request for id {Id}", input.Id);
-        User? user = await _repository.ById(input.Id);
+        _logger.LogInformation("Executing user change request for id {Id}", input.User.Id);
 
-        if (user is null)
+        if (input.User.Username == input.NewName)
         {
-            _logger.LogError("User with id {Id} was not found", input.Id);
-            throw ElementNotFoundException.ForId<User>(input.Id);
-        }
-
-        if (user.Username == input.NewName)
-        {
-            throw new ArgumentException();
+            throw new ArgumentException("You cannot change your name to your current name", nameof(input.NewName));
         }
         
         
@@ -52,15 +45,15 @@ public sealed class ChangeUserName : IUseCase<ChangeUserNameInput, Task<UserData
 
         try
         {
-            user.UpdateUserName(input.NewName);
+            input.User.UpdateUserName(input.NewName);
         }
-        catch (InvalidUsernameException)
+        catch (InvalidUsernameException ex)
         {
-            _logger.LogError("Invalid username: {Username}", input.NewName);
+            _logger.LogError(ex, "Invalid username: {Username}", input.NewName);
             throw;
         }
 
-        await _repository.Save(user);
-        return new UserData(user, _jwtProvider.GenerateToken(user));
+        await _repository.Save(input.User);
+        return new UserData(input.User, _jwtProvider.GenerateToken(input.User));
     }
 }
