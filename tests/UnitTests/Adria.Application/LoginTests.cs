@@ -1,5 +1,4 @@
-﻿using Adria.Application.Authentication;
-using Adria.Application.Contracts;
+﻿using Adria.Application.Contracts;
 using Adria.Application.Users;
 using Adria.Domain.Shared.Exceptions;
 using Adria.Domain.Users;
@@ -27,7 +26,7 @@ public class LoginTests
     {
         ILogger<Login> logger = new NullLogger<Login>();
         IJwtProvider jwtProvider = new MockJwtProvider();
-        IUserRepository repository = new MockAdoUserRepository();
+        MockAdoUserRepository repository = new MockAdoUserRepository();
         Login useCase = new(repository, logger, jwtProvider);
         User user = new("DitIsEenUsername");
         await repository.Save(user);

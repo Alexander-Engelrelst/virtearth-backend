@@ -10,7 +10,7 @@ public class MockArtifactsQuery : IArtifactsQuery
     public Guid GameWithoutArtifactsId { get;  } = Guid.NewGuid();
     public Task<IReadOnlySet<MazeArtifact>> Fetch(Guid id)
     {
-        ISet<MazeArtifact> artifacts = new HashSet<MazeArtifact>();
+        HashSet<MazeArtifact> artifacts = new HashSet<MazeArtifact>();
 
         if (id != GameWithoutArtifactsId)
         {

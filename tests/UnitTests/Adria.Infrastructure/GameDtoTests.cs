@@ -10,7 +10,7 @@ public class GameDtoTests
     [Fact]
     public void MazeGameDtoMazeGetsMappedCorrectly()
     {
-        ISet<MazeArtifact> artifacts = new HashSet<MazeArtifact>();
+        HashSet<MazeArtifact> artifacts = new HashSet<MazeArtifact>();
 
         for (int i = 0; i < 2; i++)
         {
@@ -20,7 +20,7 @@ public class GameDtoTests
         MazeGame game = new(Guid.NewGuid(), Guid.NewGuid(), artifacts.ToImmutableHashSet());
         MazeGameDto dto = new(game);
 
-        MazeElement?[,] maze = game.Maze;
+        IMazeElement?[,] maze = game.Maze;
         int[][] dtoMaze = dto.Maze;
 
         for (int i = 0; i < maze.GetLength(0); i++)

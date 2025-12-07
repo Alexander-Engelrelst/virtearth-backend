@@ -1,5 +1,4 @@
-﻿using Adria.Application.Authentication;
-using Adria.Application.Contracts;
+﻿using Adria.Application.Contracts;
 using Adria.Application.Contracts.Data;
 using Adria.Domain.Shared.Exceptions;
 using Adria.Domain.Users;
@@ -22,6 +21,7 @@ public sealed class GetUser : IUseCase<Guid, Task<User>>
     }
     public async Task<User> Execute(Guid input)
     {
+        _logger.LogInformation("Getting user with id {Id}", input);
         User? user = await _repository.ById(input);
         if (user is null) throw new ElementNotFoundException($"user with id {input} not found");
         

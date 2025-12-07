@@ -25,9 +25,9 @@ public class MazeGameTest
     }
 
     // TODO here will be more tests added in further issues
-    private ImmutableHashSet<MazeArtifact> GetMockArtifacts(int numberOfArtifacts)
+    private static ImmutableHashSet<MazeArtifact> GetMockArtifacts(int numberOfArtifacts)
     {
-        ISet<MazeArtifact> artifacts = new HashSet<MazeArtifact>();
+        HashSet<MazeArtifact> artifacts = new HashSet<MazeArtifact>();
         for (int i = 0; i < numberOfArtifacts; i++)
         {
             artifacts.Add(new MazeArtifact(Guid.NewGuid(), $"artifact{i}", $"description{i}"));

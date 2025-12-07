@@ -16,8 +16,8 @@ public class MazeGeneratorTests
     {
         for (int count = 0; count < 10; count++)
         {
-            ISet<MazeArtifact> artifacts = new HashSet<MazeArtifact>();
-            ISet<MazeArtifact> artifactsFoundInMaze = new HashSet<MazeArtifact>();
+            HashSet<MazeArtifact> artifacts = new HashSet<MazeArtifact>();
+            HashSet<MazeArtifact> artifactsFoundInMaze = new HashSet<MazeArtifact>();
             for (int i = 0; i < 100; i++)
             {
                 artifacts.Add(new MazeArtifact(Guid.NewGuid(), $"artifact{i}", $"description{i}"));

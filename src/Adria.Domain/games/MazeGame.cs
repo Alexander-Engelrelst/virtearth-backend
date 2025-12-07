@@ -9,7 +9,7 @@ public class MazeGame : Game
      * and a different amount of artifacts, for simplicity I will not be implementing this immediately
      * if this wasn't fixed it means that there was insufficient time to add this properly */
     
-    public MazeElement?[,] Maze { get; }
+    public IMazeElement?[,] Maze { get; }
     private ISet<MazeArtifact> FoundArtifacts { get; } = new HashSet<MazeArtifact>();
     private IReadOnlySet<MazeArtifact> Artifacts { get; }
     public MazeGame(Guid gameId, Guid userId, IReadOnlySet<MazeArtifact> artifacts) : base(gameId, userId)

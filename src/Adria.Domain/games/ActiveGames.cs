@@ -2,7 +2,7 @@
 
 public static class ActiveGames
 {
-    private static IList<Game> _games = new List<Game>();
+    private static List<Game> _games = [];
     public static IList<Game> Games => _games.AsReadOnly();
 
     public static void AddGame(Game game)

@@ -1,7 +1,5 @@
 ﻿using System.Security.Claims;
 using Adria.Application.Contracts;
-using Adria.Application.Contracts.Data;
-using Adria.Application.Users;
 using Adria.Domain.games;
 using Adria.Domain.Shared.Exceptions;
 using Adria.Domain.Users;

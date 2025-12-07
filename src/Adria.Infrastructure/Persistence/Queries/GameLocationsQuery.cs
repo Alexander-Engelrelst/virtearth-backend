@@ -87,7 +87,7 @@ public class GameLocationsQuery : IGameLocationsQuery
                 reader.GetDouble(longitudeOrd),
                 continent,
                 reader.GetInt32(yearOrd),
-                !reader.IsDBNull(userIdOrd)
+                !await reader.IsDBNullAsync(userIdOrd)
                 ));
         }
 

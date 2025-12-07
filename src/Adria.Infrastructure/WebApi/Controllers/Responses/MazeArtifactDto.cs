@@ -2,7 +2,7 @@
 
 namespace Adria.Infrastructure.WebApi.Controllers.Responses;
 
-public class MazeArtifactDto
+public sealed class MazeArtifactDto
 {
     public Guid Id { get; }
     public string Name { get; }
@@ -19,6 +19,7 @@ public class MazeArtifactDto
         Y = yCord;
     }
 
+    
     protected bool Equals(MazeArtifactDto other)
     {
         return Id.Equals(other.Id) && Name == other.Name && Description == other.Description && X == other.X && Y == other.Y;

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Adria.Domain.games;
+﻿using Adria.Domain.games;
 
 namespace Adria.Infrastructure.WebApi.Controllers.Responses;
 
@@ -14,7 +13,7 @@ public sealed class MazeGameDto
     {
         GameId = game.GameId;
         
-        MazeElement?[,] maze = game.Maze;
+        IMazeElement?[,] maze = game.Maze;
         
         Maze = new int[maze.GetLength(0)][];
         
@@ -38,7 +37,7 @@ public sealed class MazeGameDto
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(
-                            nameof(maze),
+                            nameof(game),
                             maze[i, j],
                             "Unexpected element found in the maze.");
                 }

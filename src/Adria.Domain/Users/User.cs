@@ -7,7 +7,7 @@ public sealed partial class User
 {   
     private const int MAXIMUM_USERNAME_LENGTH = 40;
     private const int MINIMUM_USERNAME_LENGTH = 3;
-    [GeneratedRegex(@"^[a-zA-Z0-9._-]{3,40}$")]
+    [GeneratedRegex("^[a-zA-Z0-9._-]{3,40}$")]
     private static partial Regex UsernameRegex(); 
     public Guid Id { get; private init; }
     public string Username { get; private set; }
