@@ -32,7 +32,7 @@ public sealed class UserExistsQuery : IUserExistsQuery
         _logger.LogInformation("Checking if user with username {Username} exists", username);
 
         await using var connection = _factory.CreateConnection() ?? 
-                                     throw new VirtEarthDatabaseException("Invalid operation during database access.");
+                                     throw new VirtEarthDatabaseException("Failed to create a database connection..");
         connection.ConnectionString = _connectionString;
         await connection.OpenAsync();
 

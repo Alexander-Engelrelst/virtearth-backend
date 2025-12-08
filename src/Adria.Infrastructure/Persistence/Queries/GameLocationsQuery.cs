@@ -37,7 +37,7 @@ public class GameLocationsQuery : IGameLocationsQuery
         _logger.LogInformation("Fetching all games");
 
         await using var connection = _factory.CreateConnection() ?? 
-                                     throw new VirtEarthDatabaseException("Invalid operation during database access.");
+                                     throw new VirtEarthDatabaseException("Failed to create a database connection.");
 
         
         connection.ConnectionString = _connectionString;

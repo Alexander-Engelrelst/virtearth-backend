@@ -20,4 +20,17 @@ public class MazeGame : Game
         Artifacts = artifacts;
     }
 
+    public void UpdateUserFoundArtifacts(Guid inputArtifactId)
+    {
+        if (FoundArtifacts.Select(artifact => artifact.Id).Contains(inputArtifactId))
+        {
+            // TODO add a custom exception for this
+        }
+        
+        MazeArtifact artifact = Artifacts.FirstOrDefault(artifact => artifact.Id == inputArtifactId)
+            ?? throw new Exception(); 
+        // TODO if this is null throw a correct error
+        
+        FoundArtifacts.Add(artifact);
+    }
 }

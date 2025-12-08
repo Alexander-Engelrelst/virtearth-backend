@@ -35,7 +35,7 @@ public class ArtifactsQuery : IArtifactsQuery
         _logger.LogInformation("Fetching all artifacts for game {Id}", id);
 
         await using var connection = _factory.CreateConnection() ?? 
-                                     throw new VirtEarthDatabaseException("Invalid operation during database access.");
+                                     throw new VirtEarthDatabaseException("Failed to create a database connection.");
 
         
         connection.ConnectionString = _connectionString;
