@@ -23,7 +23,7 @@ public sealed class GetUser : IUseCase<Guid, Task<User>>
     {
         _logger.LogInformation("Getting user with id {Id}", input);
         User? user = await _repository.ById(input);
-        if (user is null) throw new ElementNotFoundException($"user with id {input} not found");
+        if (user is null) throw new UserNotFoundException(input);
         
         return user;
     }

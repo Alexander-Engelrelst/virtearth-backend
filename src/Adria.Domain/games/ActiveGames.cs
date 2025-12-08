@@ -20,7 +20,7 @@ public static class ActiveGames
     {
         if (!_games.TryGetValue(userId, out Game? game))
         {
-            throw new ElementNotFoundException($"User {userId} is currently not playing a game");
+            throw new ActiveGameNotFoundException(userId);
         }
 
         return game;

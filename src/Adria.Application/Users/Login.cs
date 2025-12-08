@@ -31,7 +31,7 @@ public sealed class Login : IUseCase<Guid, Task<UserData>>
         if (user is null)
         {
             _logger.LogInformation("User {Id} not found", id);
-            throw new ElementNotFoundException($"User with id {id} not found");
+            throw new UserNotFoundException(id);
         }
         
         return new UserData(user, _jwtProvider.GenerateToken(user));
