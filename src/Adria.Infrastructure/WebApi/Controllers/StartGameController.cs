@@ -4,6 +4,7 @@ using Adria.Application.games;
 using Adria.Domain.games;
 using Adria.Domain.Shared.Exceptions;
 using Adria.Domain.Users;
+using Adria.Infrastructure.Persistence.Shared;
 using Adria.Infrastructure.WebApi.Controllers.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -47,7 +48,7 @@ public static class StartGameController
         {
             return TypedResults.Conflict("Player already playing a game");
         }
-        catch (InvalidOperationException)
+        catch (VirtEarthDatabaseException)
         {
             return TypedResults.Problem("An unexpected problem occured while trying to start a game");
         }

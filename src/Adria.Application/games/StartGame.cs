@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using Adria.Application.Contracts;
 using Adria.Domain.games;
+using Adria.Domain.Shared.Exceptions;
 using Microsoft.Extensions.Logging;
 
 namespace Adria.Application.games;
@@ -28,7 +29,15 @@ public sealed class StartGame : IUseCase<StartGameInput, Task<Game>>
          * I was told during the code review that I did not have to do this, so I didn't, but I also didn't refactor everything to simplify*/
         IReadOnlySet<MazeArtifact> artifacts = await _artifactsQuery.Fetch(input.GameId);
         Game game = new MazeGame(input.GameId, input.UserId, artifacts);
-        ActiveGames.AddGame(game);
+        try
+        {
+            ActiveGames.AddGame(game);
+        }
+        catch (PlayerAlreadyPlayingException)
+        {
+            _logger.LogWarning("User {UserId} is attempting to play a game while already playing one", input.UserId);
+            throw;
+        }
         return game;
     }
 }

@@ -46,7 +46,7 @@ public sealed class ChangeUserName : IUseCase<ChangeUserNameInput, Task<UserData
         {
             input.User.UpdateUserName(input.NewName);
         }
-        catch (InvalidUsernameException ex)
+        catch (InvalidUsernameException)
         {
             _logger.LogError("Invalid username: {Username}", input.NewName);
             throw;

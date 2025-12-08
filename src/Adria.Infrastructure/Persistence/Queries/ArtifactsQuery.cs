@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Runtime.InteropServices.JavaScript;
 using Adria.Application.Contracts;
 using Adria.Domain.games;
+using Adria.Infrastructure.Persistence.Shared;
 using Microsoft.Extensions.Logging;
 
 namespace Adria.Infrastructure.Persistence.Queries;
@@ -33,9 +34,9 @@ public class ArtifactsQuery : IArtifactsQuery
     {
         _logger.LogInformation("Fetching all artifacts for game {Id}", id);
 
-        await using var connection = _factory.CreateConnection()
-                                     ?? throw new InvalidOperationException(
-                                         "DbProviderFactory returned a null DbConnection.");
+        await using var connection = _factory.CreateConnection() ?? 
+                                     throw new VirtEarthDatabaseException("Invalid operation during database access.");
+
         
         connection.ConnectionString = _connectionString;
         await connection.OpenAsync();

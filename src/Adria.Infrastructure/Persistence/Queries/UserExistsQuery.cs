@@ -1,6 +1,7 @@
 ﻿using System.Data.Common;
 using Adria.Application.Contracts;
 using Adria.Domain.Users;
+using Adria.Infrastructure.Persistence.Shared;
 using Microsoft.Extensions.Logging;
 
 namespace Adria.Infrastructure.Persistence.Queries;
@@ -30,9 +31,8 @@ public sealed class UserExistsQuery : IUserExistsQuery
     {
         _logger.LogInformation("Checking if user with username {Username} exists", username);
 
-        await using var connection = _factory.CreateConnection()
-                                     ?? throw new InvalidOperationException(
-                                         "DbProviderFactory returned a null DbConnection.");
+        await using var connection = _factory.CreateConnection() ?? 
+                                     throw new VirtEarthDatabaseException("Invalid operation during database access.");
         connection.ConnectionString = _connectionString;
         await connection.OpenAsync();
 
