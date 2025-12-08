@@ -13,7 +13,7 @@ namespace Adria.Infrastructure.WebApi.Controllers;
 
 public static class StartGameController
 {
-    public static async Task<Results<Ok<MazeGameDto>, UnauthorizedHttpResult, ProblemHttpResult, BadRequest<string>>> Invoke(
+    public static async Task<Results<Ok<MazeGameDto>, UnauthorizedHttpResult, ProblemHttpResult, Conflict<string>, BadRequest<string>>> Invoke(
         [FromServices] IUseCase<StartGameInput, Task<Game>> startGame,
         [FromServices] IUseCase<Guid, Task<User>> getUser,
         [FromServices] IHttpContextAccessor httpContextAccessor,
@@ -40,8 +40,12 @@ public static class StartGameController
         try
         {
             Game game = await startGame.Execute(new StartGameInput(gameId, user.Id));
-            MazeGameDto response = new((MazeGame) game);
+            MazeGameDto response = new((MazeGame)game);
             return TypedResults.Ok(response);
+        }
+        catch (PlayerAlreadyPlayingException)
+        {
+            return TypedResults.Conflict("Player already playing a game");
         }
         catch (InvalidOperationException)
         {

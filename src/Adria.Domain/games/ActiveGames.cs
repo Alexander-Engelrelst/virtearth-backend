@@ -1,12 +1,18 @@
-﻿namespace Adria.Domain.games;
+﻿using System.Collections.ObjectModel;
+using Adria.Domain.Shared.Exceptions;
+
+namespace Adria.Domain.games;
 
 public static class ActiveGames
 {
-    private static List<Game> _games = [];
-    public static IList<Game> Games => _games.AsReadOnly();
+    private static Dictionary<Guid, Game> _games = new();
+    public static ReadOnlyDictionary<Guid, Game> Games => new(_games);
 
     public static void AddGame(Game game)
     {
-        _games.Add(game);
+        if (!_games.TryAdd(game.UserId, game))
+        {
+            throw new PlayerAlreadyPlayingException(game.UserId);
+        }
     }
 }

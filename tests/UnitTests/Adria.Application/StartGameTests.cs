@@ -1,5 +1,6 @@
 ﻿using Adria.Application.games;
 using Adria.Domain.games;
+using Adria.Domain.Shared.Exceptions;
 using Microsoft.Extensions.Logging.Abstractions;
 using UnitTests.Mocks;
 
@@ -21,9 +22,21 @@ public class StartGameTests
     [Fact]
     public async Task StartingGameWithArtifactsWorks()
     {
+        var userId = Guid.NewGuid();
         var usecase = new StartGame(new NullLogger<StartGame>(), new MockArtifactsQuery());
-        Game game = await usecase.Execute(new StartGameInput(Guid.NewGuid(), Guid.NewGuid()));
-        Assert.Single(ActiveGames.Games);
-        Assert.Equal(game, ActiveGames.Games[0]);
+        Game game = await usecase.Execute(new StartGameInput(Guid.NewGuid(), userId));
+        Assert.True(ActiveGames.Games.ContainsKey(userId));
+        Assert.Equal(game, ActiveGames.Games[userId]);
+    }
+
+    [Fact]
+    public async Task StartingGameForUserAlreadyPlayingThrows()
+    {
+        var userId = Guid.NewGuid();
+        var usecase = new StartGame(new NullLogger<StartGame>(), new MockArtifactsQuery());
+        await usecase.Execute(new StartGameInput(Guid.NewGuid(), userId));
+        await Assert.ThrowsAsync<PlayerAlreadyPlayingException>(
+            () => usecase.Execute(new StartGameInput(Guid.NewGuid(), userId))
+        );
     }
 }
