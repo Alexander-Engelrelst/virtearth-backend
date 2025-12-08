@@ -33,7 +33,7 @@ public static class StartGameController
         {
             user = await getUser.Execute(id);
         }
-        catch (ElementNotFoundException)
+        catch (UserNotFoundException)
         {
             return TypedResults.Unauthorized();
         }

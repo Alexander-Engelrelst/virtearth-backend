@@ -26,7 +26,7 @@ public static class LoginController
             UserDto user = new(data.User.Id, data.User.Username, data.JwtToken);
             return TypedResults.Ok(user);
         }
-        catch (ElementNotFoundException)
+        catch (UserNotFoundException)
         {
             return TypedResults.Unauthorized();
         }
