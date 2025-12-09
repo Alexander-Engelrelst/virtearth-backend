@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using Adria.Domain.games;
 using Adria.Infrastructure.WebApi.Controllers.Responses;
+using UnitTests.Mocks;
 
 namespace UnitTests.Adria.Infrastructure;
 
@@ -12,10 +13,7 @@ public class GameDtoTests
     {
         HashSet<MazeArtifact> artifacts = new HashSet<MazeArtifact>();
 
-        for (int i = 0; i < 2; i++)
-        {
-            artifacts.Add(new MazeArtifact(Guid.NewGuid(), $"artifact{i}", $"description{i}"));
-        }
+        artifacts.UnionWith(MockHelpers.GenerateMockArtifacts(20));
         
         MazeGame game = new(Guid.NewGuid(), new("username"), artifacts.ToImmutableHashSet());
         MazeGameDto dto = new(game);

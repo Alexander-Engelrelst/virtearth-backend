@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using Adria.Domain.games;
+using UnitTests.Mocks;
 
 namespace UnitTests.Adria.Domain;
 
@@ -18,10 +19,9 @@ public class MazeGeneratorTests
         {
             HashSet<MazeArtifact> artifacts = new HashSet<MazeArtifact>();
             HashSet<MazeArtifact> artifactsFoundInMaze = new HashSet<MazeArtifact>();
-            for (int i = 0; i < 100; i++)
-            {
-                artifacts.Add(new MazeArtifact(Guid.NewGuid(), $"artifact{i}", $"description{i}"));
-            }
+            
+            artifacts.UnionWith(MockHelpers.GenerateMockArtifacts(100));
+            
             var maze = MazeGenerator.GenerateMaze(artifacts.ToImmutableHashSet());
             int rows = maze.GetLength(0);
             int cols = maze.GetLength(1);
