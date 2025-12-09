@@ -38,7 +38,7 @@ public static class StartGameController
 
         try
         {
-            Game game = await startGame.Execute(new StartGameInput(gameId, user.Id));
+            Game game = await startGame.Execute(new StartGameInput(gameId, user));
             MazeGameDto response = new((MazeGame)game);
             return TypedResults.Ok(response);
         }

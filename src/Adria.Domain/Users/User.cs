@@ -3,7 +3,7 @@ using Adria.Domain.Shared.Exceptions;
 
 namespace Adria.Domain.Users;
 
-public sealed partial class User
+public sealed partial class User : IEquatable<User>
 {   
     private const int MAXIMUM_USERNAME_LENGTH = 40;
     private const int MINIMUM_USERNAME_LENGTH = 3;
@@ -41,9 +41,11 @@ public sealed partial class User
         Username =  inputNewName;
     }
 
-    private bool Equals(User other)
+    public bool Equals(User? other)
     {
-        return Id.Equals(other.Id);
+        if (other is null) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return Id.Equals(other.Id) && Username == other.Username;
     }
 
     public override bool Equals(object? obj)
@@ -53,6 +55,6 @@ public sealed partial class User
 
     public override int GetHashCode()
     {
-        return Id.GetHashCode();
+        return HashCode.Combine(Id, Username);
     }
 }

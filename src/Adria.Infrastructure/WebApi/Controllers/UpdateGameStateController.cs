@@ -39,7 +39,7 @@ public static class UpdateGameStateController
         try
         {
             // TODO ask if this should be made async
-            updateFoundMazeArtifacts.Execute(new UpdateFoundMazeArtifactsInput(user.Id, artifactId, gameId));
+            updateFoundMazeArtifacts.Execute(new UpdateFoundMazeArtifactsInput(user, artifactId, gameId));
             return TypedResults.Ok();
         }
         catch (ActiveGameNotFoundException)

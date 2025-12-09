@@ -1,4 +1,6 @@
-﻿namespace Adria.Domain.games;
+﻿using Adria.Domain.Users;
+
+namespace Adria.Domain.games;
 
 #pragma warning disable S4035
 /* for some reason sonar was being 'very smart' saying I needed to implement an IEqualityComparer when I use IEquatable
@@ -7,15 +9,14 @@
 public abstract class Game : IEquatable<Game>
 {
     // TODO refactor this for the game to keep track of the entire user instead of the userid
-    public Guid UserId { get; }
+    public User User { get; }
     public Guid GameId { get; }
 
-    protected Game(Guid gameId, Guid userId)
+    protected Game(Guid gameId, User user)
     {
         if (gameId == Guid.Empty) throw new ArgumentException("gameId cannot be empty", nameof(gameId));
-        if (userId == Guid.Empty) throw new ArgumentException("userId cannot be empty", nameof(userId));
         
-        UserId = userId;
+        User = user;
         GameId = gameId;
     }
 
@@ -23,7 +24,7 @@ public abstract class Game : IEquatable<Game>
     {
         if (other is null) return false;
         if (ReferenceEquals(this, other)) return true;
-        return UserId.Equals(other.UserId) && GameId.Equals(other.GameId);
+        return User.Equals(other.User) && GameId.Equals(other.GameId);
     }
 
     public override bool Equals(object? obj)
@@ -36,7 +37,7 @@ public abstract class Game : IEquatable<Game>
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(UserId, GameId);
+        return HashCode.Combine(User, GameId);
     }
 }
 

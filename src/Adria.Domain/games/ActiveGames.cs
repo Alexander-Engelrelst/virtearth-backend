@@ -10,9 +10,9 @@ public static class ActiveGames
 
     public static void AddGame(Game game)
     {
-        if (!_games.TryAdd(game.UserId, game))
+        if (!_games.TryAdd(game.User.Id, game))
         {
-            throw new PlayerAlreadyPlayingException(game.UserId);
+            throw new PlayerAlreadyPlayingException(game.User.Id);
         }
     }
 

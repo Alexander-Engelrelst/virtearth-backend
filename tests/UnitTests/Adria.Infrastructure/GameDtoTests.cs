@@ -17,7 +17,7 @@ public class GameDtoTests
             artifacts.Add(new MazeArtifact(Guid.NewGuid(), $"artifact{i}", $"description{i}"));
         }
         
-        MazeGame game = new(Guid.NewGuid(), Guid.NewGuid(), artifacts.ToImmutableHashSet());
+        MazeGame game = new(Guid.NewGuid(), new("username"), artifacts.ToImmutableHashSet());
         MazeGameDto dto = new(game);
 
         IMazeElement?[,] maze = game.Maze;
