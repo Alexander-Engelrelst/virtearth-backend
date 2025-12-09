@@ -12,8 +12,10 @@ public class MazeGame : Game
      * if this wasn't fixed it means that there was insufficient time to add this properly */
     
     public IMazeElement?[,] Maze { get; }
-    private ISet<MazeArtifact> FoundArtifacts { get; } = new HashSet<MazeArtifact>();
-    private IReadOnlySet<MazeArtifact> Artifacts { get; }
+    private readonly ISet<MazeArtifact> _foundArtifacts = new HashSet<MazeArtifact>();
+
+    public IReadOnlySet<MazeArtifact> FoundArtifacts => _foundArtifacts.ToImmutableHashSet();
+    public IReadOnlySet<MazeArtifact> Artifacts { get; }
     public MazeGame(Guid gameId, User user, IReadOnlySet<MazeArtifact> artifacts) : base(gameId, user)
     {
         if (artifacts.Count == 0) throw new ArgumentOutOfRangeException(nameof(artifacts), "Must have at least 1 artifact");
@@ -24,7 +26,7 @@ public class MazeGame : Game
 
     public void UpdateUserFoundArtifacts(Guid inputArtifactId)
     {
-        if (FoundArtifacts.Select(artifact => artifact.Id).Contains(inputArtifactId))
+        if (_foundArtifacts.Select(artifact => artifact.Id).Contains(inputArtifactId))
         {
             throw new ArtifactAlreadyFoundException(User.Id, inputArtifactId);
         }
@@ -32,6 +34,6 @@ public class MazeGame : Game
         MazeArtifact artifact = Artifacts.FirstOrDefault(artifact => artifact.Id == inputArtifactId)
             ?? throw new ArtifactNotFoundException(User.Id, inputArtifactId, GameId); 
         
-        FoundArtifacts.Add(artifact);
+        _foundArtifacts.Add(artifact);
     }
 }
