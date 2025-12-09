@@ -26,8 +26,9 @@ public class StartGameTests
         User user = new("thisisaveryvalidusername");
         var usecase = new StartGame(new NullLogger<StartGame>(), new MockArtifactsQuery());
         Game game = await usecase.Execute(new StartGameInput(Guid.NewGuid(), user));
-        Assert.True(ActiveGames.Games.ContainsKey(user.Id));
-        Assert.Equal(game, ActiveGames.Games[user.Id]);
+        
+        // this checks if the game has successfully been added to the active games
+        Assert.Equal(game, ActiveGames.Get(game.User.Id));
     }
 
     [Fact]
