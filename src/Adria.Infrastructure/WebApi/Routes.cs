@@ -86,7 +86,7 @@ public static class Routes
             .WithOpenApi();
 
         gameRoutes
-            .MapPut("/{gameId}/artifacts/{artifactId}", UpdateGameStateController.Invoke)
+            .MapPatch("/{gameId}/artifacts/{artifactId}", UpdateGameStateController.Invoke)
             .WithDescription("Update a game state for a specific game for a specific user")
             .RequireAuthorization()
             .WithName(nameof(UpdateGameStateController))

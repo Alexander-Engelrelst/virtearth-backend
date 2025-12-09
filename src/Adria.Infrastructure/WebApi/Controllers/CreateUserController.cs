@@ -15,7 +15,7 @@ namespace Adria.Infrastructure.WebApi.Controllers;
 
 public static class CreateUserController
 {
-    public static async Task<Results<Ok<UserDto>, BadRequest, Conflict, ProblemHttpResult>> Invoke(
+    public static async Task<Results<Ok<UserDto>, BadRequest, Conflict<string>, ProblemHttpResult>> Invoke(
         [FromBody] CreateUserBody body,
         [FromServices] IUseCase<CreateUserInput, Task<UserData>> createUser
     )
@@ -31,7 +31,7 @@ public static class CreateUserController
         }
         catch (UsernameAlreadyExistsException)
         {
-            return TypedResults.Conflict();
+            return TypedResults.Conflict("username already exists");
         }
         catch (VirtEarthDatabaseException)
         {

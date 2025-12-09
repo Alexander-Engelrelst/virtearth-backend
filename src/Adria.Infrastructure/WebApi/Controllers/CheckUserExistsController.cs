@@ -10,7 +10,7 @@ namespace Adria.Infrastructure.WebApi.Controllers;
 
 public static class CheckUserExistsController
 {
-    public static async Task<Results<NoContent, Conflict, BadRequest, ProblemHttpResult>> Invoke(
+    public static async Task<Results<NoContent, Conflict<string>, BadRequest<string>, ProblemHttpResult>> Invoke(
         [FromQuery] string username,
         [FromServices]
         IUseCase<CheckUsernameInUseInput, Task<bool>> checkUserExists
@@ -20,7 +20,7 @@ public static class CheckUserExistsController
         {
             if (await checkUserExists.Execute(new CheckUsernameInUseInput(username)))
             {
-                return TypedResults.Conflict();
+                return TypedResults.Conflict("Username already exists");
             }
             else
             {
@@ -30,7 +30,7 @@ public static class CheckUserExistsController
         }
         catch (InvalidUsernameException)
         {
-            return TypedResults.BadRequest();
+            return TypedResults.BadRequest("Invalid username");
         }
         catch (VirtEarthDatabaseException)
         {
