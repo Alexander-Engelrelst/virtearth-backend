@@ -101,7 +101,7 @@ INSERT INTO `users` (`id`, `username`) VALUES
 
 INSERT INTO `games` (`id`, `name`, `latitute`, `longitude`, `type`, `continent`, year)
 VALUES
-    ('550e8400-e29b-41d4-a716-446655440034', 'Minotaur maze', 35.2989, 25.1636, 'Maze', 'NorthAmerica', -1800);
+    ('550e8400-e29b-41d4-a716-446655440034', 'Minotaur maze', 35.2989, 25.1636, 'Maze', 'Europe<', -1800);
 INSERT INTO artifacts (id, game_id, name, description) VALUES
     ('550e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440034', 'artifact1', 'description1'),
     ('550e8400-e29b-41d4-a716-446655440001', '550e8400-e29b-41d4-a716-446655440034', 'artifact2', 'description2'),
