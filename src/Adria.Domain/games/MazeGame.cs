@@ -1,5 +1,7 @@
 ﻿using System.Collections.Immutable;
 using System.Text.Json.Serialization;
+using Adria.Domain.Shared.Exceptions;
+using Adria.Domain.Users;
 
 namespace Adria.Domain.games;
 
@@ -24,12 +26,11 @@ public class MazeGame : Game
     {
         if (FoundArtifacts.Select(artifact => artifact.Id).Contains(inputArtifactId))
         {
-            // TODO add a custom exception for this
+            throw new ArtifactAlreadyFoundException(UserId, inputArtifactId);
         }
         
         MazeArtifact artifact = Artifacts.FirstOrDefault(artifact => artifact.Id == inputArtifactId)
-            ?? throw new Exception(); 
-        // TODO if this is null throw a correct error
+            ?? throw new ArtifactNotFoundException(UserId, inputArtifactId, GameId); 
         
         FoundArtifacts.Add(artifact);
     }
