@@ -18,7 +18,7 @@ public class LoginTests
         MockAdoUserRepository repository = new MockAdoUserRepository();
         Login useCase = new(repository, logger, jwtProvider);
 
-        await Assert.ThrowsAsync<ElementNotFoundException>(() => useCase.Execute(Guid.NewGuid()));
+        await Assert.ThrowsAsync<UserNotFoundException>(() => useCase.Execute(Guid.NewGuid()));
     }
     
     [Fact]

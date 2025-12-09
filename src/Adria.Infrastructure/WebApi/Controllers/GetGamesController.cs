@@ -19,16 +19,14 @@ public static class GetGamesController
         [FromServices] IHttpContextAccessor httpContextAccessor
     )
     {
-        Claim? userClaim = httpContextAccessor.HttpContext?.User.FindFirst("guid");
-
-        if (userClaim is null || !Guid.TryParse(userClaim.Value, out Guid id))
-        {
-            return TypedResults.BadRequest("Please provide a valid user id");
-        }
-
+        User user;
         try
         {
-            await getUser.Execute(id);
+            user = await httpContextAccessor.GetUser(getUser);
+        }
+        catch (NoUserIdInTokenException)
+        {
+            return TypedResults.Unauthorized();
         }
         catch (UserNotFoundException)
         {
@@ -38,7 +36,7 @@ public static class GetGamesController
         
         try
         {
-            IReadOnlyCollection<GameLocation> gameLocations = await getGames.Execute(id);
+            IReadOnlyCollection<GameLocation> gameLocations = await getGames.Execute(user.Id);
             return TypedResults.Ok(
                 gameLocations.Select(location => new GameLocationDto(location)).ToArray()
                 );

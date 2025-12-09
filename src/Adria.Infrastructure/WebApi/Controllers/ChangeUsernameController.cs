@@ -21,17 +21,15 @@ public static class ChangeUsernameController
         [FromServices] IHttpContextAccessor httpContextAccessor
     )
     {
-        Claim? userClaim = httpContextAccessor.HttpContext?.User.FindFirst("guid");
-
-        if (userClaim is null || !Guid.TryParse(userClaim.Value, out Guid id))
-        {
-            return TypedResults.BadRequest("Please provide a valid user id");
-        }
-
         User user;
+
         try
         {
-            user = await getUser.Execute(id);
+            user = await httpContextAccessor.GetUser(getUser);
+        }
+        catch (NoUserIdInTokenException)
+        {
+            return TypedResults.Unauthorized();
         }
         catch (UserNotFoundException)
         {
