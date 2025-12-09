@@ -8,7 +8,6 @@ namespace Adria.Domain.games;
  * won't break the comparison because I believe it is quite clear that 2 games are the same if they have the same Guid */
 public abstract class Game : IEquatable<Game>
 {
-    // TODO refactor this for the game to keep track of the entire user instead of the userid
     public User User { get; }
     public Guid GameId { get; }
 

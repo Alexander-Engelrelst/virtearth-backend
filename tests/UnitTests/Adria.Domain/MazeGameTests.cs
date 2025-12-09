@@ -45,9 +45,7 @@ public class MazeGameTest
         Assert.Throws<ArtifactAlreadyFoundException>(() => game.UpdateUserFoundArtifacts(artifact.Id));
         Assert.Throws<ArtifactNotFoundException>(() => game.UpdateUserFoundArtifacts(Guid.NewGuid()));
     }
-    
 
-    // TODO here will be more tests added in further issues
     private static HashSet<MazeArtifact> GetMockArtifacts(int numberOfArtifacts)
     {
         HashSet<MazeArtifact> artifacts = new HashSet<MazeArtifact>();

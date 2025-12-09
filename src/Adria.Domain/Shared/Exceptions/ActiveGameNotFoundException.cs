@@ -1,6 +1,6 @@
 ﻿namespace Adria.Domain.Shared.Exceptions;
 
-public sealed class ActiveGameNotFoundException(Guid id, Exception? innerException = null)
-    : ElementNotFoundException($"User {id} is currently not playing a game", innerException)
+public sealed class ActiveGameNotFoundException(Guid userId, Exception? innerException = null)
+    : ElementNotFoundException($"User {userId} is currently not playing a game", innerException)
 {
 }
