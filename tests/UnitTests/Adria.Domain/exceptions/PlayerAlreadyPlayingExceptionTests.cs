@@ -1,21 +1,20 @@
 ﻿using Adria.Domain.Shared.Exceptions;
 
-namespace UnitTests.Adria.Domain;
+namespace UnitTests.Adria.Domain.exceptions;
 
-public class MazeGenerationExceptionTests
+public class PlayerAlreadyPlayingExceptionTests
 {
-    
     [Fact]
     public void Constructor_WithMessage_CreatesException()
     {
         // Arrange
-        var message = "this is a very useful message";
+        var id = Guid.NewGuid();
         
         // Act
-        var exception = new MazeGenerationException(message);
+        var exception = new PlayerAlreadyPlayingException(id);
 
         // Assert
-        Assert.Equal(message, exception.Message);
+        Assert.Equal($"username {id} already playing a game.",exception.Message);
         Assert.Null(exception.InnerException);
     }
 
@@ -23,14 +22,14 @@ public class MazeGenerationExceptionTests
     public void Constructor_WithMessageAndInnerException_CreatesException()
     {
         // Arrange
-        var message = "this is a very useful message";
+        var id = Guid.NewGuid();
         var innerException = new Exception("Inner exception");
         
         // Act
-        var exception = new MazeGenerationException(message, innerException);
+        var exception = new PlayerAlreadyPlayingException(id, innerException);
         
         // Assert
-        Assert.Equal(message, exception.Message);
+        Assert.Equal($"username {id} already playing a game.",exception.Message);
         Assert.Equal(innerException, exception.InnerException);
     }
 }

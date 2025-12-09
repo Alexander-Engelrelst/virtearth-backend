@@ -1,6 +1,6 @@
 ﻿using Adria.Domain.Shared.Exceptions;
 
-namespace UnitTests.Adria.Domain;
+namespace UnitTests.Adria.Domain.exceptions;
 
 public class InvalidUsernameExceptionTests
 {
