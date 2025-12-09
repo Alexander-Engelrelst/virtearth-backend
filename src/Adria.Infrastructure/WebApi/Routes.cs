@@ -84,5 +84,12 @@ public static class Routes
             .RequireAuthorization()
             .WithName(nameof(StartGameController))
             .WithOpenApi();
+
+        gameRoutes
+            .MapPut("/{gameId}/artifacts/{artifactId}", UpdateGameStateController.Invoke)
+            .WithDescription("Update a game state for a specific game for a specific user")
+            .RequireAuthorization()
+            .WithName(nameof(UpdateGameStateController))
+            .WithOpenApi();
     }
 }
