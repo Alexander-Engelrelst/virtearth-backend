@@ -214,4 +214,52 @@ public static class MazeGenerator
         
         return spaces;
     }
+
+    public static (int xCord, int yCord) GenerateMazeExit(IMazeElement?[,] maze, float xCord, float yCord, float angleDeg)
+    {
+        angleDeg = (angleDeg % 360 + 360) % 360;
+        int roundedXCord = (int)Math.Round(xCord);
+        int roundedYCord = (int)Math.Round(yCord);
+            
+            
+        var directions = new (int dx, int dy, float angle)[]
+        {
+            (0, -1, 0f),
+            (1, 0, 90f),
+            (0, 1, 180f),
+            (-1, 0, 270f)
+        };
+        
+        var orderedDirections = directions
+            .OrderBy(d => AngleDifference(angleDeg, d.angle))
+            .ToArray();
+
+        foreach (var dir in orderedDirections)
+        {
+            if (maze[roundedXCord + dir.dx, roundedYCord + dir.dy] is MazeWall)
+            {
+                return (roundedXCord + dir.dx, roundedYCord + dir.dy);
+            }
+        }
+
+        var diagonalDirections = new (int dx, int dy, float angle)[]
+        {
+            (1, -1, 45f),
+            (1, 1, 135f),
+            (-1, 1, 225f),
+            (-1, 1, 315f),
+        };
+
+        var chosenDir = diagonalDirections
+            .OrderBy(d => AngleDifference(angleDeg, d.angle))
+            .First();
+        
+        return (roundedXCord + chosenDir.dx, roundedYCord + chosenDir.dy);
+    }
+
+    private static float AngleDifference(float angle1, float angle2)
+    {
+        var diff = Math.Abs(angle1 - angle2) % 360;
+        return diff > 180 ? 360 - diff : diff;
+    }
 }
