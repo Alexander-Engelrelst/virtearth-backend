@@ -6,7 +6,6 @@ namespace Adria.Domain.games;
 public static class ActiveGames
 {
     private static readonly Dictionary<Guid, Game> _games = new();
-    public static ReadOnlyDictionary<Guid, Game> Games => new(_games);
 
     public static void AddGame(Game game)
     {
