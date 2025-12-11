@@ -50,4 +50,5 @@ public class MazeGameTest
         Assert.Throws<ArtifactAlreadyFoundException>(() => game.UpdateUserFoundArtifacts(artifact.Id));
         Assert.Throws<ArtifactNotFoundException>(() => game.UpdateUserFoundArtifacts(Guid.NewGuid()));
     }
+    // TODO add tests to check if an exit actually gets generated
 }

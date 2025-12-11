@@ -13,12 +13,13 @@ namespace Adria.Infrastructure.WebApi.Controllers;
 
 public static class UpdateGameStateController
 {
-    public static async Task<Results<Ok, UnauthorizedHttpResult, NotFound<string>, Conflict<string>>> Invoke(
-        [FromServices] IUseCase<UpdateFoundMazeArtifactsInput> updateFoundMazeArtifacts,
+    public static async Task<Results<Ok<MazeGame>, NoContent, UnauthorizedHttpResult, NotFound<string>, Conflict<string>>> Invoke(
+        [FromServices] IUseCase<UpdateFoundMazeArtifactsInput, MazeGame?> updateFoundMazeArtifacts,
         [FromServices] IUseCase<Guid, Task<User>> getUser,
         [FromServices] IHttpContextAccessor httpContextAccessor,
         [FromRoute] Guid gameId,
-        [FromRoute] Guid artifactId
+        [FromRoute] Guid artifactId,
+        [FromBody] UpdateGameStateBody body
     )
     {
         User user;
@@ -39,8 +40,16 @@ public static class UpdateGameStateController
         try
         {
             // TODO ask if this should be made async
-            updateFoundMazeArtifacts.Execute(new UpdateFoundMazeArtifactsInput(user, artifactId, gameId));
-            return TypedResults.Ok();
+            MazeGame? game = updateFoundMazeArtifacts.Execute(new UpdateFoundMazeArtifactsInput(
+                user, artifactId, gameId, body.XCord, body.YCord, body.Angle
+            ));
+
+            if (game is null)
+            {
+                return TypedResults.NoContent();
+            }
+            
+            return TypedResults.Ok(game);
         }
         catch (ActiveGameNotFoundException)
         {
@@ -62,3 +71,9 @@ public static class UpdateGameStateController
         
     }
 }
+
+public sealed record UpdateGameStateBody(
+    float XCord,
+    float YCord,
+    float Angle
+);

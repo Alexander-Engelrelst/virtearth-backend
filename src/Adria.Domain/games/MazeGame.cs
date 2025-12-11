@@ -24,7 +24,7 @@ public class MazeGame : Game
         Artifacts = artifacts;
     }
 
-    public void UpdateUserFoundArtifacts(Guid inputArtifactId)
+    public MazeGame? UpdateUserFoundArtifacts(Guid inputArtifactId, float xCord, float yCord, float angle)
     {
         if (_foundArtifacts.Select(artifact => artifact.Id).Contains(inputArtifactId))
         {
@@ -35,5 +35,10 @@ public class MazeGame : Game
             ?? throw new ArtifactNotFoundException(User.Id, inputArtifactId, GameId); 
         
         _foundArtifacts.Add(artifact);
+
+        if (_foundArtifacts.Count != Artifacts.Count) return null;
+        
+        // TODO add the correct handling of adding the exit
+        return null;
     }
 }
