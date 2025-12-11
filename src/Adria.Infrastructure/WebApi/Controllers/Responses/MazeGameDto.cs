@@ -8,10 +8,13 @@ public sealed class MazeGameDto
     // for some reason serialization doesn't allow int[,]
     public int[][] Maze { get; set; }
     public IList<MazeArtifactDto> Artifacts { get; } = new List<MazeArtifactDto>();
+    public CoordinatesDto? Coordinates { get; set; }
 
     public MazeGameDto(MazeGame game)
     {
         GameId = game.GameId;
+        Coordinates = game.ExitCoordinates is null ? null : new CoordinatesDto(game.ExitCoordinates.Value.xCord, game.ExitCoordinates.Value.yCord);
+        
         
         IMazeElement?[,] maze = game.Maze;
         

@@ -13,7 +13,7 @@ namespace Adria.Infrastructure.WebApi.Controllers;
 
 public static class UpdateGameStateController
 {
-    public static async Task<Results<Ok<MazeGame>, NoContent, UnauthorizedHttpResult, NotFound<string>, Conflict<string>>> Invoke(
+    public static async Task<Results<Ok<MazeGameDto>, NoContent, UnauthorizedHttpResult, NotFound<string>, Conflict<string>>> Invoke(
         [FromServices] IUseCase<UpdateFoundMazeArtifactsInput, MazeGame?> updateFoundMazeArtifacts,
         [FromServices] IUseCase<Guid, Task<User>> getUser,
         [FromServices] IHttpContextAccessor httpContextAccessor,
@@ -49,7 +49,7 @@ public static class UpdateGameStateController
                 return TypedResults.NoContent();
             }
             
-            return TypedResults.Ok(game);
+            return TypedResults.Ok(new MazeGameDto(game));
         }
         catch (ActiveGameNotFoundException)
         {
