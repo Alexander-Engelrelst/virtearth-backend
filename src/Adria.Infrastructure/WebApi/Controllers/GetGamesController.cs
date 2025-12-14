@@ -43,11 +43,7 @@ public static class GetGamesController
         }
         catch (VirtEarthDatabaseException)
         {
-            return TypedResults.Problem(
-                title: "Database Error",
-                detail: "an unexpected database error has occured",
-                statusCode: StatusCodes.Status500InternalServerError
-            );
+            return TypedResults.Problem("an unexpected error occured");
         }
     }
 }

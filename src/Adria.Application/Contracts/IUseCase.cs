@@ -6,5 +6,5 @@ public interface IUseCase<in Input, out Output>
 
 public interface IUseCase<in Input>
 {
-    void Execute(Input input);
+    Task Execute(Input input);
 }

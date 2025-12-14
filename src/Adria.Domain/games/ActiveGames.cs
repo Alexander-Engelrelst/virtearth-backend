@@ -15,13 +15,23 @@ public static class ActiveGames
         }
     }
 
-    public static Game Get(Guid userId)
+    public static Game Get(Guid userId, bool mustBeFinished = false)
     {
         if (!_games.TryGetValue(userId, out Game? game))
         {
             throw new ActiveGameNotFoundException(userId);
         }
 
+        if (mustBeFinished && !game.IsFinished())
+        {
+            throw new GameNotFinishedException(game.GameId, userId);
+        }
+
         return game;
+    }
+
+    public static void Remove(Guid userId)
+    {
+        _games.Remove(userId);
     }
 }

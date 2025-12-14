@@ -38,6 +38,8 @@ public abstract class Game : IEquatable<Game>
     {
         return HashCode.Combine(User, GameId);
     }
+
+    public abstract bool IsFinished();
 }
 
 #pragma warning restore S4035

@@ -36,7 +36,6 @@ public class AdoGameRepository : AbstractAdoRepository, IGameRepository
         }
         catch (DuplicatePrimaryKeyException ex)
         {
-            _logger.LogWarning(ex, "Duplicate key values for game {GameId} and {UserId}", game.GameId, game.User.Id);
             throw new GameAlreadyCompletedByUserException(game.GameId, game.User.Id, ex);
         }
         catch (DbException ex)

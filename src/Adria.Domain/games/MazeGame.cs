@@ -42,4 +42,10 @@ public class MazeGame : Game
         ExitCoordinates = MazeGenerator.GenerateMazeExit(Maze, xCord, yCord, angle);
         return this;
     }
+
+    public override bool IsFinished()
+    {
+        // TODO maybe add something else to this
+        return Artifacts.Count == _foundArtifacts.Count;
+    }
 }

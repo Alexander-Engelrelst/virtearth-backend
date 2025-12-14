@@ -91,5 +91,12 @@ public static class Routes
             .RequireAuthorization()
             .WithName(nameof(UpdateGameStateController))
             .WithOpenApi();
+        
+        gameRoutes
+            .MapPost("/{gameId}/save", SaveGameController.Invoke)
+            .WithDescription("Save a finished game")
+            .RequireAuthorization()
+            .WithName(nameof(SaveGameController))
+            .WithOpenApi();
     }
 }
