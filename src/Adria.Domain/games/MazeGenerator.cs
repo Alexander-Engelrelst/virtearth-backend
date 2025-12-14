@@ -218,8 +218,8 @@ public static class MazeGenerator
     public static (int xCord, int yCord) GenerateMazeExit(IMazeElement?[,] maze, float xCord, float yCord, float angleDeg)
     {
         angleDeg = (angleDeg % 360 + 360) % 360;
-        int roundedXCord = (int)Math.Round(xCord);
-        int roundedYCord = (int)Math.Round(yCord);
+        int roundedXCord = (int)Math.Floor(xCord);
+        int roundedYCord = (int)Math.Floor(yCord);
             
             
         var directions = new (int dx, int dy, float angle)[]

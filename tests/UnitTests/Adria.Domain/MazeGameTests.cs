@@ -44,11 +44,12 @@ public class MazeGameTest
         artifacts.Add(artifact);
         
         MazeGame game = new MazeGame(Guid.NewGuid(), new User("username"), artifacts);
-        game.UpdateUserFoundArtifacts(artifact.Id);
+        // location 0, 0 can never be a valid location 
+        game.UpdateUserFoundArtifacts(artifact.Id, 1 , 1 , 90);
         Assert.Contains(artifact, game.FoundArtifacts);
         
-        Assert.Throws<ArtifactAlreadyFoundException>(() => game.UpdateUserFoundArtifacts(artifact.Id));
-        Assert.Throws<ArtifactNotFoundException>(() => game.UpdateUserFoundArtifacts(Guid.NewGuid()));
+        Assert.Throws<ArtifactAlreadyFoundException>(() => game.UpdateUserFoundArtifacts(artifact.Id, 1, 1, 90));
+        Assert.Throws<ArtifactNotFoundException>(() => game.UpdateUserFoundArtifacts(Guid.NewGuid(), 1, 1, 90));
     }
     // TODO add tests to check if an exit actually gets generated
 }

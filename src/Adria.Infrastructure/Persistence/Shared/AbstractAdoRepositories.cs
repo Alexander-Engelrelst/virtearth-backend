@@ -40,7 +40,7 @@ public abstract class AbstractAdoRepository
         }
         catch (MySqlException ex) when (ex.Number == MYSQL_DUPLICATE_ENTRY_STATUS_CODE)
         {
-            throw;
+            throw new DuplicatePrimaryKeyException(ex.Message, ex);
         }
         catch (DbException ex)
         {   
