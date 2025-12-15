@@ -200,7 +200,7 @@ public class MazeGeneratorTests
         };
         
         MazeGenerator.GenerateMazeExit(maze, 2 , 2, 90);
-        Assert.IsType<MazeGameExit>(maze[2, 2]);
+        Assert.IsType<MazeGameExit>(maze[2, 1]);
     }
     
     [Fact]
@@ -216,7 +216,7 @@ public class MazeGeneratorTests
         };
         
         MazeGenerator.GenerateMazeExit(maze, 2 , 2, 90);
-        Assert.True(maze[2, 3] is MazeGameExit ^ maze[2, 1] is MazeGameExit);
+        Assert.True(maze[1, 3] is MazeGameExit ^ maze[3, 1] is MazeGameExit);
     }
     
     [Fact]

@@ -12,10 +12,12 @@ public class GameDtoTests
     public void MazeGameDtoMazeGetsMappedCorrectly()
     {
         HashSet<MazeArtifact> artifacts = new HashSet<MazeArtifact>();
-
-        artifacts.UnionWith(MockHelpers.GenerateMockArtifacts(20));
+    
+        Guid artifactId = Guid.NewGuid();
+        artifacts.Add(new MazeArtifact(artifactId, "name", "description"));
         
         MazeGame game = new(Guid.NewGuid(), new("username"), artifacts.ToImmutableHashSet());
+        game.UpdateUserFoundArtifacts(artifactId, 1, 1, 90);
         MazeGameDto dto = new(game);
 
         IMazeElement?[,] maze = game.Maze;
@@ -36,6 +38,14 @@ public class GameDtoTests
                     case MazeArtifact artifact:
                         Assert.Equal(0, dtoMaze[i][j]);
                         Assert.Contains(new MazeArtifactDto(artifact, i, j), dto.Artifacts);
+                        break;
+                    case MazeGameSpawn:
+                        Assert.Equal(0, dtoMaze[i][j]);
+                        Assert.Equal(i + 0.5f, dto.SpawnLocation.X);
+                        Assert.Equal(j + 0.5f, dto.SpawnLocation.Y);
+                        break;
+                    case MazeGameExit:
+                        Assert.Equal(99, dtoMaze[i][j]);
                         break;
                     default:
                         Assert.Fail("Unexpected MazeElement");
