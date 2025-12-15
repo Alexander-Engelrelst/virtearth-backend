@@ -10,6 +10,8 @@ public abstract class Game : IEquatable<Game>
 {
     public User User { get; }
     public Guid GameId { get; }
+    
+    public DateTime TimeOfLastHeartBeat { get; private set; }
 
     protected Game(Guid gameId, User user)
     {
@@ -17,6 +19,12 @@ public abstract class Game : IEquatable<Game>
         
         User = user;
         GameId = gameId;
+        TimeOfLastHeartBeat = DateTime.UtcNow;
+    }
+
+    public void UpdateTtl()
+    {
+        TimeOfLastHeartBeat =  DateTime.UtcNow;
     }
 
     public bool Equals(Game? other)

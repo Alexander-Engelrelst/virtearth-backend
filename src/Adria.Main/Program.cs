@@ -1,3 +1,4 @@
+using Adria.Infrastructure.BackgroundServices;
 using Adria.Main.Modules.Authentication;
 using Adria.Main.Modules.Persistence;
 using Adria.Main.Modules.UseCases;
@@ -8,6 +9,7 @@ var configuration = builder.Configuration;
 
 builder
     .Services
+        .AddHostedService<ActiveGamesCleanupService>()
         .AddHttpContextAccessor()
         .AddPersistenceModule(configuration)
         .AddWebApiModule(configuration)

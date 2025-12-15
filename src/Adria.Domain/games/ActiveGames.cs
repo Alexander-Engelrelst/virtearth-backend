@@ -6,8 +6,8 @@ namespace Adria.Domain.games;
 
 public static class ActiveGames
 {
-    public static readonly Dictionary<Guid, Game> _games = new();
-
+    public static readonly ConcurrentDictionary<Guid, Game> _games = new();
+    public static TimeSpan GAME_TTL { get; } = TimeSpan.FromSeconds(15);
     public static void AddGame(Game game)
     {
         if (!_games.TryAdd(game.User.Id, game))
@@ -23,6 +23,8 @@ public static class ActiveGames
             throw new ActiveGameNotFoundException(userId);
         }
         
+        game.UpdateTtl();
+        
         if (game.GameId != expectedGameId)
         {
             throw new GameIdMismatchException(userId);
@@ -33,15 +35,17 @@ public static class ActiveGames
             throw new GameNotFinishedException(game.GameId, userId);
         }
         
-        // if mustBeFinished is true that means this is used to save to game and so it must be deleted from the cache
-        // TODO add a heartbeat route instead of this
-        if (mustBeFinished) Remove(game.User.Id);
-        
         return game;
     }
 
-    public static void Remove(Guid userId)
+    public static void RemoveUnplayedGames()
     {
-        _games.Remove(userId);
+        foreach (var game in _games.Values)
+        {
+            if (game.TimeOfLastHeartBeat.Add(GAME_TTL) < DateTime.UtcNow)
+            {
+                _games.TryRemove(game.User.Id, out _);
+            }
+        }
     }
 }
