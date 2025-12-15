@@ -23,8 +23,6 @@ public static class ActiveGames
             throw new ActiveGameNotFoundException(userId);
         }
         
-        game.UpdateTtl();
-        
         if (game.GameId != expectedGameId)
         {
             throw new GameIdMismatchException(userId);
