@@ -224,10 +224,10 @@ public static class MazeGenerator
             
         var directions = new (int dx, int dy, float angle)[]
         {
-            (0, -1, 0f),
-            (1, 0, 90f),
-            (0, 1, 180f),
-            (-1, 0, 270f)
+            (-1, 0, 0f),
+            (0, 1, 90f),
+            (1, 0, 180f),
+            (0, -1, 270f)
         };
         
         var orderedDirections = directions
@@ -245,10 +245,10 @@ public static class MazeGenerator
 
         var diagonalDirections = new (int dx, int dy, float angle)[]
         {
-            (1, -1, 45f),
+            (-1, 1, 45f),
             (1, 1, 135f),
-            (-1, 1, 225f),
-            (-1, 1, 315f),
+            (1, -1, 225f),
+            (-1, -1, 315f),
         };
 
         var chosenDir = diagonalDirections
