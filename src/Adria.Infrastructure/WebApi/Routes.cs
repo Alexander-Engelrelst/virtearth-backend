@@ -98,5 +98,12 @@ public static class Routes
             .RequireAuthorization()
             .WithName(nameof(SaveGameController))
             .WithOpenApi();
+
+        gameRoutes
+            .MapPost("/{gameId}/heartbeat", UpdateTtlController.Invoke)
+            .WithDescription("Notify the server a game is still active")
+            .RequireAuthorization()
+            .WithName(nameof(UpdateTtlController))
+            .WithOpenApi();
     }
 }

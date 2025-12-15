@@ -1,7 +1,5 @@
-﻿using System.Data.Common;
-using Adria.Application.Contracts;
+﻿using Adria.Application.Contracts;
 using Adria.Domain.games;
-using Adria.Domain.Shared;
 using Adria.Domain.Users;
 using Microsoft.Extensions.Logging;
 
