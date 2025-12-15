@@ -16,7 +16,6 @@ public class MazeGame : Game
 
     public IReadOnlySet<MazeArtifact> FoundArtifacts => _foundArtifacts.ToImmutableHashSet();
     public IReadOnlySet<MazeArtifact> Artifacts { get; }
-    public (int xCord, int yCord)? ExitCoordinates = null;
     public MazeGame(Guid gameId, User user, IReadOnlySet<MazeArtifact> artifacts) : base(gameId, user)
     {
         if (artifacts.Count == 0) throw new ArgumentOutOfRangeException(nameof(artifacts), "Must have at least 1 artifact");
@@ -39,7 +38,7 @@ public class MazeGame : Game
 
         if (_foundArtifacts.Count != Artifacts.Count) return null;
 
-        ExitCoordinates = MazeGenerator.GenerateMazeExit(Maze, xCord, yCord, angle);
+        MazeGenerator.GenerateMazeExit(Maze, xCord, yCord, angle);
         return this;
     }
 

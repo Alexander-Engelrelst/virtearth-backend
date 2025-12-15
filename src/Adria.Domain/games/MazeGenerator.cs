@@ -215,7 +215,7 @@ public static class MazeGenerator
         return spaces;
     }
 
-    public static (int xCord, int yCord) GenerateMazeExit(IMazeElement?[,] maze, float xCord, float yCord, float angleDeg)
+    public static void GenerateMazeExit(IMazeElement?[,] maze, float xCord, float yCord, float angleDeg)
     {
         angleDeg = (angleDeg % 360 + 360) % 360;
         int roundedXCord = (int)Math.Floor(xCord);
@@ -238,7 +238,8 @@ public static class MazeGenerator
         {
             if (maze[roundedXCord + dir.dx, roundedYCord + dir.dy] is MazeWall)
             {
-                return (roundedXCord + dir.dx, roundedYCord + dir.dy);
+                maze[roundedXCord + dir.dx, roundedYCord + dir.dy] = new MazeGameExit();
+                return;
             }
         }
 
@@ -254,7 +255,7 @@ public static class MazeGenerator
             .OrderBy(d => AngleDifference(angleDeg, d.angle))
             .First();
         
-        return (roundedXCord + chosenDir.dx, roundedYCord + chosenDir.dy);
+        maze[roundedXCord + chosenDir.dx, roundedYCord + chosenDir.dy] = new MazeGameExit();
     }
 
     private static float AngleDifference(float angle1, float angle2)
