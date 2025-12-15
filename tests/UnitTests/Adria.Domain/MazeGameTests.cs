@@ -37,7 +37,7 @@ public class MazeGameTest
     }
 
     [Fact]
-    public void UpdateMazeGameFoundArtifactTest()
+    public void UpdateMazeGameFoundArtifactThrowsForInvalidInput()
     {
         var artifacts = MockHelpers.GenerateMockArtifacts(5);
         var artifact = new MazeArtifact(Guid.NewGuid(), "name", "description");
@@ -51,5 +51,28 @@ public class MazeGameTest
         Assert.Throws<ArtifactAlreadyFoundException>(() => game.UpdateUserFoundArtifacts(artifact.Id, 1, 1, 90));
         Assert.Throws<ArtifactNotFoundException>(() => game.UpdateUserFoundArtifacts(Guid.NewGuid(), 1, 1, 90));
     }
-    // TODO add tests to check if an exit actually gets generated
+
+    [Fact]
+    public void UpdateMazeGameArtifactGeneratesExit()
+    {
+        var artifact =  new MazeArtifact(Guid.NewGuid(), "name", "description");
+        MazeGame game = new MazeGame(Guid.NewGuid(), new User("username"), new HashSet<MazeArtifact>{artifact});
+        
+        game.UpdateUserFoundArtifacts(artifact.Id, 1 , 1 , 90);
+
+        bool exitFound = false;
+        
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < 2; j++)
+            {
+                if (game.Maze[i, j] is MazeGameExit)
+                {
+                    exitFound = true;
+                }
+            }
+        }
+        
+        Assert.True(exitFound);
+    }
 }
