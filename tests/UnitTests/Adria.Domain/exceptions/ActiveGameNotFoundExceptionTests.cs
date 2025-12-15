@@ -1,4 +1,4 @@
-﻿using Adria.Domain.Shared.Exceptions;
+﻿using Adria.Domain.Shared;
 using Xunit.Abstractions;
 
 namespace UnitTests.Adria.Domain.exceptions;

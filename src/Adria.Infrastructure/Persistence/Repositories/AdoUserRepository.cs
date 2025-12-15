@@ -1,5 +1,5 @@
 ﻿using System.Data.Common;
-using Adria.Domain.Shared.Exceptions;
+using Adria.Domain.Shared;
 using Adria.Domain.Users;
 using Adria.Infrastructure.Persistence.Shared;
 using Microsoft.Extensions.Logging;

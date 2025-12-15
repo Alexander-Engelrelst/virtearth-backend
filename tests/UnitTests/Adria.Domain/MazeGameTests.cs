@@ -1,6 +1,6 @@
 ﻿using System.Collections.Immutable;
 using Adria.Domain.games;
-using Adria.Domain.Shared.Exceptions;
+using Adria.Domain.Shared;
 using Adria.Domain.Users;
 using UnitTests.Mocks;
 using Xunit.Abstractions;

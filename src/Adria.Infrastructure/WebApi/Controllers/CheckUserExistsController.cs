@@ -1,6 +1,6 @@
 ﻿using Adria.Application.Contracts;
 using Adria.Application.Users;
-using Adria.Domain.Shared.Exceptions;
+using Adria.Domain.Shared;
 using Adria.Infrastructure.Persistence.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;

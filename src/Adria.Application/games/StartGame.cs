@@ -1,7 +1,7 @@
 ﻿using System.Collections.Immutable;
 using Adria.Application.Contracts;
 using Adria.Domain.games;
-using Adria.Domain.Shared.Exceptions;
+using Adria.Domain.Shared;
 using Adria.Domain.Users;
 using Microsoft.Extensions.Logging;
 

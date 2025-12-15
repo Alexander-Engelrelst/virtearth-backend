@@ -1,6 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Text.Json.Serialization;
-using Adria.Domain.Shared.Exceptions;
+using Adria.Domain.Shared;
 using Adria.Domain.Users;
 
 namespace Adria.Domain.games;
@@ -32,13 +32,27 @@ public class MazeGame : Game
         }
         
         MazeArtifact artifact = Artifacts.FirstOrDefault(artifact => artifact.Id == inputArtifactId)
-            ?? throw new ArtifactNotFoundException(User.Id, inputArtifactId, GameId); 
-        
+            ?? throw new ArtifactNotFoundException(User.Id, inputArtifactId, GameId);
+
         _foundArtifacts.Add(artifact);
 
         if (_foundArtifacts.Count != Artifacts.Count) return null;
 
-        MazeGenerator.GenerateMazeExit(Maze, xCord, yCord, angle);
+        try
+        {
+            MazeGenerator.GenerateMazeExit(Maze, xCord, yCord, angle);
+        }
+        catch (IndexOutOfRangeException ex)
+        {
+            _foundArtifacts.Remove(artifact);
+            throw new PlayerOutOfBoundsException(GameId, User.Id, xCord, yCord, ex);
+        }
+        catch (ArgumentException ex)
+        {
+            _foundArtifacts.Remove(artifact);
+            throw new PlayerStandingInWallException(GameId, User.Id, xCord, yCord, ex);
+        }
+        
         return this;
     }
 

@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using Adria.Domain.Shared.Exceptions;
+using Adria.Domain.Shared;
 using Adria.Infrastructure.WebApi;
 using Microsoft.OpenApi.Models;
 

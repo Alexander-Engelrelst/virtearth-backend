@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 using Adria.Application.Contracts;
-using Adria.Domain.Shared.Exceptions;
+using Adria.Domain.Shared;
 using Adria.Domain.Users;
 using Microsoft.AspNetCore.Http;
 

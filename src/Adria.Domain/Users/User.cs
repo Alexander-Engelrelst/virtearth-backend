@@ -1,5 +1,5 @@
 ﻿using System.Text.RegularExpressions;
-using Adria.Domain.Shared.Exceptions;
+using Adria.Domain.Shared;
 
 namespace Adria.Domain.Users;
 

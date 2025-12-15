@@ -1,6 +1,6 @@
 ﻿using Adria.Application.games;
 using Adria.Domain.games;
-using Adria.Domain.Shared.Exceptions;
+using Adria.Domain.Shared;
 using Adria.Domain.Users;
 using Microsoft.Extensions.Logging.Abstractions;
 using UnitTests.Mocks;

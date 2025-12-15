@@ -1,4 +1,4 @@
-﻿using Adria.Domain.Shared.Exceptions;
+﻿using Adria.Domain.Shared;
 
 namespace Adria.Domain.games;
 
@@ -220,8 +220,12 @@ public static class MazeGenerator
         angleDeg = (angleDeg % 360 + 360) % 360;
         int roundedXCord = (int)Math.Floor(xCord);
         int roundedYCord = (int)Math.Floor(yCord);
-            
-            
+        
+        if (maze[roundedXCord, roundedYCord] is MazeWall)
+        {
+            throw new ArgumentException("at least one of the coordinates is invalid");
+        }
+        
         var directions = new (int dx, int dy, float angle)[]
         {
             (-1, 0, 0f),

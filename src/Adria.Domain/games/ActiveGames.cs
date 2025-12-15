@@ -1,5 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using Adria.Domain.Shared.Exceptions;
+using Adria.Domain.Shared;
 
 namespace Adria.Domain.games;
 
