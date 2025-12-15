@@ -45,7 +45,7 @@ public sealed partial class User : IEquatable<User>
     {
         if (other is null) return false;
         if (ReferenceEquals(this, other)) return true;
-        return Id.Equals(other.Id) && Username == other.Username;
+        return Id.Equals(other.Id);
     }
 
     public override bool Equals(object? obj)
@@ -55,6 +55,6 @@ public sealed partial class User : IEquatable<User>
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, Username);
+        return HashCode.Combine(Id);
     }
 }

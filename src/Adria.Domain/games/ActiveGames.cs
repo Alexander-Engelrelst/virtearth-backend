@@ -1,11 +1,12 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Concurrent;
+using System.Collections.ObjectModel;
 using Adria.Domain.Shared;
 
 namespace Adria.Domain.games;
 
 public static class ActiveGames
 {
-    private static readonly Dictionary<Guid, Game> _games = new();
+    public static readonly Dictionary<Guid, Game> _games = new();
 
     public static void AddGame(Game game)
     {

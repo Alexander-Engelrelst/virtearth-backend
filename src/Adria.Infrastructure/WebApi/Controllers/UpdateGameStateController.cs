@@ -14,7 +14,7 @@ namespace Adria.Infrastructure.WebApi.Controllers;
 public static class UpdateGameStateController
 {
     public static async Task<Results<Ok<MazeGameDto>, NoContent, UnauthorizedHttpResult, NotFound<string>, Conflict<string>>> Invoke(
-        [FromServices] IUseCase<UpdateFoundMazeArtifactsInput, MazeGame?> updateFoundMazeArtifacts,
+        [FromServices] IUseCase<UpdateFoundMazeArtifactsInput, Task<MazeGame?>> updateFoundMazeArtifacts,
         [FromServices] IUseCase<Guid, Task<User>> getUser,
         [FromServices] IHttpContextAccessor httpContextAccessor,
         [FromRoute] Guid gameId,
@@ -39,8 +39,7 @@ public static class UpdateGameStateController
 
         try
         {
-            // TODO ask if this should be made async
-            MazeGame? game = updateFoundMazeArtifacts.Execute(new UpdateFoundMazeArtifactsInput(
+            MazeGame? game = await updateFoundMazeArtifacts.Execute(new UpdateFoundMazeArtifactsInput(
                 user, artifactId, gameId, body.XCord, body.YCord, body.Angle
             ));
 
