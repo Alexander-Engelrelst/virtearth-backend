@@ -107,7 +107,7 @@ public class UpdateFoundMazeArtifactsTests
         ActiveGames.AddGame(game);
         
         Assert.Null(usecase.Execute(new UpdateFoundMazeArtifactsInput(game.User, artifact.Id, game.GameId, 1, 1, 90)));
-        Assert.Equal(game, usecase.Execute(new UpdateFoundMazeArtifactsInput(game.User, artifact.Id, game.GameId, 1, 1, 90)));
+        Assert.Equal(game, usecase.Execute(new UpdateFoundMazeArtifactsInput(game.User, artifact2.Id, game.GameId, 1, 1, 90)));
     }
     
     /* if the value returned is actually correct will be checked inside the functions called by the usecase
