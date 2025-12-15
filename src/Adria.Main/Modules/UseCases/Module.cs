@@ -21,6 +21,7 @@ public static class UseCases
             .AddScoped<IUseCase<Guid, Task<User>>, GetUser>()
             .AddScoped<IUseCase<StartGameInput, Task<Game>>, StartGame>()
             .AddScoped<IUseCase<UpdateFoundMazeArtifactsInput, Task<MazeGame?>>, UpdateFoundMazeArtifacts>()
-            .AddScoped<IUseCase<SaveFinishedGameInput>,  SaveFinishedGame>();
+            .AddScoped<IUseCase<SaveFinishedGameInput>,  SaveFinishedGame>()
+            .AddScoped<IUseCase<UpdateTtlInput>, UpdateTtl>();
     }
 }
