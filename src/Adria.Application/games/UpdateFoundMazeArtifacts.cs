@@ -15,12 +15,7 @@ public sealed class UpdateFoundMazeArtifacts(ILogger<UpdateFoundMazeArtifacts> l
         /* here we will once again not make a distinction between types of games although this is in the database,
          * for an explanation as of why I refer to the StartGame Usecase where this is explained */
         _logger.LogInformation("trying to add artifact {ArtifactId} as found for {UserId}.", input.ArtifactId, input.User.Id);
-        MazeGame game = (MazeGame) ActiveGames.Get(input.User.Id);
-        
-        if (game.GameId != input.GameId)
-        {
-            throw new GameIdMismatchException(input.User.Id);
-        }
+        MazeGame game = (MazeGame) ActiveGames.Get(input.User.Id, input.GameId);
         
         return Task.FromResult(game.UpdateUserFoundArtifacts(input.ArtifactId, input.XCord,  input.YCord, input.Angle));
     }

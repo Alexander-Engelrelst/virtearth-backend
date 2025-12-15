@@ -20,7 +20,7 @@ public class ActiveGamesTest
     {
         Game game = new MazeGame(Guid.NewGuid(), new User("username"), MockHelpers.GenerateMockArtifacts(5));
         ActiveGames.AddGame(game);
-        Assert.Equal(game, ActiveGames.Get(game.User.Id));
+        Assert.Equal(game, ActiveGames.Get(game.User.Id, game.GameId));
     }
 
     [Fact]
@@ -35,7 +35,15 @@ public class ActiveGamesTest
     [Fact]
     public void GettingNonExistingGameThrows()
     {
-        Assert.Throws<ActiveGameNotFoundException>(() => ActiveGames.Get(Guid.NewGuid()));
+        Assert.Throws<ActiveGameNotFoundException>(() => ActiveGames.Get(Guid.NewGuid(), Guid.NewGuid()));
+    }
+
+    [Fact]
+    public void WrongGameIdThrows()
+    {
+        Game game = new MazeGame(Guid.NewGuid(), new User("username"), MockHelpers.GenerateMockArtifacts(5));
+        ActiveGames.AddGame(game);
+        Assert.Throws<GameIdMismatchException>(() => ActiveGames.Get(game.User.Id, Guid.NewGuid()));
     }
     
 }

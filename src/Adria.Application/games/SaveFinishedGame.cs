@@ -25,16 +25,7 @@ public class SaveFinishedGame : IUseCase<SaveFinishedGameInput>
     
     public async Task Execute(SaveFinishedGameInput input)
     {
-        Game game = ActiveGames.Get(input.User.Id, true);
-
-        if (game.GameId != input.GameId)
-        {
-            throw new GameIdMismatchException(game.User.Id);
-        }
-        
-        /* if the gameId's don't match either this is a malicious action or something is horribly wrong clientside
-         * that is why we handle this only after confirming the Id*/
-        ActiveGames.Remove(game.User.Id);
+        Game game = ActiveGames.Get(input.User.Id, input.GameId, true);
         
         await _gameRepository.Save(game);
     }

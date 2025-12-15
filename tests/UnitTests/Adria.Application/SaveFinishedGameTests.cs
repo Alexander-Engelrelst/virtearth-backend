@@ -26,7 +26,7 @@ public class SaveFinishedGameTests
         ActiveGames.AddGame(game);
         
         await Assert.ThrowsAsync<GameNotFinishedException>(() => usecase.Execute(
-            new SaveFinishedGameInput(game.User, Guid.NewGuid())
+            new SaveFinishedGameInput(game.User, game.GameId)
             ));
     }
 }

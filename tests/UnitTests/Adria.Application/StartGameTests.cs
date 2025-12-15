@@ -28,7 +28,7 @@ public class StartGameTests
         Game game = await usecase.Execute(new StartGameInput(Guid.NewGuid(), user));
         
         // this checks if the game has successfully been added to the active games
-        Assert.Equal(game, ActiveGames.Get(game.User.Id));
+        Assert.Equal(game, ActiveGames.Get(game.User.Id, game.GameId));
     }
 
     [Fact]
