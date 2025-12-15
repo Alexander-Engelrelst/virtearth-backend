@@ -89,7 +89,7 @@ public static class MazeGenerator
         maze[
             2 * startingX + 1,
             2 * startingY + 1
-        ] = null;
+        ] = new MazeGameSpawn();
         while (stack.Count > 0)
         {
             (int x, int y) currentCell = stack.Peek();

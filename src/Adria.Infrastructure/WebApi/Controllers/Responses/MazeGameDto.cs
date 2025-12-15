@@ -11,7 +11,8 @@ public sealed class MazeGameDto
     // for some reason serialization doesn't allow int[,]
     public int[][] Maze { get; set; }
     public IList<MazeArtifactDto> Artifacts { get; } = new List<MazeArtifactDto>();
-
+    public SpawnLocationDto SpawnLocation { get; set; }
+    
     public MazeGameDto(MazeGame game)
     {
         GameId = game.GameId;
@@ -38,6 +39,10 @@ public sealed class MazeGameDto
                     case MazeArtifact:
                         Maze[i][j] = MAZE_WALKABLE_PATH_NUMBER;
                         Artifacts.Add(new MazeArtifactDto((MazeArtifact) maze[i, j]!, i , j));
+                        break;
+                    case MazeGameSpawn:
+                        Maze[i][j] = MAZE_WALKABLE_PATH_NUMBER;
+                        SpawnLocation = new SpawnLocationDto(i, j);
                         break;
                     case MazeGameExit:
                         Maze[i][j] = MAZE_EXIT_NUMBER;
