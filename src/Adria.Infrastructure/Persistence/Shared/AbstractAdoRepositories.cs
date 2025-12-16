@@ -1,4 +1,5 @@
-﻿using System.Data.Common;
+﻿using System.Data;
+using System.Data.Common;
 using MySql.Data.MySqlClient;
 
 namespace Adria.Infrastructure.Persistence.Shared;
@@ -32,7 +33,7 @@ public abstract class AbstractAdoRepository
     {
         try
         {
-            DbConnection connection = await OpenConnection();
+            await using DbConnection connection = await OpenConnection();
             using var command = connection.CreateCommand();
             command.CommandText = commandText;
             command.Parameters.AddRange(parameters);
@@ -64,7 +65,9 @@ public abstract class AbstractAdoRepository
             var command = connection.CreateCommand();
             command.CommandText = commandText;
             command.Parameters.AddRange(parameters);
-            return await command.ExecuteReaderAsync();
+            return await command.ExecuteReaderAsync(
+                CommandBehavior.CloseConnection //this is needed to ensure the connection gets closed when the reader is finished
+                );
         }
         catch (DbException ex)
         {
