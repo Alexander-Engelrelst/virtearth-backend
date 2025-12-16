@@ -58,15 +58,17 @@ public class MazeGameTest
         var artifact =  new MazeArtifact(Guid.NewGuid(), "name", "description");
         MazeGame game = new MazeGame(Guid.NewGuid(), new User("username"), new HashSet<MazeArtifact>{artifact});
         
-        game.UpdateUserFoundArtifacts(artifact.Id, 1 , 1 , 90);
-
+        MazeGame? result = game.UpdateUserFoundArtifacts(artifact.Id, 1 , 1 , 90);
+        
+        if (result is null) Assert.Fail("The returned value should not be null");
+        
         bool exitFound = false;
         
         for (int i = 0; i < 2; i++)
         {
             for (int j = 0; j < 2; j++)
             {
-                if (game.Maze[i, j] is MazeGameExit)
+                if (result.Maze[i, j] is MazeGameExit)
                 {
                     exitFound = true;
                 }
