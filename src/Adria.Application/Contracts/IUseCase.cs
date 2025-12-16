@@ -1,14 +1,10 @@
-using System.IdentityModel.Tokens.Jwt;
-using Adria.Application.Contracts.Data;
-using Adria.Domain.games;
-
 namespace Adria.Application.Contracts;
 public interface IUseCase<in Input, out Output>
 {
     Output Execute(Input input);
 }
 
-public interface IUseCase<out Output>
+public interface IUseCase<in Input>
 {
-    Output Execute();
+    Task Execute(Input input);
 }

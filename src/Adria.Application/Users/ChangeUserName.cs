@@ -1,7 +1,6 @@
-﻿using Adria.Application.Authentication;
-using Adria.Application.Contracts;
+﻿using Adria.Application.Contracts;
 using Adria.Application.Contracts.Data;
-using Adria.Domain.Shared.Exceptions;
+using Adria.Domain.Shared;
 using Adria.Domain.Users;
 using Microsoft.Extensions.Logging;
 
@@ -32,7 +31,7 @@ public sealed class ChangeUserName : IUseCase<ChangeUserNameInput, Task<UserData
 
         if (input.User.Username == input.NewName)
         {
-            throw new ArgumentException("You cannot change your name to your current name", nameof(input.NewName));
+            throw new ArgumentException("You cannot change your name to your current name", nameof(input));
         }
         
         
@@ -47,9 +46,9 @@ public sealed class ChangeUserName : IUseCase<ChangeUserNameInput, Task<UserData
         {
             input.User.UpdateUserName(input.NewName);
         }
-        catch (InvalidUsernameException ex)
+        catch (InvalidUsernameException)
         {
-            _logger.LogError(ex, "Invalid username: {Username}", input.NewName);
+            _logger.LogError("Invalid username: {Username}", input.NewName);
             throw;
         }
 

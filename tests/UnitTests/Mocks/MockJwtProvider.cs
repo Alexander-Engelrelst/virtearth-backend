@@ -1,4 +1,4 @@
-﻿using Adria.Application.Authentication;
+﻿using Adria.Application.Contracts;
 using Adria.Domain.Users;
 
 namespace UnitTests.Mocks;

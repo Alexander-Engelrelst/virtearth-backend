@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.Text.RegularExpressions;
 using Adria.Application.Contracts;
 using Adria.Domain.games;
+using Adria.Infrastructure.Persistence.Shared;
 using Microsoft.Extensions.Logging;
 
 namespace Adria.Infrastructure.Persistence.Queries;
@@ -35,9 +36,9 @@ public class GameLocationsQuery : IGameLocationsQuery
     {
         _logger.LogInformation("Fetching all games");
 
-        await using var connection = _factory.CreateConnection()
-                                     ?? throw new InvalidOperationException(
-                                         "DbProviderFactory returned a null DbConnection.");
+        await using var connection = _factory.CreateConnection() ?? 
+                                     throw new VirtEarthDatabaseException("Failed to create a database connection.");
+
         
         connection.ConnectionString = _connectionString;
         await connection.OpenAsync();
@@ -87,7 +88,7 @@ public class GameLocationsQuery : IGameLocationsQuery
                 reader.GetDouble(longitudeOrd),
                 continent,
                 reader.GetInt32(yearOrd),
-                !reader.IsDBNull(userIdOrd)
+                !await reader.IsDBNullAsync(userIdOrd)
                 ));
         }
 

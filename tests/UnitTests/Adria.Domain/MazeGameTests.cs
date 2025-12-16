@@ -1,5 +1,8 @@
 ﻿using System.Collections.Immutable;
 using Adria.Domain.games;
+using Adria.Domain.Shared;
+using Adria.Domain.Users;
+using UnitTests.Mocks;
 using Xunit.Abstractions;
 
 namespace UnitTests.Adria.Domain;
@@ -9,30 +12,69 @@ public class MazeGameTest
     [Fact]
     public void MazeGameWithEmptyGameIdThrows()
     {
-        Assert.Throws<ArgumentException>(() => new MazeGame(Guid.Empty, Guid.NewGuid(), GetMockArtifacts(5)));
-    }
-    
-    [Fact]
-    public void MazeGameWithEmptyUserIdThrows()
-    {
-        Assert.Throws<ArgumentException>(() => new MazeGame(Guid.NewGuid(), Guid.Empty, GetMockArtifacts(5)));
+        Assert.Throws<ArgumentException>(() =>
+            new MazeGame(Guid.Empty, new User("username"), MockHelpers.GenerateMockArtifacts(5))
+        );
     }
     
     [Fact]
     public void MazeGameWithoutArtifactsThrows()
     {
-        Assert.Throws<ArgumentException>(() => new MazeGame(Guid.NewGuid(), Guid.Empty, GetMockArtifacts(0)));
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+            new MazeGame(Guid.NewGuid(), new User("username"), MockHelpers.GenerateMockArtifacts(0))
+        );
     }
 
-    // TODO here will be more tests added in further issues
-    private ImmutableHashSet<MazeArtifact> GetMockArtifacts(int numberOfArtifacts)
+    [Fact]
+    public void MazeGameWithArtifactsDoesNotThrow()
     {
-        ISet<MazeArtifact> artifacts = new HashSet<MazeArtifact>();
-        for (int i = 0; i < numberOfArtifacts; i++)
+        var artifacts = MockHelpers.GenerateMockArtifacts(5);
+        MazeGame game = new MazeGame(Guid.NewGuid(), new User("username"), artifacts);
+        foreach (var artifact in artifacts)
         {
-            artifacts.Add(new MazeArtifact(Guid.NewGuid(), $"artifact{i}", $"description{i}"));
+            Assert.Contains(artifact, game.Artifacts);
         }
+    }
 
-        return artifacts.ToImmutableHashSet();
+    [Fact]
+    public void UpdateMazeGameFoundArtifactThrowsForInvalidInput()
+    {
+        var artifacts = MockHelpers.GenerateMockArtifacts(5);
+        var artifact = new MazeArtifact(Guid.NewGuid(), "name", "description");
+        artifacts.Add(artifact);
+        
+        MazeGame game = new MazeGame(Guid.NewGuid(), new User("username"), artifacts);
+        // location 0, 0 can never be a valid location 
+        game.UpdateUserFoundArtifacts(artifact.Id, 1 , 1 , 90);
+        Assert.Contains(artifact, game.FoundArtifacts);
+        
+        Assert.Throws<ArtifactAlreadyFoundException>(() => game.UpdateUserFoundArtifacts(artifact.Id, 1, 1, 90));
+        Assert.Throws<ArtifactNotFoundException>(() => game.UpdateUserFoundArtifacts(Guid.NewGuid(), 1, 1, 90));
+    }
+
+    [Fact]
+    public void UpdateMazeGameArtifactGeneratesExit()
+    {
+        var artifact =  new MazeArtifact(Guid.NewGuid(), "name", "description");
+        MazeGame game = new MazeGame(Guid.NewGuid(), new User("username"), new HashSet<MazeArtifact>{artifact});
+        
+        MazeGame? result = game.UpdateUserFoundArtifacts(artifact.Id, 1 , 1 , 90);
+        
+        if (result is null) Assert.Fail("The returned value should not be null");
+        
+        bool exitFound = false;
+        
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < 2; j++)
+            {
+                if (result.Maze[i, j] is MazeGameExit)
+                {
+                    exitFound = true;
+                }
+            }
+        }
+        
+        Assert.True(exitFound);
     }
 }

@@ -1,11 +1,13 @@
 ﻿using System.Collections.Immutable;
 using Adria.Application.Contracts;
 using Adria.Domain.games;
+using Adria.Domain.Shared;
+using Adria.Domain.Users;
 using Microsoft.Extensions.Logging;
 
 namespace Adria.Application.games;
 
-public sealed record StartGameInput(Guid GameId, Guid UserId);
+public sealed record StartGameInput(Guid GameId, User User);
 
 public sealed class StartGame : IUseCase<StartGameInput, Task<Game>>
 {
@@ -22,13 +24,21 @@ public sealed class StartGame : IUseCase<StartGameInput, Task<Game>>
     
     public async Task<Game> Execute(StartGameInput input)
     {
-        _logger.LogInformation("Starting game {GameId} for user {UserId}", input.GameId, input.UserId);
+        _logger.LogInformation("Starting game {GameId} for user {UserId}", input.GameId, input.User.Id);
         /* normally this would be made more robust and safe for other types of games,
          * I was planning on doing this first but second guessed my decision until I was able to ask if this was expected
          * I was told during the code review that I did not have to do this, so I didn't, but I also didn't refactor everything to simplify*/
         IReadOnlySet<MazeArtifact> artifacts = await _artifactsQuery.Fetch(input.GameId);
-        Game game = new MazeGame(input.GameId, input.UserId, artifacts);
-        ActiveGames.AddGame(game);
+        Game game = new MazeGame(input.GameId, input.User, artifacts);
+        try
+        {
+            ActiveGames.AddGame(game);
+        }
+        catch (PlayerAlreadyPlayingException)
+        {
+            _logger.LogWarning("User {UserId} is attempting to play a game while already playing one", input.User.Id);
+            throw;
+        }
         return game;
     }
 }

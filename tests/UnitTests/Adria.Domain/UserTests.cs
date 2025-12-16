@@ -1,4 +1,4 @@
-﻿using Adria.Domain.Shared.Exceptions;
+﻿using Adria.Domain.Shared;
 using Adria.Domain.Users;
 
 namespace UnitTests.Adria.Domain;

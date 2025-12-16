@@ -84,5 +84,26 @@ public static class Routes
             .RequireAuthorization()
             .WithName(nameof(StartGameController))
             .WithOpenApi();
+
+        gameRoutes
+            .MapPatch("/{gameId}/artifacts/{artifactId}", UpdateGameStateController.Invoke)
+            .WithDescription("Update a game state for a specific game for a specific user")
+            .RequireAuthorization()
+            .WithName(nameof(UpdateGameStateController))
+            .WithOpenApi();
+        
+        gameRoutes
+            .MapPost("/{gameId}/save", SaveGameController.Invoke)
+            .WithDescription("Save a finished game")
+            .RequireAuthorization()
+            .WithName(nameof(SaveGameController))
+            .WithOpenApi();
+
+        gameRoutes
+            .MapPost("/{gameId}/heartbeat", UpdateTtlController.Invoke)
+            .WithDescription("Notify the server a game is still active")
+            .RequireAuthorization()
+            .WithName(nameof(UpdateTtlController))
+            .WithOpenApi();
     }
 }

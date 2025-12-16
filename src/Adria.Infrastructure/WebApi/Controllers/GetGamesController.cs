@@ -1,9 +1,7 @@
 ﻿using System.Security.Claims;
 using Adria.Application.Contracts;
-using Adria.Application.Contracts.Data;
-using Adria.Application.Users;
 using Adria.Domain.games;
-using Adria.Domain.Shared.Exceptions;
+using Adria.Domain.Shared;
 using Adria.Domain.Users;
 using Adria.Infrastructure.Persistence.Shared;
 using Adria.Infrastructure.WebApi.Controllers.Responses;
@@ -21,18 +19,16 @@ public static class GetGamesController
         [FromServices] IHttpContextAccessor httpContextAccessor
     )
     {
-        Claim? userClaim = httpContextAccessor.HttpContext?.User.FindFirst("guid");
-
-        if (userClaim is null || !Guid.TryParse(userClaim.Value, out Guid id))
-        {
-            return TypedResults.BadRequest("Please provide a valid user id");
-        }
-
+        User user;
         try
         {
-            await getUser.Execute(id);
+            user = await httpContextAccessor.GetUser(getUser);
         }
-        catch (ElementNotFoundException)
+        catch (NoUserIdInTokenException)
+        {
+            return TypedResults.Unauthorized();
+        }
+        catch (UserNotFoundException)
         {
             return TypedResults.Unauthorized();
         }
@@ -40,18 +36,14 @@ public static class GetGamesController
         
         try
         {
-            IReadOnlyCollection<GameLocation> gameLocations = await getGames.Execute(id);
+            IReadOnlyCollection<GameLocation> gameLocations = await getGames.Execute(user.Id);
             return TypedResults.Ok(
                 gameLocations.Select(location => new GameLocationDto(location)).ToArray()
                 );
         }
         catch (VirtEarthDatabaseException)
         {
-            return TypedResults.Problem(
-                title: "Database Error",
-                detail: "an unexpected database error has occured",
-                statusCode: StatusCodes.Status500InternalServerError
-            );
+            return TypedResults.Problem("an unexpected error occured");
         }
     }
 }

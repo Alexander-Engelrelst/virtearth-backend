@@ -2,7 +2,7 @@
 using Adria.Application.Contracts;
 using Adria.Application.Contracts.Data;
 using Adria.Application.Users;
-using Adria.Domain.Shared.Exceptions;
+using Adria.Domain.Shared;
 using Adria.Domain.Users;
 using Adria.Infrastructure.Persistence.Shared;
 using Adria.Infrastructure.WebApi.Controllers.Responses;
@@ -15,7 +15,7 @@ namespace Adria.Infrastructure.WebApi.Controllers;
 
 public static class CreateUserController
 {
-    public static async Task<Results<Ok<UserDto>, BadRequest, Conflict, ProblemHttpResult>> Invoke(
+    public static async Task<Results<Ok<UserDto>, BadRequest, Conflict<string>, ProblemHttpResult>> Invoke(
         [FromBody] CreateUserBody body,
         [FromServices] IUseCase<CreateUserInput, Task<UserData>> createUser
     )
@@ -31,15 +31,11 @@ public static class CreateUserController
         }
         catch (UsernameAlreadyExistsException)
         {
-            return TypedResults.Conflict();
+            return TypedResults.Conflict("username already exists");
         }
         catch (VirtEarthDatabaseException)
         {
-            return TypedResults.Problem(
-                title: "Database Error",
-                detail: "an unexpected database error has occured",
-                statusCode: StatusCodes.Status500InternalServerError
-            );
+            return TypedResults.Problem("an unexpected error occured");
         }
     }
 }

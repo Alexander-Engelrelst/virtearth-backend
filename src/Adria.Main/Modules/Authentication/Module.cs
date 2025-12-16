@@ -1,6 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using Adria.Application.Authentication;
+using Adria.Application.Contracts;
 using Adria.Infrastructure;
 using Adria.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authentication;

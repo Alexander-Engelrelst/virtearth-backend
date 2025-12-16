@@ -1,6 +1,6 @@
-﻿using Adria.Domain.Shared.Exceptions;
+﻿using Adria.Domain.Shared;
 
-namespace UnitTests.Adria.Domain;
+namespace UnitTests.Adria.Domain.exceptions;
 
 public class UsernameAlreadyExistsExceptionTests
 {

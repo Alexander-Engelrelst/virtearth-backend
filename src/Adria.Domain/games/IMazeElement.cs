@@ -1,6 +1,6 @@
 ﻿namespace Adria.Domain.games;
 
-public class MazeElement
+public interface IMazeElement
 {
     
 }

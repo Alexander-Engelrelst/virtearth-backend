@@ -1,20 +1,24 @@
-﻿using System.Diagnostics;
-using Adria.Domain.games;
+﻿using Adria.Domain.games;
 
 namespace Adria.Infrastructure.WebApi.Controllers.Responses;
 
 public sealed class MazeGameDto
 {
+    private const int MAZE_WALKABLE_PATH_NUMBER = 0;
+    private const int MAZE_WALL_NUMBER = 1;
+    private const int MAZE_EXIT_NUMBER = 99;
     public Guid GameId { get; set; }
     // for some reason serialization doesn't allow int[,]
     public int[][] Maze { get; set; }
     public IList<MazeArtifactDto> Artifacts { get; } = new List<MazeArtifactDto>();
-
+    public SpawnLocationDto SpawnLocation { get; set; }
+    
     public MazeGameDto(MazeGame game)
     {
         GameId = game.GameId;
         
-        MazeElement?[,] maze = game.Maze;
+        
+        IMazeElement?[,] maze = game.Maze;
         
         Maze = new int[maze.GetLength(0)][];
         
@@ -27,18 +31,25 @@ public sealed class MazeGameDto
                 switch(maze[i, j])
                 {
                     case null:
-                        Maze[i][j] = 0;
+                        Maze[i][j] = MAZE_WALKABLE_PATH_NUMBER;
                         break;
                     case MazeWall:
-                        Maze[i][j] = 1;
+                        Maze[i][j] = MAZE_WALL_NUMBER;
                         break;
                     case MazeArtifact:
-                        Maze[i][j] = 0;
+                        Maze[i][j] = MAZE_WALKABLE_PATH_NUMBER;
                         Artifacts.Add(new MazeArtifactDto((MazeArtifact) maze[i, j]!, i , j));
+                        break;
+                    case MazeGameSpawn:
+                        Maze[i][j] = MAZE_WALKABLE_PATH_NUMBER;
+                        SpawnLocation = new SpawnLocationDto(i, j);
+                        break;
+                    case MazeGameExit:
+                        Maze[i][j] = MAZE_EXIT_NUMBER;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(
-                            nameof(maze),
+                            nameof(game),
                             maze[i, j],
                             "Unexpected element found in the maze.");
                 }

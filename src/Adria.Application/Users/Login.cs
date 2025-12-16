@@ -1,8 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using Adria.Application.Authentication;
 using Adria.Application.Contracts;
 using Adria.Application.Contracts.Data;
-using Adria.Domain.Shared.Exceptions;
+using Adria.Domain.Shared;
 using Adria.Domain.Users;
 using Microsoft.Extensions.Logging;
 
@@ -32,7 +31,7 @@ public sealed class Login : IUseCase<Guid, Task<UserData>>
         if (user is null)
         {
             _logger.LogInformation("User {Id} not found", id);
-            throw new ElementNotFoundException($"User with id {id} not found");
+            throw new UserNotFoundException(id);
         }
         
         return new UserData(user, _jwtProvider.GenerateToken(user));

@@ -1,5 +1,5 @@
 ﻿using Adria.Application.Contracts;
-using Adria.Domain.Shared.Exceptions;
+using Adria.Domain.Shared;
 
 namespace UnitTests.Mocks;
 

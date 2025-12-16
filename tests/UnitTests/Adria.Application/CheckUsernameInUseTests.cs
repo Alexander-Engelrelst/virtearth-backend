@@ -1,5 +1,5 @@
 ﻿using Adria.Application.Users;
-using Adria.Domain.Shared.Exceptions;
+using Adria.Domain.Shared;
 using Microsoft.Extensions.Logging.Abstractions;
 using UnitTests.Mocks;
 

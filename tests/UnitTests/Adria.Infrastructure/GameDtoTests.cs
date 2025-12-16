@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using Adria.Domain.games;
 using Adria.Infrastructure.WebApi.Controllers.Responses;
+using UnitTests.Mocks;
 
 namespace UnitTests.Adria.Infrastructure;
 
@@ -10,17 +11,16 @@ public class GameDtoTests
     [Fact]
     public void MazeGameDtoMazeGetsMappedCorrectly()
     {
-        ISet<MazeArtifact> artifacts = new HashSet<MazeArtifact>();
-
-        for (int i = 0; i < 2; i++)
-        {
-            artifacts.Add(new MazeArtifact(Guid.NewGuid(), $"artifact{i}", $"description{i}"));
-        }
+        HashSet<MazeArtifact> artifacts = new HashSet<MazeArtifact>();
+    
+        Guid artifactId = Guid.NewGuid();
+        artifacts.Add(new MazeArtifact(artifactId, "name", "description"));
         
-        MazeGame game = new(Guid.NewGuid(), Guid.NewGuid(), artifacts.ToImmutableHashSet());
+        MazeGame game = new(Guid.NewGuid(), new("username"), artifacts.ToImmutableHashSet());
+        game.UpdateUserFoundArtifacts(artifactId, 1, 1, 90);
         MazeGameDto dto = new(game);
 
-        MazeElement?[,] maze = game.Maze;
+        IMazeElement?[,] maze = game.Maze;
         int[][] dtoMaze = dto.Maze;
 
         for (int i = 0; i < maze.GetLength(0); i++)
@@ -38,6 +38,14 @@ public class GameDtoTests
                     case MazeArtifact artifact:
                         Assert.Equal(0, dtoMaze[i][j]);
                         Assert.Contains(new MazeArtifactDto(artifact, i, j), dto.Artifacts);
+                        break;
+                    case MazeGameSpawn:
+                        Assert.Equal(0, dtoMaze[i][j]);
+                        Assert.Equal(i + 0.5f, dto.SpawnLocation.X);
+                        Assert.Equal(j + 0.5f, dto.SpawnLocation.Y);
+                        break;
+                    case MazeGameExit:
+                        Assert.Equal(99, dtoMaze[i][j]);
                         break;
                     default:
                         Assert.Fail("Unexpected MazeElement");

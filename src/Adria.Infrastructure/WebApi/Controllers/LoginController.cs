@@ -2,7 +2,7 @@
 using Adria.Application.Contracts;
 using Adria.Application.Contracts.Data;
 using Adria.Application.Users;
-using Adria.Domain.Shared.Exceptions;
+using Adria.Domain.Shared;
 using Adria.Domain.Users;
 using Adria.Infrastructure.Persistence.Shared;
 using Adria.Infrastructure.WebApi.Controllers.Responses;
@@ -26,7 +26,7 @@ public static class LoginController
             UserDto user = new(data.User.Id, data.User.Username, data.JwtToken);
             return TypedResults.Ok(user);
         }
-        catch (ElementNotFoundException)
+        catch (UserNotFoundException)
         {
             return TypedResults.Unauthorized();
         }

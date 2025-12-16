@@ -2,7 +2,7 @@
 using Adria.Application.Contracts;
 using Adria.Application.Contracts.Data;
 using Adria.Application.Users;
-using Adria.Domain.Shared.Exceptions;
+using Adria.Domain.Shared;
 using Adria.Domain.Users;
 using Adria.Infrastructure.Persistence.Shared;
 using Adria.Infrastructure.WebApi.Controllers.Responses;
@@ -21,19 +21,17 @@ public static class ChangeUsernameController
         [FromServices] IHttpContextAccessor httpContextAccessor
     )
     {
-        Claim? userClaim = httpContextAccessor.HttpContext?.User.FindFirst("guid");
-
-        if (userClaim is null || !Guid.TryParse(userClaim.Value, out Guid id))
-        {
-            return TypedResults.BadRequest("Please provide a valid user id");
-        }
-
         User user;
+
         try
         {
-            user = await getUser.Execute(id);
+            user = await httpContextAccessor.GetUser(getUser);
         }
-        catch (ElementNotFoundException)
+        catch (NoUserIdInTokenException)
+        {
+            return TypedResults.Unauthorized();
+        }
+        catch (UserNotFoundException)
         {
             return TypedResults.Unauthorized();
         }

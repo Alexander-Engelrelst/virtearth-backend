@@ -1,21 +1,20 @@
-﻿using Adria.Domain.Shared.Exceptions;
+﻿using Adria.Domain.Shared;
 
-namespace UnitTests.Adria.Domain;
+namespace UnitTests.Adria.Domain.exceptions;
 
-public class MazeGenerationExceptionTests
+public class UserNotFoundExceptionTests
 {
-    
     [Fact]
     public void Constructor_WithMessage_CreatesException()
     {
         // Arrange
-        var message = "this is a very useful message";
+        var userId = Guid.NewGuid();
         
         // Act
-        var exception = new MazeGenerationException(message);
+        var exception = new UserNotFoundException(userId);
 
         // Assert
-        Assert.Equal(message, exception.Message);
+        Assert.Equal($"User with id {userId} not found", exception.Message);
         Assert.Null(exception.InnerException);
     }
 
@@ -23,14 +22,15 @@ public class MazeGenerationExceptionTests
     public void Constructor_WithMessageAndInnerException_CreatesException()
     {
         // Arrange
-        var message = "this is a very useful message";
         var innerException = new Exception("Inner exception");
+        var userId = Guid.NewGuid();
         
         // Act
-        var exception = new MazeGenerationException(message, innerException);
-        
+        var exception = new UserNotFoundException(userId, innerException);
+
         // Assert
-        Assert.Equal(message, exception.Message);
+        Assert.Equal($"User with id {userId} not found", exception.Message);
+
         Assert.Equal(innerException, exception.InnerException);
     }
 }

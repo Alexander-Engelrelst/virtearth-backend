@@ -1,12 +1,10 @@
-﻿using Adria.Application.Authentication;
-using Adria.Application.Contracts;
+﻿using Adria.Application.Contracts;
 using Adria.Application.Contracts.Data;
-using Adria.Domain.Shared.Exceptions;
+using Adria.Domain.Shared;
 using Adria.Domain.Users;
 using Microsoft.Extensions.Logging;
 
 namespace Adria.Application.Users;
-// TODO edit that all calls involving an id from the jwt token are called from a helper function (will be done in a separate issue)
 public sealed class GetUser : IUseCase<Guid, Task<User>>
 {
     private readonly IUserRepository _repository;
@@ -22,8 +20,9 @@ public sealed class GetUser : IUseCase<Guid, Task<User>>
     }
     public async Task<User> Execute(Guid input)
     {
+        _logger.LogInformation("Getting user with id {Id}", input);
         User? user = await _repository.ById(input);
-        if (user is null) throw new ElementNotFoundException($"user with id {input} not found");
+        if (user is null) throw new UserNotFoundException(input);
         
         return user;
     }

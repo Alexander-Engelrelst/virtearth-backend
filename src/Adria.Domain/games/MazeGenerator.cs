@@ -1,11 +1,11 @@
-﻿using Adria.Domain.Shared.Exceptions;
+﻿using Adria.Domain.Shared;
 
 namespace Adria.Domain.games;
 
 public static class MazeGenerator
 {
-    private const int MinimumCellsBetweenArtifacts = 5;
-    private const int MazeSizeSafetyFactor = 2;
+    private const int MINIMUM_CELLS_BETWEEN_ARTIFACTS = 5;
+    private const int MAZE_SIZE_SAFETY_FACTOR = 2;
 
     /*
      * The algorithm to construct a maze consists out of 2 distinct steps.
@@ -39,10 +39,10 @@ public static class MazeGenerator
      * It is highly unlikely and maybe even impossible to come into a situation where adding artifacts fail
      * this is because the maze is purposefully made large, but I'd rather be safe than sorry if someone decided to change anything
      */
-    public static MazeElement?[,] GenerateMaze(IReadOnlySet<MazeArtifact> artifacts)
+    public static IMazeElement?[,] GenerateMaze(IReadOnlySet<MazeArtifact> artifacts)
     {
-        int size = (int) Math.Sqrt(artifacts.Count * Math.Pow(MinimumCellsBetweenArtifacts, 2) * MazeSizeSafetyFactor);
-        MazeElement?[,] maze = new MazeElement?[2 * size + 1, 2 * size + 1];
+        int size = (int) Math.Sqrt(artifacts.Count * Math.Pow(MINIMUM_CELLS_BETWEEN_ARTIFACTS, 2) * MAZE_SIZE_SAFETY_FACTOR);
+        IMazeElement?[,] maze = new IMazeElement?[2 * size + 1, 2 * size + 1];
 
         FillMazeWithWalls(maze, new MazeWall());
         GenerateWalkablePaths(maze, size);
@@ -56,14 +56,14 @@ public static class MazeGenerator
                 throw new MazeGenerationException("Maximum number of attempts to place artifacts exceeded");
             }
             
-            artifactsAdded = AddArtifacts(maze, artifacts, MinimumCellsBetweenArtifacts);
+            artifactsAdded = AddArtifacts(maze, artifacts, MINIMUM_CELLS_BETWEEN_ARTIFACTS);
             attempts++;
         } while (!artifactsAdded);
         
         return maze;
     }
     
-    private static void FillMazeWithWalls(MazeElement?[,] maze, MazeWall wall)
+    private static void FillMazeWithWalls(IMazeElement?[,] maze, MazeWall wall)
     {
         for (int i = 0; i < maze.GetLength(0); i++)
         {
@@ -73,7 +73,7 @@ public static class MazeGenerator
             }
         }
     }
-    private static void GenerateWalkablePaths(MazeElement?[,] maze, int size)
+    private static void GenerateWalkablePaths(IMazeElement?[,] maze, int size)
     {
         bool[,] visitedNodes = new bool[size, size];
         
@@ -89,12 +89,12 @@ public static class MazeGenerator
         maze[
             2 * startingX + 1,
             2 * startingY + 1
-        ] = null;
+        ] = new MazeGameSpawn();
         while (stack.Count > 0)
         {
             (int x, int y) currentCell = stack.Peek();
             
-            IList<(int xCord, int yCord)> unvisitedNeighbours = GetUnvisitedNeighbours(currentCell.x, currentCell.y, visitedNodes, size);
+            List<(int xCord, int yCord)> unvisitedNeighbours = GetUnvisitedNeighbours(currentCell.x, currentCell.y, visitedNodes, size);
 
             if (unvisitedNeighbours.Count > 0)
             { 
@@ -120,9 +120,9 @@ public static class MazeGenerator
 
     }
 
-    private static IList<(int xCord, int yCord)> GetUnvisitedNeighbours(int x, int y, bool[,] visitedNodes, int size)
+    private static List<(int xCord, int yCord)> GetUnvisitedNeighbours(int x, int y, bool[,] visitedNodes, int size)
     {
-        IList<(int xCord, int yCord)> unVisitedNeighbours = new List<(int xCord, int yCord)>();
+        List<(int xCord, int yCord)> unVisitedNeighbours = [];
         
         if (y > 0 && !visitedNodes[x, y - 1]) unVisitedNeighbours.Add((x, y - 1));
         if (y < size - 1 && !visitedNodes[x, y + 1]) unVisitedNeighbours.Add((x, y + 1));
@@ -132,7 +132,7 @@ public static class MazeGenerator
         return unVisitedNeighbours;
     }
 
-    private static bool AddArtifacts(MazeElement?[,] maze, IReadOnlySet<MazeArtifact> artifacts, int minimumCellsBetweenArtifacts)
+    private static bool AddArtifacts(IMazeElement?[,] maze, IReadOnlySet<MazeArtifact> artifacts, int minimumCellsBetweenArtifacts)
     {
         bool[,] availableSpaces = GetBaseAvailableSpaces(maze);
         Random random = new Random();
@@ -183,7 +183,7 @@ public static class MazeGenerator
         if (stepsRemaining == 0) return;
         int size = availableSpaces.GetLength(0);
         
-        IList<(int x, int y)> neighbours = new List<(int x, int y)>();
+        List<(int x, int y)> neighbours = [];
         if (coordinates.x > 0) neighbours.Add((coordinates.x - 1, coordinates.y));
         if (coordinates.x < size - 1) neighbours.Add((coordinates.x + 1, coordinates.y));
         if (coordinates.y > 0) neighbours.Add((coordinates.x, coordinates.y - 1));
@@ -197,7 +197,7 @@ public static class MazeGenerator
         }
     }
 
-    private static bool[,] GetBaseAvailableSpaces(MazeElement?[,] maze)
+    private static bool[,] GetBaseAvailableSpaces(IMazeElement?[,] maze)
     {
         bool[,] spaces = new bool[maze.GetLength(0), maze.GetLength(1)];
         
@@ -213,5 +213,58 @@ public static class MazeGenerator
         }
         
         return spaces;
+    }
+
+    public static void GenerateMazeExit(IMazeElement?[,] maze, float xCord, float yCord, float angleDeg)
+    {
+        angleDeg = (angleDeg % 360 + 360) % 360;
+        int roundedXCord = (int)Math.Floor(xCord);
+        int roundedYCord = (int)Math.Floor(yCord);
+        
+        if (maze[roundedXCord, roundedYCord] is MazeWall)
+        {
+            throw new ArgumentException("at least one of the coordinates is invalid");
+        }
+        
+        var directions = new (int dx, int dy, float angle)[]
+        {
+            (-1, 0, 0f),
+            (0, 1, 90f),
+            (1, 0, 180f),
+            (0, -1, 270f)
+        };
+        
+        var orderedDirections = directions
+            .OrderBy(d => AngleDifference(angleDeg, d.angle))
+            .ToArray();
+
+        foreach (var dir in orderedDirections)
+        {
+            if (maze[roundedXCord + dir.dx, roundedYCord + dir.dy] is MazeWall)
+            {
+                maze[roundedXCord + dir.dx, roundedYCord + dir.dy] = new MazeGameExit();
+                return;
+            }
+        }
+
+        var diagonalDirections = new (int dx, int dy, float angle)[]
+        {
+            (-1, 1, 45f),
+            (1, 1, 135f),
+            (1, -1, 225f),
+            (-1, -1, 315f),
+        };
+
+        var chosenDir = diagonalDirections
+            .OrderBy(d => AngleDifference(angleDeg, d.angle))
+            .First();
+        
+        maze[roundedXCord + chosenDir.dx, roundedYCord + chosenDir.dy] = new MazeGameExit();
+    }
+
+    private static float AngleDifference(float angle1, float angle2)
+    {
+        var diff = Math.Abs(angle1 - angle2) % 360;
+        return diff > 180 ? 360 - diff : diff;
     }
 }

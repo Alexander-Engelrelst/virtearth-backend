@@ -10,14 +10,11 @@ public class MockArtifactsQuery : IArtifactsQuery
     public Guid GameWithoutArtifactsId { get;  } = Guid.NewGuid();
     public Task<IReadOnlySet<MazeArtifact>> Fetch(Guid id)
     {
-        ISet<MazeArtifact> artifacts = new HashSet<MazeArtifact>();
+        HashSet<MazeArtifact> artifacts = new HashSet<MazeArtifact>();
 
         if (id != GameWithoutArtifactsId)
-        {
-            for (int i = 0; i < 15; i++)
-            {
-                artifacts.Add(new MazeArtifact(Guid.NewGuid(), $"artifact{i}", $"description{i}"));
-            }
+        { 
+            artifacts.UnionWith(MockHelpers.GenerateMockArtifacts(15));
         }
         
         return Task.FromResult<IReadOnlySet<MazeArtifact>>(artifacts.ToImmutableHashSet());

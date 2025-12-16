@@ -44,12 +44,12 @@ public static class PersistenceModule
                 serviceProvider.GetRequiredService<ILogger<AdoUserRepository>>()
             );
         })
-        .AddScoped<IArtifactsQuery, ArtifactsQuery>(serviceProvider =>
+        .AddScoped<IGameRepository, AdoGameRepository>(serviceProvider =>
         {
-            return new ArtifactsQuery(
+            return new AdoGameRepository(
                 serviceProvider.GetRequiredService<DbProviderFactory>(),
                 _connectionString,
-                serviceProvider.GetRequiredService<ILogger<ArtifactsQuery>>()
+                serviceProvider.GetRequiredService<ILogger<AdoGameRepository>>()
             );
         });
     }
@@ -73,6 +73,14 @@ public static class PersistenceModule
                     serviceProvider.GetRequiredService<DbProviderFactory>(),
                     _connectionString,
                     serviceProvider.GetRequiredService<ILogger<GameLocationsQuery>>()
+                );
+            })
+            .AddScoped<IArtifactsQuery, ArtifactsQuery>(serviceProvider =>
+            {
+                return new ArtifactsQuery(
+                    serviceProvider.GetRequiredService<DbProviderFactory>(),
+                    _connectionString,
+                    serviceProvider.GetRequiredService<ILogger<ArtifactsQuery>>()
                 );
             });
     }

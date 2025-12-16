@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using Adria.Domain.Shared.Exceptions;
+using Adria.Domain.Shared;
 using Adria.Infrastructure.WebApi;
 using Microsoft.OpenApi.Models;
 
@@ -43,7 +43,7 @@ public static class WebApiModule
                                 Id="Bearer"
                             }
                         },
-                        new string[]{}
+                        Array.Empty<string>()
                     }
                 });
                 

@@ -1,5 +1,5 @@
 ﻿using Adria.Application.Users;
-using Adria.Domain.Shared.Exceptions;
+using Adria.Domain.Shared;
 using Adria.Domain.Users;
 using Microsoft.Extensions.Logging.Abstractions;
 using UnitTests.Mocks;
@@ -13,8 +13,7 @@ public class GetUserTests
     {
         Guid id =  Guid.NewGuid();
         var usecase = new GetUser(new MockAdoUserRepository(), new NullLogger<GetUser>());
-        var exception = await Assert.ThrowsAsync<ElementNotFoundException>(() => usecase.Execute(id));
-        Assert.Equal($"user with id {id} not found", exception.Message);
+        await Assert.ThrowsAsync<UserNotFoundException>(() => usecase.Execute(id));
     }
 
     [Fact]
