@@ -103,5 +103,6 @@ INSERT INTO `games` (`id`, `name`, `latitute`, `longitude`, `type`, `continent`,
 VALUES
     ('550e8400-e29b-41d4-a716-446655440034', 'Minotaur maze', 35.2989, 25.1636, 'Maze', 'Europe', -1800);
 INSERT INTO artifacts (id, game_id, name, description) VALUES
-    ('550e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440034', 'artifact1', 'description1'),
-    ('550e8400-e29b-41d4-a716-446655440001', '550e8400-e29b-41d4-a716-446655440034', 'artifact2', 'description2');
+    ('550e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440034', 'thread of ariadne', 'When bound to a wall or doorway, the Thread remembers every step taken thereafter. It pulls gently toward the path of return, tightening when danger draws near and slackening when the way is clear. No matter how deep the maze twists, the Thread will always lead its bearer back to the light.', 
+     'description1'),
+    ('550e8400-e29b-41d4-a716-446655440001', '550e8400-e29b-41d4-a716-446655440034', 'artifact2', 'Lit by Daedalus before the labyrinth was sealed, this flame exposes what the maze tries to hide. In its glow, false walls shimmer, hidden mechanisms stir, and illusions recoil. The fire does not chase away the darkness—it forces it to tell the truth.');
