@@ -19,8 +19,8 @@ public sealed class MazeArtifactDto
         Y = yCord;
     }
 
-    
-    protected bool Equals(MazeArtifactDto other)
+
+    private bool Equals(MazeArtifactDto other)
     {
         return Id.Equals(other.Id) && Name == other.Name && Description == other.Description && X == other.X && Y == other.Y;
     }

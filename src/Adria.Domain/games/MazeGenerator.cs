@@ -215,6 +215,8 @@ public static class MazeGenerator
         return spaces;
     }
 
+    #pragma warning disable S2368
+    // (ง ͠° ͟ل͜ ͡°)ง  I will use a multidimensional array wherever I want >:(
     public static void GenerateMazeExit(IMazeElement?[,] maze, float xCord, float yCord, float angleDeg)
     {
         angleDeg = (angleDeg % 360 + 360) % 360;
@@ -234,19 +236,18 @@ public static class MazeGenerator
             (0, -1, 270f)
         };
         
-        var orderedDirections = directions
+        var orderedValidDirections = directions
+            .Where(d => maze[roundedXCord + d.dx, roundedYCord + d.dy] is MazeWall)
             .OrderBy(d => AngleDifference(angleDeg, d.angle))
             .ToArray();
 
-        foreach (var dir in orderedDirections)
+        if (orderedValidDirections.Length > 0)
         {
-            if (maze[roundedXCord + dir.dx, roundedYCord + dir.dy] is MazeWall)
-            {
-                maze[roundedXCord + dir.dx, roundedYCord + dir.dy] = new MazeGameExit();
-                return;
-            }
+            var dir = orderedValidDirections[0];
+            maze[roundedXCord + dir.dx, roundedYCord + dir.dy] = new MazeGameExit();
+            return;
         }
-
+        
         var diagonalDirections = new (int dx, int dy, float angle)[]
         {
             (-1, 1, 45f),
@@ -261,6 +262,8 @@ public static class MazeGenerator
         
         maze[roundedXCord + chosenDir.dx, roundedYCord + chosenDir.dy] = new MazeGameExit();
     }
+    
+    #pragma warning restore S2368
 
     private static float AngleDifference(float angle1, float angle2)
     {

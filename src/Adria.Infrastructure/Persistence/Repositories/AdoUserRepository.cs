@@ -14,7 +14,6 @@ public sealed class AdoUserRepository : AbstractAdoRepository, IUserRepository
     private const string TABLE_USERS = "users";
     private const string COL_ID = "id";
     private const string COL_NAME = "username";
-    private const int MYSQL_DUPLICATE_ENTRY_STATUS_CODE = 1062;
 
     private const string INSERT_USER = $@"
         INSERT INTO {TABLE_USERS} ({COL_ID}, {COL_NAME})

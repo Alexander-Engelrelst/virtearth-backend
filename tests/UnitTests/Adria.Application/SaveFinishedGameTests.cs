@@ -12,7 +12,7 @@ public class SaveFinishedGameTests
     [Fact]
     public async Task SavingNonExistentGameThrows()
     {
-        var usecase = new SaveFinishedGame(new NullLogger<SaveFinishedGame>(), new MockAdoGameRepository());
+        var usecase = new SaveFinishedGame(new MockAdoGameRepository());
         await Assert.ThrowsAsync<ActiveGameNotFoundException>(() =>
             usecase.Execute(new SaveFinishedGameInput(new User("username"), Guid.NewGuid())
             ));
@@ -21,7 +21,7 @@ public class SaveFinishedGameTests
     [Fact]
     public async Task SavingUnfinishedGameThrows()
     {
-        var usecase = new SaveFinishedGame(new NullLogger<SaveFinishedGame>(), new MockAdoGameRepository());
+        var usecase = new SaveFinishedGame(new MockAdoGameRepository());
         Game game = new MazeGame(Guid.NewGuid(), new User("username", Guid.NewGuid()), MockHelpers.GenerateMockArtifacts(5));
         ActiveGames.AddGame(game);
         

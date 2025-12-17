@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Adria.Infrastructure.WebApi.Controllers;
 
-public class UpdateTtlController
+public static class UpdateTtlController
 {
     public static async Task<Results<UnauthorizedHttpResult, NoContent, NotFound<string>, Conflict<string>>> Invoke(
         [FromServices] IUseCase<UpdateTtlInput> updateTtl,

@@ -11,8 +11,9 @@ public sealed class MazeGameDto
     // for some reason serialization doesn't allow int[,]
     public int[][] Maze { get; set; }
     public IList<MazeArtifactDto> Artifacts { get; } = new List<MazeArtifactDto>();
-    public SpawnLocationDto SpawnLocation { get; set; }
-    
+    // if someone manages to make it such that there is no spawn this will be caught by the unit tests :)
+    public SpawnLocationDto SpawnLocation { get; set; } = null!;
+
     public MazeGameDto(MazeGame game)
     {
         GameId = game.GameId;

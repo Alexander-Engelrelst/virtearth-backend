@@ -34,9 +34,9 @@ public sealed class StartGame : IUseCase<StartGameInput, Task<Game>>
         {
             ActiveGames.AddGame(game);
         }
-        catch (PlayerAlreadyPlayingException)
+        catch (PlayerAlreadyPlayingException ex)
         {
-            _logger.LogWarning("User {UserId} is attempting to play a game while already playing one", input.User.Id);
+            _logger.LogWarning(ex, "User {UserId} is attempting to play a game while already playing one", input.User.Id);
             throw;
         }
         return game;
