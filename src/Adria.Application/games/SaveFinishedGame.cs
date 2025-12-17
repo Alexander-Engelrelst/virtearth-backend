@@ -21,7 +21,7 @@ public class SaveFinishedGame : IUseCase<SaveFinishedGameInput>
     public async Task Execute(SaveFinishedGameInput input)
     {
         Game game = ActiveGames.Get(input.User.Id, input.GameId, true);
-        
+        ActiveGames.RemoveGame(game);
         await _gameRepository.Save(game);
     }
 }

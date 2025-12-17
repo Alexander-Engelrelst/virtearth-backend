@@ -5,8 +5,8 @@ namespace Adria.Domain.games;
 // yes using pseudorandom is safe here sonar
 public static class MazeGenerator
 {
-    private const int MINIMUM_CELLS_BETWEEN_ARTIFACTS = 5;
-    private const int MAZE_SIZE_SAFETY_FACTOR = 2;
+    private const int MINIMUM_CELLS_BETWEEN_ARTIFACTS = 3; //5
+    private const float MAZE_SIZE_SAFETY_FACTOR = 1.5f; // 2
 
     /*
      * The algorithm to construct a maze consists out of 2 distinct steps.

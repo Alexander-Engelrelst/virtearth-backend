@@ -46,4 +46,9 @@ public static class ActiveGames
             }
         }
     }
+
+    public static void RemoveGame(Game game)
+    { 
+        _games.TryRemove(game.User.Id, out _);
+    }
 }

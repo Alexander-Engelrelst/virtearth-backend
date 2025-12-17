@@ -16,8 +16,7 @@ public class GameLocationsQuery : IGameLocationsQuery
     private const string QRY = @"
     SELECT g.id, g.name, g.latitute, g.longitude, g.continent, g.year, cg.user_id
     FROM `games` AS g
-    LEFT JOIN `completed_games` AS cg ON g.id = cg.game_id
-    WHERE cg.user_id = @userId OR cg.user_id IS NULL";
+    LEFT JOIN `completed_games` AS cg ON g.id = cg.game_id AND cg.user_id = @userId";
     
     private readonly ILogger _logger;
     private readonly string _connectionString;
