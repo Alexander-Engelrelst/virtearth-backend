@@ -41,16 +41,8 @@ public sealed class ChangeUserName : IUseCase<ChangeUserNameInput, Task<UserData
             _logger.LogError("User with name {Name} already exists", input.NewName);
             throw new UsernameAlreadyExistsException(input.NewName);
         }
-
-        try
-        {
-            input.User.UpdateUserName(input.NewName);
-        }
-        catch (InvalidUsernameException ex)
-        {
-            _logger.LogError(ex, "Invalid username: {Username}", input.NewName);
-            throw;
-        }
+        
+        input.User.UpdateUserName(input.NewName);
 
         await _repository.Save(input.User);
         return new UserData(input.User, _jwtProvider.GenerateToken(input.User));

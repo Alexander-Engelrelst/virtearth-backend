@@ -30,15 +30,9 @@ public sealed class StartGame : IUseCase<StartGameInput, Task<Game>>
          * I was told during the code review that I did not have to do this, so I didn't, but I also didn't refactor everything to simplify*/
         IReadOnlySet<MazeArtifact> artifacts = await _artifactsQuery.Fetch(input.GameId);
         Game game = new MazeGame(input.GameId, input.User, artifacts);
-        try
-        {
-            ActiveGames.AddGame(game);
-        }
-        catch (PlayerAlreadyPlayingException ex)
-        {
-            _logger.LogWarning(ex, "User {UserId} is attempting to play a game while already playing one", input.User.Id);
-            throw;
-        }
+        
+        ActiveGames.AddGame(game);
+        
         return game;
     }
 }
