@@ -45,7 +45,7 @@ public class GameDtoTests
                         Assert.Equal(j + 0.5f, dto.SpawnLocation.Y);
                         break;
                     case MazeGameExit:
-                        Assert.Equal(99, dtoMaze[i][j]);
+                        Assert.Equal(2, dtoMaze[i][j]);
                         break;
                     default:
                         Assert.Fail("Unexpected MazeElement");

@@ -56,9 +56,11 @@ public static class Routes
             .WithName(nameof(LoginController))
             .WithOpenApi();
         
+        /* apparently we are not implementing this clientSide for the poc, I thought we were originally
+         * but hey shit happens and yes I was to lazy to remove everything involved in this route */
         userRoutes
             .MapPatch("/", ChangeUsernameController.Invoke)
-            .WithDescription("Login a user to get a JWT token")
+            .WithDescription("Change the username of a user")
             .RequireAuthorization()
             .WithName(nameof(ChangeUsernameController))
             .WithOpenApi();

@@ -100,22 +100,20 @@ INSERT INTO `users` (`id`, `username`) VALUES
 ('550e8400-e29b-41d4-a716-446655440033', 'ZaraAllen');
 
 INSERT INTO `games` (`id`, `name`, `latitute`, `longitude`, `type`, `continent`, year)
-VALUES
-    ('550e8400-e29b-41d4-a716-446655440034', 'Minotaur maze', 35.2989, 25.1636, 'Maze', 'Europe', -1800);
+VALUES -- yes they are all mazes and it is because I was lazy, thank you
+    ('550e8400-e29b-41d4-a716-446655442001', 'Minotaur maze', 35.2989, 25.1636, 'Maze', 'Europe', -1800),
+    ('550e8400-e29b-41d4-a716-446655442002', 'Viking Quest', 59.9139, 10.7522, 'Maze', 'Europe', 900),
+    ('550e8400-e29b-41d4-a716-446655442003', 'Dragon Dynasty', 34.3416, 108.9398, 'Maze', 'Asia', 1200),
+    ('550e8400-e29b-41d4-a716-446655442004', 'Samurai Trials', 35.6762, 139.6503, 'Maze', 'Asia', 1600),
+    ('550e8400-e29b-41d4-a716-446655442005', 'Pharaoh’s Path', 29.9792, 31.1342, 'Maze', 'Africa', -1500),
+    ('550e8400-e29b-41d4-a716-446655442006', 'Savanna Survival', -1.2921, 36.8219, 'Maze', 'Africa', 1800),
+    ('550e8400-e29b-41d4-a716-446655442007', 'Aztec Conquest', 19.4326, -99.1332, 'Maze', 'NorthAmerica', 1400),
+    ('550e8400-e29b-41d4-a716-446655442008', 'Frontier Legends', 39.7392, -104.9903, 'Maze', 'NorthAmerica', 1850),
+    ('550e8400-e29b-41d4-a716-446655442009', 'Inca Empire', -13.5319, -71.9675, 'Maze', 'SouthAmerica', 1450),
+    ('550e8400-e29b-41d4-a716-446655442010', 'Amazon Mysteries', -3.4653, -62.2159, 'Maze', 'SouthAmerica', 1700),
+    ('550e8400-e29b-41d4-a716-446655442011', 'Dreamtime Journey', -25.2744, 133.7751, 'Maze', 'Oceania', 1000),
+    ('550e8400-e29b-41d4-a716-446655442012', 'Pacific Navigators', -17.7134, 178.0650, 'Maze', 'Oceania', 1500);
+
 INSERT INTO artifacts (id, game_id, name, description) VALUES
-    ('550e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440034', 'artifact1', 'description1'),
-    ('550e8400-e29b-41d4-a716-446655440001', '550e8400-e29b-41d4-a716-446655440034', 'artifact2', 'description2');
-    -- ('550e8400-e29b-41d4-a716-446655440002', '550e8400-e29b-41d4-a716-446655440034', 'artifact3', 'description3'),
-    -- ('550e8400-e29b-41d4-a716-446655440003', '550e8400-e29b-41d4-a716-446655440034', 'artifact4', 'description4'),
-    -- ('550e8400-e29b-41d4-a716-446655440004', '550e8400-e29b-41d4-a716-446655440034', 'artifact5', 'description5'),
-    -- ('550e8400-e29b-41d4-a716-446655440005', '550e8400-e29b-41d4-a716-446655440034', 'artifact6', 'description6'),
-    -- ('550e8400-e29b-41d4-a716-446655440006', '550e8400-e29b-41d4-a716-446655440034', 'artifact7', 'description7'),
-    -- ('550e8400-e29b-41d4-a716-446655440007', '550e8400-e29b-41d4-a716-446655440034', 'artifact8', 'description8'),
-    -- ('550e8400-e29b-41d4-a716-446655440008', '550e8400-e29b-41d4-a716-446655440034', 'artifact9', 'description9'),
-    -- ('550e8400-e29b-41d4-a716-446655440009', '550e8400-e29b-41d4-a716-446655440034', 'artifact10', 'description10'),
-    -- ('550e8400-e29b-41d4-a716-44665544000a', '550e8400-e29b-41d4-a716-446655440034', 'artifact11', 'description11'),
-    -- ('550e8400-e29b-41d4-a716-44665544000b', '550e8400-e29b-41d4-a716-446655440034', 'artifact12', 'description12'),
-    -- ('550e8400-e29b-41d4-a716-44665544000c', '550e8400-e29b-41d4-a716-446655440034', 'artifact13', 'description13'),
-    -- ('550e8400-e29b-41d4-a716-44665544000d', '550e8400-e29b-41d4-a716-446655440034', 'artifact14', 'description14'),
-    -- ('550e8400-e29b-41d4-a716-44665544000e', '550e8400-e29b-41d4-a716-446655440034', 'artifact15', 'description15');
--- 
+    ('550e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655442001', 'thread of Ariadne', 'When bound to a wall or doorway, the Thread remembers every step taken thereafter. It pulls gently toward the path of return, tightening when danger draws near and slackening when the way is clear. No matter how deep the maze twists, the Thread will always lead its bearer back to the light.'),
+    ('550e8400-e29b-41d4-a716-446655440001', '550e8400-e29b-41d4-a716-446655442001', 'Torch of Daedalus', 'Lit by Daedalus before the labyrinth was sealed, this flame exposes what the maze tries to hide. In its glow, false walls shimmer, hidden mechanisms stir, and illusions recoil. The fire does not chase away the darkness—it forces it to tell the truth.');

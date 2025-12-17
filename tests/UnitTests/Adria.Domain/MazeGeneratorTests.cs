@@ -1,11 +1,13 @@
-﻿using System.Collections.Immutable;
-using Adria.Domain.games;
+﻿using Adria.Domain.games;
+
 using UnitTests.Mocks;
 
 namespace UnitTests.Adria.Domain;
 
 public class MazeGeneratorTests
 { 
+    private static readonly MazeWall _wall = new();
+
     /* yes this test was written by chatgpt,
      * yes there was absolutely no way I wanted to write this by myself and yes I read it to make sure it works
      * this test checks which cells are walkable places, it chooses a starting point and just keeps walking all paths
@@ -13,7 +15,7 @@ public class MazeGeneratorTests
      * that isn't the cell it visited in the iteration before but it was visited already then the maze has a cycle
      * and if it has a cycle it isn't a perfect maze*/
     [Fact]
-    public void Maze_ShouldBeAcyclicAndFullyConnected()
+    public void MazeShouldBeAcyclicAndFullyConnected()
     {
         for (int count = 0; count < 10; count++)
         {
@@ -22,12 +24,12 @@ public class MazeGeneratorTests
             
             artifacts.UnionWith(MockHelpers.GenerateMockArtifacts(100));
             
-            var maze = MazeGenerator.GenerateMaze(artifacts.ToImmutableHashSet());
+            var maze = MazeGenerator.GenerateMaze(artifacts);
             int rows = maze.GetLength(0);
             int cols = maze.GetLength(1);
     
             bool IsWalkable(int r, int c)
-                => maze[r, c] is null or MazeArtifact;
+                => maze[r, c] is null or MazeArtifact or MazeGameSpawn;
     
             var directions = new (int dr, int dc)[]
             {
@@ -108,9 +110,26 @@ public class MazeGeneratorTests
             }
         }
     }
-    
-    private static MazeWall _wall = new MazeWall();
-    private static MazeGameExit _exit = new();
+
+    [Fact]
+    public void MazeMustContainASingleSpawn()
+    {
+        var maze = MazeGenerator.GenerateMaze(MockHelpers.GenerateMockArtifacts(100));
+
+        int spawns = 0;
+        for (int i = 0; i < maze.GetLength(0); i++)
+        {
+            for (int j = 0; j < maze.GetLength(1); j++)
+            {
+                if (maze[i, j] is MazeGameSpawn)
+                {
+                    spawns++;
+                }
+            }
+        }
+        
+        Assert.Equal(1, spawns);
+    }
     
     [Fact]
     public void GenerateExitTestLookingAtAWall270deg()

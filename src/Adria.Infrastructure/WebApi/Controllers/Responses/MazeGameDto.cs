@@ -6,13 +6,14 @@ public sealed class MazeGameDto
 {
     private const int MAZE_WALKABLE_PATH_NUMBER = 0;
     private const int MAZE_WALL_NUMBER = 1;
-    private const int MAZE_EXIT_NUMBER = 99;
+    private const int MAZE_EXIT_NUMBER = 2;
     public Guid GameId { get; set; }
     // for some reason serialization doesn't allow int[,]
     public int[][] Maze { get; set; }
     public IList<MazeArtifactDto> Artifacts { get; } = new List<MazeArtifactDto>();
-    public SpawnLocationDto SpawnLocation { get; set; }
-    
+    // if someone manages to make it such that there is no spawn this will be caught by the unit tests :)
+    public SpawnLocationDto SpawnLocation { get; set; } = null!;
+
     public MazeGameDto(MazeGame game)
     {
         GameId = game.GameId;

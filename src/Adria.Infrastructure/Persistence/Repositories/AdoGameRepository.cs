@@ -8,7 +8,7 @@ namespace Adria.Infrastructure.Persistence.Repositories;
 
 public class AdoGameRepository : AbstractAdoRepository, IGameRepository
 {
-    private ILogger<AdoGameRepository> _logger;
+    private readonly ILogger<AdoGameRepository> _logger;
     private const string TABLE_COMPLETED_GAMES = "completed_games";
     private const string COL_COMPLETED_GAMES_GAME_ID = "game_id";
     private const string COL_COMPLETED_GAMES_USER_ID = "user_id";

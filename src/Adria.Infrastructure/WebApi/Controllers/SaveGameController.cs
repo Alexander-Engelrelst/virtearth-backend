@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Adria.Infrastructure.WebApi.Controllers;
 
-public class SaveGameController
+public static class SaveGameController
 {
     public static async Task<Results<UnauthorizedHttpResult, NotFound<string>, Conflict<string>, NoContent, ProblemHttpResult>> Invoke(
         [FromServices] IUseCase<SaveFinishedGameInput> saveGame,

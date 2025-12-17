@@ -6,7 +6,7 @@ namespace Adria.Domain.games;
 
 public static class ActiveGames
 {
-    public static readonly ConcurrentDictionary<Guid, Game> _games = new();
+    private static readonly ConcurrentDictionary<Guid, Game> _games = new();
     public static TimeSpan GAME_TTL { get; } = TimeSpan.FromSeconds(15);
     public static void AddGame(Game game)
     {

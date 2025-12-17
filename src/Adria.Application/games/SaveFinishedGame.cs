@@ -9,14 +9,11 @@ public sealed record SaveFinishedGameInput(User User, Guid GameId);
 
 public class SaveFinishedGame : IUseCase<SaveFinishedGameInput>
 {
-    private readonly ILogger<SaveFinishedGame> _logger;
     private readonly IGameRepository  _gameRepository;
     public SaveFinishedGame(
-        ILogger<SaveFinishedGame> logger,
         IGameRepository gameRepository
     )
     {
-        _logger = logger;
         _gameRepository = gameRepository;
     }
     

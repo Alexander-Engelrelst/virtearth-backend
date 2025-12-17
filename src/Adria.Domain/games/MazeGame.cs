@@ -12,7 +12,7 @@ public class MazeGame : Game
      * if this wasn't fixed it means that there was insufficient time to add this properly */
     
     public IMazeElement?[,] Maze { get; }
-    private readonly ISet<MazeArtifact> _foundArtifacts = new HashSet<MazeArtifact>();
+    private readonly HashSet<MazeArtifact> _foundArtifacts = [];
 
     public IReadOnlySet<MazeArtifact> FoundArtifacts => _foundArtifacts.ToImmutableHashSet();
     public IReadOnlySet<MazeArtifact> Artifacts { get; }
