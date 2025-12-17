@@ -1,7 +1,8 @@
 ﻿using Adria.Domain.Shared;
 
 namespace Adria.Domain.games;
-
+#pragma warning disable S2245
+// yes using pseudorandom is safe here sonar
 public static class MazeGenerator
 {
     private const int MINIMUM_CELLS_BETWEEN_ARTIFACTS = 5;
@@ -271,3 +272,5 @@ public static class MazeGenerator
         return diff > 180 ? 360 - diff : diff;
     }
 }
+#pragma warning restore S2245
+

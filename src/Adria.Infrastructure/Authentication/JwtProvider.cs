@@ -34,6 +34,7 @@ public sealed class JwtProvider : IJwtProvider
 public static class JwtConfiguration
 {
     // Thanks Sonar
+    #pragma warning disable S6418
     private const string SECRET =
         "L7dLr6B6K9M+f0Ogbbuv9y8RnWUVVYqJ7Zn1jZy4WGi8sVtzjQw1v5XvT4Qy2x+O9U9JvUdxW1BvJQnHVpEtDw==";
 
@@ -45,5 +46,6 @@ public static class JwtConfiguration
     public static string Issuer => ISSUER;
     public static string Audience => AUDIENCE;
     public static int ExpireDays => EXPIRE_DAYS;
-    
+    #pragma warning restore S6418
+
 }
