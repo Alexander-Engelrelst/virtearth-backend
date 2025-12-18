@@ -24,7 +24,7 @@ public class MazeGame : Game
         Artifacts = artifacts;
     }
 
-    public MazeGame? UpdateUserFoundArtifacts(Guid inputArtifactId, float xCord, float yCord, float angle)
+    public MazeGame? UpdateUserFoundArtifacts(Guid inputArtifactId)
     {
         if (_foundArtifacts.Select(artifact => artifact.Id).Contains(inputArtifactId))
         {
@@ -38,20 +38,7 @@ public class MazeGame : Game
 
         if (_foundArtifacts.Count != Artifacts.Count) return null;
 
-        try
-        {
-            MazeGenerator.GenerateMazeExit(Maze);
-        }
-        catch (IndexOutOfRangeException ex)
-        {
-            _foundArtifacts.Remove(artifact);
-            throw new PlayerOutOfBoundsException(GameId, User.Id, xCord, yCord, ex);
-        }
-        catch (ArgumentException ex)
-        {
-            _foundArtifacts.Remove(artifact);
-            throw new PlayerStandingInWallException(GameId, User.Id, xCord, yCord, ex);
-        }
+        MazeGenerator.GenerateMazeExit(Maze);
         
         return this;
     }
