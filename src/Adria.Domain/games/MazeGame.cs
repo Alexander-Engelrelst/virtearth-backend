@@ -40,7 +40,7 @@ public class MazeGame : Game
 
         try
         {
-            MazeGenerator.GenerateMazeExit(Maze, xCord, yCord, angle);
+            MazeGenerator.GenerateMazeExit(Maze);
         }
         catch (IndexOutOfRangeException ex)
         {

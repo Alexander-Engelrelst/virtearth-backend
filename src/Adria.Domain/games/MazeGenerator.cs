@@ -2,7 +2,7 @@
 
 namespace Adria.Domain.games;
 #pragma warning disable S2245
-// yes using pseudorandom is safe here sonar
+// yes using pseudorandom is safe here sonar ¯\_(ツ)_/¯
 public static class MazeGenerator
 {
     private const int MINIMUM_CELLS_BETWEEN_ARTIFACTS = 5;
@@ -215,58 +215,22 @@ public static class MazeGenerator
 
     #pragma warning disable S2368
     // (ง ͠° ͟ل͜ ͡°)ง  I will use a multidimensional array wherever I want >:(
-    public static void GenerateMazeExit(IMazeElement?[,] maze, float xCord, float yCord, float angleDeg)
+    public static void GenerateMazeExit(IMazeElement?[,] maze)
     {
-        angleDeg = (angleDeg % 360 + 360) % 360;
-        int roundedXCord = (int)Math.Floor(xCord);
-        int roundedYCord = (int)Math.Floor(yCord);
-        
-        if (maze[roundedXCord, roundedYCord] is MazeWall)
+        Random random = new();
+        int mazeWidth = maze.GetLength(0);
+        // most of the maze consists of walls so if this somehow runs more than a few times it is just unfortunate
+        while (true)
         {
-            throw new ArgumentException("at least one of the coordinates is invalid");
+            (int x, int y) coordinates = (random.Next(mazeWidth - 1), random.Next(mazeWidth - 1));
+            if (maze[coordinates.x, coordinates.y] is MazeWall)
+            {
+                maze[coordinates.x, coordinates.y] = new MazeGameExit();
+                return;
+            }
         }
-
-        (int dx, int dy, float angle)[] directions =
-        [
-            (-1, 0, 0f),
-            (0, 1, 90f),
-            (1, 0, 180f),
-            (0, -1, 270f)
-        ];
-        
-        (int dx, int dy, float angle)[] orderedValidDirections = directions
-            .Where(d => maze[roundedXCord + d.dx, roundedYCord + d.dy] is MazeWall)
-            .OrderBy(d => AngleDifference(angleDeg, d.angle))
-            .ToArray();
-
-        if (orderedValidDirections.Length > 0)
-        {
-            (int dx, int dy, float angle) dir = orderedValidDirections[0];
-            maze[roundedXCord + dir.dx, roundedYCord + dir.dy] = new MazeGameExit();
-            return;
-        }
-        
-        (int dx, int dy, float angle)[] diagonalDirections =
-        [
-            (-1, 1, 45f),
-            (1, 1, 135f),
-            (1, -1, 225f),
-            (-1, -1, 315f)
-        ];
-
-        (int dx, int dy, float angle) chosenDir = diagonalDirections
-            .OrderBy(d => AngleDifference(angleDeg, d.angle))
-            .First();
-        
-        maze[roundedXCord + chosenDir.dx, roundedYCord + chosenDir.dy] = new MazeGameExit();
     }
     
     #pragma warning restore S2368
-
-    private static float AngleDifference(float angle1, float angle2)
-    {
-        float diff = Math.Abs(angle1 - angle2) % 360;
-        return diff > 180 ? 360 - diff : diff;
-    }
 }
 #pragma warning restore S2245

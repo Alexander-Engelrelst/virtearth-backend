@@ -64,43 +64,6 @@ public class UpdateFoundMazeArtifactsTests
     }
 
     [Fact]
-    public async Task UpdatingLastArtifactWithInvalidCoordinatesThrows()
-    {
-        var usecase = new UpdateFoundMazeArtifacts(new NullLogger<UpdateFoundMazeArtifacts>());
-        MazeArtifact artifact = new(Guid.NewGuid(), "name", "description");
-        
-        Game game = new MazeGame(Guid.NewGuid(), new User("username"), new HashSet<MazeArtifact>{artifact});
-        
-        ActiveGames.AddGame(game);
-
-        await Assert.ThrowsAsync<PlayerStandingInWallException>(() =>
-            usecase.Execute(new UpdateFoundMazeArtifactsInput(game.User, artifact.Id, game.GameId, 0, 0, 90)));
-    }
-    
-    [Fact]
-    public async Task UpdatingLastOutsideOfMazeThrows()
-    {
-        var usecase = new UpdateFoundMazeArtifacts(new NullLogger<UpdateFoundMazeArtifacts>());
-        MazeArtifact artifact = new(Guid.NewGuid(), "name", "description");
-        Game game = new MazeGame(Guid.NewGuid(), new User("username"), new HashSet<MazeArtifact>{artifact});
-
-        ActiveGames.AddGame(game);
-        await Assert.ThrowsAsync<PlayerOutOfBoundsException>(() =>
-            usecase.Execute(new UpdateFoundMazeArtifactsInput(game.User, artifact.Id, game.GameId, -1, 0, 90)));
-        
-        await Assert.ThrowsAsync<PlayerOutOfBoundsException>(() =>
-             usecase.Execute(new UpdateFoundMazeArtifactsInput(game.User, artifact.Id, game.GameId, 1, -1, 90)));
-        
-         await Assert.ThrowsAsync<PlayerOutOfBoundsException>(() =>
-             usecase.Execute(new UpdateFoundMazeArtifactsInput(game.User, artifact.Id, game.GameId, int.MaxValue, 1,
-            90)));
-        
-         await Assert.ThrowsAsync<PlayerOutOfBoundsException>(() =>
-             usecase.Execute(new UpdateFoundMazeArtifactsInput(game.User, artifact.Id, game.GameId, 1, int.MaxValue,
-            90)));
-    }
-
-    [Fact]
     public async Task CorrectUsageWorks()
     {
         var usecase = new UpdateFoundMazeArtifacts(new NullLogger<UpdateFoundMazeArtifacts>());

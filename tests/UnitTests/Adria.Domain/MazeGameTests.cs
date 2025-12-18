@@ -64,9 +64,9 @@ public class MazeGameTest
         
         bool exitFound = false;
         
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < game.Maze.GetLength(0); i++)
         {
-            for (int j = 0; j < 2; j++)
+            for (int j = 0; j < game.Maze.GetLength(1); j++)
             {
                 if (result.Maze[i, j] is MazeGameExit)
                 {
