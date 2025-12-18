@@ -34,7 +34,7 @@ public abstract class AbstractAdoRepository
         try
         {
             await using DbConnection connection = await OpenConnection();
-            using var command = connection.CreateCommand();
+            using DbCommand command = connection.CreateCommand();
             command.CommandText = commandText;
             command.Parameters.AddRange(parameters);
             await command.ExecuteNonQueryAsync();
@@ -61,8 +61,8 @@ public abstract class AbstractAdoRepository
     {
         try
         {
-            var connection = await OpenConnection();
-            var command = connection.CreateCommand();
+            DbConnection connection = await OpenConnection();
+            DbCommand command = connection.CreateCommand();
             command.CommandText = commandText;
             command.Parameters.AddRange(parameters);
             return await command.ExecuteReaderAsync(
@@ -85,7 +85,7 @@ public abstract class AbstractAdoRepository
     
     protected async Task<DbConnection> OpenConnection()
     {
-        var connection = _factory.CreateConnection() ??
+        DbConnection connection = _factory.CreateConnection() ??
              throw new InvalidOperationException("Failed to create a database connection.");
 
         connection.ConnectionString = _connectionString;

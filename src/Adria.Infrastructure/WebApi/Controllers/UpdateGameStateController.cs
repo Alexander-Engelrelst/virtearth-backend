@@ -18,8 +18,7 @@ public static class UpdateGameStateController
         [FromServices] IUseCase<Guid, Task<User>> getUser,
         [FromServices] IHttpContextAccessor httpContextAccessor,
         [FromRoute] Guid gameId,
-        [FromRoute] Guid artifactId,
-        [FromBody] UpdateGameStateBody body
+        [FromRoute] Guid artifactId
     )
     {
         User user;
@@ -40,7 +39,7 @@ public static class UpdateGameStateController
         try
         {
             MazeGame? game = await updateFoundMazeArtifacts.Execute(new UpdateFoundMazeArtifactsInput(
-                user, artifactId, gameId, body.XCord, body.YCord, body.Angle
+                user, artifactId, gameId
             ));
 
             if (game is null)
@@ -77,9 +76,3 @@ public static class UpdateGameStateController
         }
     }
 }
-
-public sealed record UpdateGameStateBody(
-    float XCord,
-    float YCord,
-    float Angle
-);
