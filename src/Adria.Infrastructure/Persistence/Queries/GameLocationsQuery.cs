@@ -35,35 +35,35 @@ public class GameLocationsQuery : IGameLocationsQuery
     {
         _logger.LogInformation("Fetching all games");
 
-        await using var connection = _factory.CreateConnection() ?? 
+        await using DbConnection connection = _factory.CreateConnection() ?? 
                                      throw new VirtEarthDatabaseException("Failed to create a database connection.");
 
         
         connection.ConnectionString = _connectionString;
         await connection.OpenAsync();
 
-        await using var command = connection.CreateCommand();
+        await using DbCommand command = connection.CreateCommand();
     
         command.CommandText = QRY;
         
-        var parameter = command.CreateParameter();
+        DbParameter parameter = command.CreateParameter();
         parameter.ParameterName = "@userId";
         parameter.Value = userId;
         command.Parameters.Add(parameter);
         
-        var games = new List<GameLocation>();
+        List<GameLocation> games = [];
 
-        await using var reader = await command.ExecuteReaderAsync();
+        await using DbDataReader reader = await command.ExecuteReaderAsync();
 
         while (await reader.ReadAsync())
         {
-            var idOrd = reader.GetOrdinal("id");
-            var nameOrd = reader.GetOrdinal("name");
-            var latituteOrd = reader.GetOrdinal("latitute");
-            var longitudeOrd = reader.GetOrdinal("longitude");
-            var continentOrd = reader.GetOrdinal("continent");
-            var yearOrd = reader.GetOrdinal("year");
-            var userIdOrd = reader.GetOrdinal("user_id");
+            int idOrd = reader.GetOrdinal("id");
+            int nameOrd = reader.GetOrdinal("name");
+            int latituteOrd = reader.GetOrdinal("latitute");
+            int longitudeOrd = reader.GetOrdinal("longitude");
+            int continentOrd = reader.GetOrdinal("continent");
+            int yearOrd = reader.GetOrdinal("year");
+            int userIdOrd = reader.GetOrdinal("user_id");
             
             string continentAsString = reader.GetString(continentOrd);
             if (!Enum.TryParse(continentAsString, out Continent continent))

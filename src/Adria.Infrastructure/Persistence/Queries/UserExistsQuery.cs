@@ -31,16 +31,16 @@ public sealed class UserExistsQuery : IUserExistsQuery
     {
         _logger.LogInformation("Checking if user with username {Username} exists", username);
 
-        await using var connection = _factory.CreateConnection() ?? 
+        await using DbConnection connection = _factory.CreateConnection() ?? 
                                      throw new VirtEarthDatabaseException("Failed to create a database connection..");
         connection.ConnectionString = _connectionString;
         await connection.OpenAsync();
 
-        await using var command = connection.CreateCommand();
+        await using DbCommand command = connection.CreateCommand();
     
         command.CommandText = QRY;
             
-        var parameter = command.CreateParameter();
+        DbParameter parameter = command.CreateParameter();
         parameter.ParameterName = "@username";
         parameter.Value = username;
         

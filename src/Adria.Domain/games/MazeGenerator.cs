@@ -206,10 +206,7 @@ public static class MazeGenerator
         {
             for (int j = 0; j < maze.GetLength(1); j++)
             {
-                if (maze[i, j] is null)
-                {
-                    spaces[i, j] = true;
-                }
+                if (maze[i, j] is null) spaces[i, j] = true;
             }
         }
         
@@ -228,36 +225,36 @@ public static class MazeGenerator
         {
             throw new ArgumentException("at least one of the coordinates is invalid");
         }
-        
-        var directions = new (int dx, int dy, float angle)[]
-        {
+
+        (int dx, int dy, float angle)[] directions =
+        [
             (-1, 0, 0f),
             (0, 1, 90f),
             (1, 0, 180f),
             (0, -1, 270f)
-        };
+        ];
         
-        var orderedValidDirections = directions
+        (int dx, int dy, float angle)[] orderedValidDirections = directions
             .Where(d => maze[roundedXCord + d.dx, roundedYCord + d.dy] is MazeWall)
             .OrderBy(d => AngleDifference(angleDeg, d.angle))
             .ToArray();
 
         if (orderedValidDirections.Length > 0)
         {
-            var dir = orderedValidDirections[0];
+            (int dx, int dy, float angle) dir = orderedValidDirections[0];
             maze[roundedXCord + dir.dx, roundedYCord + dir.dy] = new MazeGameExit();
             return;
         }
         
-        var diagonalDirections = new (int dx, int dy, float angle)[]
-        {
+        (int dx, int dy, float angle)[] diagonalDirections =
+        [
             (-1, 1, 45f),
             (1, 1, 135f),
             (1, -1, 225f),
-            (-1, -1, 315f),
-        };
+            (-1, -1, 315f)
+        ];
 
-        var chosenDir = diagonalDirections
+        (int dx, int dy, float angle) chosenDir = diagonalDirections
             .OrderBy(d => AngleDifference(angleDeg, d.angle))
             .First();
         
@@ -268,9 +265,8 @@ public static class MazeGenerator
 
     private static float AngleDifference(float angle1, float angle2)
     {
-        var diff = Math.Abs(angle1 - angle2) % 360;
+        float diff = Math.Abs(angle1 - angle2) % 360;
         return diff > 180 ? 360 - diff : diff;
     }
 }
 #pragma warning restore S2245
-
