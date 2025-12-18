@@ -45,11 +45,11 @@ public class MazeGameTest
         
         MazeGame game = new MazeGame(Guid.NewGuid(), new User("username"), artifacts);
         // location 0, 0 can never be a valid location 
-        game.UpdateUserFoundArtifacts(artifact.Id, 1 , 1 , 90);
+        game.UpdateUserFoundArtifacts(artifact.Id);
         Assert.Contains(artifact, game.FoundArtifacts);
         
-        Assert.Throws<ArtifactAlreadyFoundException>(() => game.UpdateUserFoundArtifacts(artifact.Id, 1, 1, 90));
-        Assert.Throws<ArtifactNotFoundException>(() => game.UpdateUserFoundArtifacts(Guid.NewGuid(), 1, 1, 90));
+        Assert.Throws<ArtifactAlreadyFoundException>(() => game.UpdateUserFoundArtifacts(artifact.Id));
+        Assert.Throws<ArtifactNotFoundException>(() => game.UpdateUserFoundArtifacts(Guid.NewGuid()));
     }
 
     [Fact]
@@ -58,15 +58,15 @@ public class MazeGameTest
         var artifact =  new MazeArtifact(Guid.NewGuid(), "name", "description");
         MazeGame game = new MazeGame(Guid.NewGuid(), new User("username"), new HashSet<MazeArtifact>{artifact});
         
-        MazeGame? result = game.UpdateUserFoundArtifacts(artifact.Id, 1 , 1 , 90);
+        MazeGame? result = game.UpdateUserFoundArtifacts(artifact.Id);
         
         if (result is null) Assert.Fail("The returned value should not be null");
         
         bool exitFound = false;
         
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < game.Maze.GetLength(0); i++)
         {
-            for (int j = 0; j < 2; j++)
+            for (int j = 0; j < game.Maze.GetLength(1); j++)
             {
                 if (result.Maze[i, j] is MazeGameExit)
                 {

@@ -4,8 +4,8 @@ using Adria.Main.Modules.Persistence;
 using Adria.Main.Modules.UseCases;
 using Adria.Main.Modules.WebApi;
 
-var builder = WebApplication.CreateBuilder(args);
-var configuration = builder.Configuration;
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+ConfigurationManager configuration = builder.Configuration;
 
 builder
     .Services

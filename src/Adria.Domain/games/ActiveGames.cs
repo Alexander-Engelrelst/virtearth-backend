@@ -38,7 +38,7 @@ public static class ActiveGames
 
     public static void RemoveUnplayedGames()
     {
-        foreach (var game in _games.Values)
+        foreach (Game game in _games.Values)
         {
             if (game.TimeOfLastHeartBeat.Add(GAME_TTL) < DateTime.UtcNow)
             {

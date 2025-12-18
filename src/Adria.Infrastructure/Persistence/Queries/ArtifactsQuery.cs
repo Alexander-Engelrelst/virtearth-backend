@@ -34,31 +34,31 @@ public class ArtifactsQuery : IArtifactsQuery
     {
         _logger.LogInformation("Fetching all artifacts for game {Id}", id);
 
-        await using var connection = _factory.CreateConnection() ?? 
+        await using DbConnection connection = _factory.CreateConnection() ?? 
                                      throw new VirtEarthDatabaseException("Failed to create a database connection.");
 
         
         connection.ConnectionString = _connectionString;
         await connection.OpenAsync();
 
-        await using var command = connection.CreateCommand();
+        await using DbCommand command = connection.CreateCommand();
     
         command.CommandText = QRY;
         
-        var parameter = command.CreateParameter();
+        DbParameter parameter = command.CreateParameter();
         parameter.ParameterName = "@id";
         parameter.Value = id.ToString();
         command.Parameters.Add(parameter);
         
-        var artifacts = new HashSet<MazeArtifact>();
+        HashSet<MazeArtifact> artifacts = [];
 
-        await using var reader = await command.ExecuteReaderAsync();
+        await using DbDataReader reader = await command.ExecuteReaderAsync();
 
         while (await reader.ReadAsync())
         {
-            var idOrd = reader.GetOrdinal("id");
-            var nameOrd = reader.GetOrdinal("name");
-            var descriptionOrd = reader.GetOrdinal("description");
+            int idOrd = reader.GetOrdinal("id");
+            int nameOrd = reader.GetOrdinal("name");
+            int descriptionOrd = reader.GetOrdinal("description");
             
             artifacts.Add(new MazeArtifact(
                 reader.GetGuid(idOrd),

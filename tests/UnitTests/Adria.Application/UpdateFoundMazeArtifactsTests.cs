@@ -16,10 +16,7 @@ public class UpdateFoundMazeArtifactsTests
         await Assert.ThrowsAsync<ActiveGameNotFoundException>(() => usecase.Execute(new UpdateFoundMazeArtifactsInput(
             new User("username"),
             Guid.NewGuid(),
-            Guid.NewGuid(),
-            1,
-            1,
-            90
+            Guid.NewGuid()
         )));
     }
 
@@ -31,7 +28,7 @@ public class UpdateFoundMazeArtifactsTests
         ActiveGames.AddGame(game);
 
         await Assert.ThrowsAsync<GameIdMismatchException>(() =>
-            usecase.Execute(new UpdateFoundMazeArtifactsInput(game.User, Guid.NewGuid(), Guid.NewGuid(), 1, 1, 90))
+            usecase.Execute(new UpdateFoundMazeArtifactsInput(game.User, Guid.NewGuid(), Guid.NewGuid()))
         );
     }
 
@@ -43,7 +40,7 @@ public class UpdateFoundMazeArtifactsTests
         ActiveGames.AddGame(game);
 
         await Assert.ThrowsAsync<ArtifactNotFoundException>(() =>
-            usecase.Execute(new UpdateFoundMazeArtifactsInput(game.User, Guid.NewGuid(), game.GameId, 1, 1, 90)));
+            usecase.Execute(new UpdateFoundMazeArtifactsInput(game.User, Guid.NewGuid(), game.GameId)));
     }
     
     [Fact]
@@ -58,46 +55,9 @@ public class UpdateFoundMazeArtifactsTests
         Game game = new MazeGame(Guid.NewGuid(), new User("username"), artifacts);
         
         ActiveGames.AddGame(game);
-        await usecase.Execute(new UpdateFoundMazeArtifactsInput(game.User, artifact.Id, game.GameId, 1, 1, 90));
+        await usecase.Execute(new UpdateFoundMazeArtifactsInput(game.User, artifact.Id, game.GameId));
         await Assert.ThrowsAsync<ArtifactAlreadyFoundException>(() =>
-            usecase.Execute(new UpdateFoundMazeArtifactsInput(game.User, artifact.Id, game.GameId, 1, 1, 90)));
-    }
-
-    [Fact]
-    public async Task UpdatingLastArtifactWithInvalidCoordinatesThrows()
-    {
-        var usecase = new UpdateFoundMazeArtifacts(new NullLogger<UpdateFoundMazeArtifacts>());
-        MazeArtifact artifact = new(Guid.NewGuid(), "name", "description");
-        
-        Game game = new MazeGame(Guid.NewGuid(), new User("username"), new HashSet<MazeArtifact>{artifact});
-        
-        ActiveGames.AddGame(game);
-
-        await Assert.ThrowsAsync<PlayerStandingInWallException>(() =>
-            usecase.Execute(new UpdateFoundMazeArtifactsInput(game.User, artifact.Id, game.GameId, 0, 0, 90)));
-    }
-    
-    [Fact]
-    public async Task UpdatingLastOutsideOfMazeThrows()
-    {
-        var usecase = new UpdateFoundMazeArtifacts(new NullLogger<UpdateFoundMazeArtifacts>());
-        MazeArtifact artifact = new(Guid.NewGuid(), "name", "description");
-        Game game = new MazeGame(Guid.NewGuid(), new User("username"), new HashSet<MazeArtifact>{artifact});
-
-        ActiveGames.AddGame(game);
-        await Assert.ThrowsAsync<PlayerOutOfBoundsException>(() =>
-            usecase.Execute(new UpdateFoundMazeArtifactsInput(game.User, artifact.Id, game.GameId, -1, 0, 90)));
-        
-        await Assert.ThrowsAsync<PlayerOutOfBoundsException>(() =>
-             usecase.Execute(new UpdateFoundMazeArtifactsInput(game.User, artifact.Id, game.GameId, 1, -1, 90)));
-        
-         await Assert.ThrowsAsync<PlayerOutOfBoundsException>(() =>
-             usecase.Execute(new UpdateFoundMazeArtifactsInput(game.User, artifact.Id, game.GameId, int.MaxValue, 1,
-            90)));
-        
-         await Assert.ThrowsAsync<PlayerOutOfBoundsException>(() =>
-             usecase.Execute(new UpdateFoundMazeArtifactsInput(game.User, artifact.Id, game.GameId, 1, int.MaxValue,
-            90)));
+            usecase.Execute(new UpdateFoundMazeArtifactsInput(game.User, artifact.Id, game.GameId)));
     }
 
     [Fact]
@@ -110,8 +70,8 @@ public class UpdateFoundMazeArtifactsTests
 
         ActiveGames.AddGame(game);
         
-        Assert.Null(await usecase.Execute(new UpdateFoundMazeArtifactsInput(game.User, artifact.Id, game.GameId, 1, 1, 90)));
-        Assert.Equal(game, await usecase.Execute(new UpdateFoundMazeArtifactsInput(game.User, artifact2.Id, game.GameId, 1, 1, 90)));
+        Assert.Null(await usecase.Execute(new UpdateFoundMazeArtifactsInput(game.User, artifact.Id, game.GameId)));
+        Assert.Equal(game, await usecase.Execute(new UpdateFoundMazeArtifactsInput(game.User, artifact2.Id, game.GameId)));
     }
     
     /* if the value returned is actually correct will be checked inside the functions called by the usecase

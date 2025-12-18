@@ -130,146 +130,44 @@ public class MazeGeneratorTests
         
         Assert.Equal(1, spawns);
     }
-    
+
     [Fact]
-    public void GenerateExitTestLookingAtAWall270deg()
+    public void MazeExitMustGetAddedOnAWall()
     {
-        IMazeElement?[,] maze = new IMazeElement?[,]
-        {
-            { _wall, _wall, _wall, _wall },
-            { _wall, null, _wall, _wall },
-            { _wall, _wall, _wall, _wall },
-            { _wall, _wall, _wall, _wall }
-        };
+        var maze = MazeGenerator.GenerateMaze(MockHelpers.GenerateMockArtifacts(100));
+        List<(int x, int y)> mazeWallCoordinates = [];
         
-        MazeGenerator.GenerateMazeExit(maze, 1 , 1, 270);
-        Assert.IsType<MazeGameExit>(maze[1 , 0]);
-    }
-    
-    [Fact]
-    public void GenerateExitTestLookingAtAWall90deg()
-    {
-        IMazeElement?[,] maze = new IMazeElement?[,]
+        for (int i = 0; i < maze.GetLength(0); i++)
         {
-            { _wall, _wall, _wall, _wall },
-            { _wall, null, _wall, _wall },
-            { _wall, _wall, _wall, _wall },
-            { _wall, _wall, _wall, _wall }
-        };
+            for (int j = 0; j < maze.GetLength(1); j++)
+            {
+                if (maze[i, j] is MazeWall)
+                {
+                    mazeWallCoordinates.Add((i, j));
+                }
+            }
+        }
         
-        MazeGenerator.GenerateMazeExit(maze, 1 , 1, 90);
-        Assert.IsType<MazeGameExit>(maze[1 , 2]);
-    }
-    
-    [Fact]
-    public void GenerateExitTestLookingAtAWall45deg()
-    {
-        IMazeElement?[,] maze = new IMazeElement?[,]
+        MazeGenerator.GenerateMazeExit(maze);
+
+        (int x, int y)? mazeExitCoordinates = null;
+
+        for (int i = 0; i < maze.GetLength(0); i++)
         {
-            { _wall, _wall, _wall, _wall },
-            { _wall, null, _wall, _wall },
-            { _wall, _wall, _wall, _wall },
-            { _wall, _wall, _wall, _wall }
-        };
+            for (int j = 0; j < maze.GetLength(1); j++)
+            {
+                if (maze[i, j] is MazeGameExit)
+                {
+                    mazeExitCoordinates = (i, j);
+                }
+            }
+        }
         
-        MazeGenerator.GenerateMazeExit(maze, 1 , 1, 45);
-        Assert.True(maze[0, 1] is MazeGameExit ^ maze[1, 2] is MazeGameExit);
+        Assert.NotNull(mazeExitCoordinates);
+        Assert.Contains(
+            mazeExitCoordinates.Value,
+            mazeWallCoordinates
+        );
+
     }
-    
-    [Fact]
-    public void GenerateExitTestLookingAtAWall30deg()
-    {
-        IMazeElement?[,] maze = new IMazeElement?[4, 4]
-        {
-            { _wall, _wall, _wall, _wall },
-            { _wall, null, _wall, _wall },
-            { _wall, _wall, _wall, _wall },
-            { _wall, _wall, _wall, _wall }
-        };
-        
-        MazeGenerator.GenerateMazeExit(maze, 1 , 1, 45);
-        Assert.IsType<MazeGameExit>(maze[0 , 1]);
-    }
-    
-    [Fact]
-    public void GenerateExitTestLookingAtEmptySidesAreWalls()
-    {
-        IMazeElement?[,] maze = new IMazeElement?[4, 4]
-        {
-            { _wall, _wall, _wall, _wall },
-            { _wall, null, null, _wall },
-            { _wall, _wall, _wall, _wall },
-            { _wall, _wall, _wall, _wall }
-        };
-        
-        MazeGenerator.GenerateMazeExit(maze, 1 , 1, 90);
-        Assert.True(maze[0, 1] is MazeGameExit ^ maze[2, 1] is MazeGameExit);
-    }
-    
-    [Fact]
-    public void GenerateExitTestLookingAtEmptySidesAreEmpty()
-    {
-        IMazeElement?[,] maze = new IMazeElement?[,]
-        {
-            { _wall, _wall, _wall, _wall, _wall },
-            { _wall, _wall, null, _wall, _wall },
-            { _wall, _wall, null, null, _wall },
-            { _wall, _wall, null, _wall, _wall },
-            { _wall, _wall, _wall, _wall, _wall }
-        };
-        
-        MazeGenerator.GenerateMazeExit(maze, 2 , 2, 90);
-        Assert.IsType<MazeGameExit>(maze[2, 1]);
-    }
-    
-    [Fact]
-    public void GenerateExitAllNonDiagonalEmpty90deg()
-    {
-        IMazeElement?[,] maze = new IMazeElement?[,]
-        {
-            { _wall, _wall, _wall, _wall, _wall },
-            { _wall, _wall, null, _wall, _wall },
-            { _wall, null, null, null, _wall },
-            { _wall, _wall, null, _wall, _wall },
-            { _wall, _wall, _wall, _wall, _wall }
-        };
-        
-        MazeGenerator.GenerateMazeExit(maze, 2 , 2, 90);
-        Assert.True(maze[1, 3] is MazeGameExit ^ maze[3, 1] is MazeGameExit);
-    }
-    
-    [Fact]
-    public void GenerateExitAllNonDiagonalEmpty45deg()
-    {
-        IMazeElement?[,] maze = new IMazeElement?[,]
-        {
-            { _wall, _wall, _wall, _wall, _wall },
-            { _wall, _wall, null, _wall, _wall },
-            { _wall, null, null, null, _wall },
-            { _wall, _wall, null, _wall, _wall },
-            { _wall, _wall, _wall, _wall, _wall }
-        };
-        
-        MazeGenerator.GenerateMazeExit(maze, 2 , 2, 45);
-        Assert.IsType<MazeGameExit>(maze[1, 3]);
-    }
-    
-    [Fact]
-    public void GenerateExitAllNonDiagonalEmpty30deg()
-    {
-        IMazeElement?[,] maze = new IMazeElement?[,]
-        {
-            { _wall, _wall, _wall, _wall, _wall },
-            { _wall, _wall, null, _wall, _wall },
-            { _wall, null, null, null, _wall },
-            { _wall, _wall, null, _wall, _wall },
-            { _wall, _wall, _wall, _wall, _wall }
-        };
-        
-        MazeGenerator.GenerateMazeExit(maze, 2 , 2, 45);
-        Assert.IsType<MazeGameExit>(maze[1, 3]);
-    }
-    
-    /* we don't need more tests for diagonal the maze algorithm ensures that if all horizontal spaces are null,
-     * then all diagonals will be a wall */
 }

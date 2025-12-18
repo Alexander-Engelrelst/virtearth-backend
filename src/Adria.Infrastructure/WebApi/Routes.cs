@@ -2,6 +2,7 @@ using Adria.Infrastructure.WebApi.Controllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.OpenApi.Models;
 
 namespace Adria.Infrastructure.WebApi;
@@ -32,7 +33,7 @@ public static class Routes
 
     private static void MapUserRoutes(WebApplication app)
     {
-        var userRoutes = app.MapGroup("/api/users")
+        RouteGroupBuilder userRoutes = app.MapGroup("/api/users")
             .WithTags("Users")
             .WithDescription("All endpoints related to users")
             .WithOpenApi();
@@ -68,7 +69,7 @@ public static class Routes
 
     private static void MapGameRoutes(WebApplication app)
     {
-        var gameRoutes = app.MapGroup("/api/games")
+        RouteGroupBuilder gameRoutes = app.MapGroup("/api/games")
             .WithTags("Games")
             .WithDescription("All endpoints related to games")
             .WithOpenApi();
