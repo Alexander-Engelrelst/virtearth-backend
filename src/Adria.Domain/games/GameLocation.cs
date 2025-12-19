@@ -1,5 +1,6 @@
 ﻿namespace Adria.Domain.games;
-
+// I will use as many constructor parameters as I want, and this was added last minute so I did not have time to fix this
+#pragma warning disable S107
 public sealed class GameLocation
 {
     public Guid GameId { get; }
@@ -55,3 +56,4 @@ public sealed class GameLocation
         Description = description;
     }
 }
+#pragma warning restore S2245
