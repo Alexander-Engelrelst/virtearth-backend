@@ -21,7 +21,7 @@ public sealed class GameLocation
         double longitude,
         Continent continent,
         int year,
-        string description,
+        string description = "",
         bool completed = false)
     {
         if (gameId == Guid.Empty)
