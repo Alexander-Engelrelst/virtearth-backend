@@ -19,12 +19,13 @@ ALTER TABLE `users`
 create table games(
     id CHAR(36) NOT NULL  PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    latitute DOUBLE(7,4) not null,
+    latitude DOUBLE(7,4) not null,
     longitude DOUBLE(7,4) not null,
     type VARCHAR(50) not null ,
     continent VARCHAR(15) not null,
     year int not null,
-    CONSTRAINT chk_latitute CHECK ( latitute BETWEEN -90 AND 90),
+    description VARCHAR(1000) NOT NULL DEFAULT '',
+    CONSTRAINT chk_latitute CHECK ( latitude BETWEEN -90 AND 90),
     CONSTRAINT chk_longitude CHECK ( longitude BETWEEN -180 AND 180)
 );
 
@@ -99,10 +100,17 @@ INSERT INTO `users` (`id`, `username`) VALUES
 ('550e8400-e29b-41d4-a716-446655440032', 'YusufZimmerman'),
 ('550e8400-e29b-41d4-a716-446655440033', 'ZaraAllen');
 
-INSERT INTO `games` (`id`, `name`, `latitute`, `longitude`, `type`, `continent`, year)
+INSERT INTO `games` (`id`, `name`, latitude, `longitude`, `type`, `continent`, year, description)
 VALUES -- yes they are all mazes and it is because I was lazy, thank you
-    ('550e8400-e29b-41d4-a716-446655442001', 'Minotaur maze', 35.2989, 25.1636, 'Maze', 'Europe', -1800),
-    ('550e8400-e29b-41d4-a716-446655442002', 'Viking Quest', 59.9139, 10.7522, 'Maze', 'Europe', 900),
+    ('550e8400-e29b-41d4-a716-446655442001',
+     'Minotaur maze', 35.2989,
+     25.1636, 'Maze',
+     'Europe',
+     -1800,
+     'You can control the player either by using WASD or by using the arrow keys');
+
+INSERT INTO `games` (`id`, `name`, latitude, `longitude`, `type`, `continent`, year)
+VALUES  ('550e8400-e29b-41d4-a716-446655442002', 'Viking Quest', 59.9139, 10.7522, 'Maze', 'Europe', 900),
     ('550e8400-e29b-41d4-a716-446655442003', 'Dragon Dynasty', 34.3416, 108.9398, 'Maze', 'Asia', 1200),
     ('550e8400-e29b-41d4-a716-446655442004', 'Samurai Trials', 35.6762, 139.6503, 'Maze', 'Asia', 1600),
     ('550e8400-e29b-41d4-a716-446655442005', 'Pharaoh’s Path', 29.9792, 31.1342, 'Maze', 'Africa', -1500),

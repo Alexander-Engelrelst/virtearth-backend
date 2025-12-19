@@ -16,6 +16,8 @@ public sealed partial class GameLocationDto
     public string GameName { get; }
     
     public bool Completed { get; }
+    
+    public string Description { get; }
 
     public GameLocationDto(GameLocation gameLocation)
     {
@@ -26,5 +28,6 @@ public sealed partial class GameLocationDto
         Year = gameLocation.Year;
         GameName = gameLocation.GameName;
         Completed = gameLocation.Completed;
+        Description = gameLocation.Description;
     }
 }

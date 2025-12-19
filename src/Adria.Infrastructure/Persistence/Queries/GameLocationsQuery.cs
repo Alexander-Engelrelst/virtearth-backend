@@ -14,7 +14,7 @@ public class GameLocationsQuery : IGameLocationsQuery
 {
 
     private const string QRY = @"
-    SELECT g.id, g.name, g.latitute, g.longitude, g.continent, g.year, cg.user_id
+    SELECT g.id, g.name, g.latitude, g.longitude, g.continent, g.year, g.description,cg.user_id
     FROM `games` AS g
     LEFT JOIN `completed_games` AS cg ON g.id = cg.game_id AND cg.user_id = @userId";
     
@@ -59,10 +59,11 @@ public class GameLocationsQuery : IGameLocationsQuery
         {
             int idOrd = reader.GetOrdinal("id");
             int nameOrd = reader.GetOrdinal("name");
-            int latituteOrd = reader.GetOrdinal("latitute");
+            int latituteOrd = reader.GetOrdinal("latitude");
             int longitudeOrd = reader.GetOrdinal("longitude");
             int continentOrd = reader.GetOrdinal("continent");
             int yearOrd = reader.GetOrdinal("year");
+            int descriptionOrd = reader.GetOrdinal("description");
             int userIdOrd = reader.GetOrdinal("user_id");
             
             string continentAsString = reader.GetString(continentOrd);
@@ -87,6 +88,7 @@ public class GameLocationsQuery : IGameLocationsQuery
                 reader.GetDouble(longitudeOrd),
                 continent,
                 reader.GetInt32(yearOrd),
+                reader.GetString(descriptionOrd),
                 !await reader.IsDBNullAsync(userIdOrd)
                 ));
         }
