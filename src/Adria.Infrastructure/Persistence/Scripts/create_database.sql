@@ -101,7 +101,7 @@ INSERT INTO `users` (`id`, `username`) VALUES
 ('550e8400-e29b-41d4-a716-446655440033', 'ZaraAllen');
 
 INSERT INTO `games` (`id`, `name`, latitude, `longitude`, `type`, `continent`, year, description)
-VALUES -- yes they are all mazes and it is because I was lazy, thank you
+VALUES -- yes they are all mazes, and yes it is because I was lazy, thank you
     ('550e8400-e29b-41d4-a716-446655442001',
      'Minotaur maze', 35.2989,
      25.1636, 'Maze',
