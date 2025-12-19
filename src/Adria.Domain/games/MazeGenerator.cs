@@ -57,7 +57,7 @@ public static class MazeGenerator
                 throw new MazeGenerationException("Maximum number of attempts to place artifacts exceeded");
             }
             
-            artifactsAdded = AddArtifacts(maze, artifacts, MINIMUM_CELLS_BETWEEN_ARTIFACTS);
+            artifactsAdded = AddArtifacts(maze, artifacts);
             attempts++;
         } while (!artifactsAdded);
         
@@ -133,7 +133,7 @@ public static class MazeGenerator
         return unVisitedNeighbours;
     }
 
-    private static bool AddArtifacts(IMazeElement?[,] maze, IReadOnlySet<MazeArtifact> artifacts, int minimumCellsBetweenArtifacts)
+    private static bool AddArtifacts(IMazeElement?[,] maze, IReadOnlySet<MazeArtifact> artifacts)
     {
         bool[,] availableSpaces = GetBaseAvailableSpaces(maze);
         Random random = new Random();
@@ -156,7 +156,7 @@ public static class MazeGenerator
             } while (!availableSpaces[coordinates.x , coordinates.y]);
             
             artifactsCoordinates[artifact] = coordinates;
-            MakeSpotsUnavailable(availableSpaces, coordinates, minimumCellsBetweenArtifacts);
+            MakeSpotsUnavailable(availableSpaces, coordinates, MINIMUM_CELLS_BETWEEN_ARTIFACTS);
         }
 
         foreach (KeyValuePair<MazeArtifact, (int xCord, int yCord)> kvp in artifactsCoordinates)
@@ -185,10 +185,22 @@ public static class MazeGenerator
         int size = availableSpaces.GetLength(0);
         
         List<(int x, int y)> neighbours = [];
-        if (coordinates.x > 0) neighbours.Add((coordinates.x - 1, coordinates.y));
-        if (coordinates.x < size - 1) neighbours.Add((coordinates.x + 1, coordinates.y));
-        if (coordinates.y > 0) neighbours.Add((coordinates.x, coordinates.y - 1));
-        if (coordinates.y < size - 1) neighbours.Add((coordinates.x, coordinates.y + 1));
+
+        for (int dx = -1; dx < 1; dx++)
+        {
+            for (int dy = -1; dy < 1; dy++)
+            {
+                if (dx == 0 && dy == 0) continue;
+                
+                int nx = coordinates.x + dx;
+                int ny = coordinates.y + dy;
+
+                if (nx >= 0 && nx < size && ny >= 0 && ny < size)
+                {
+                    neighbours.Add((nx, ny));
+                }
+            }
+        }
         
         // I am aware that this is far from the most ideal way to do it but hey bite me
         foreach ((int xCord, int yCord) neighbour in neighbours)

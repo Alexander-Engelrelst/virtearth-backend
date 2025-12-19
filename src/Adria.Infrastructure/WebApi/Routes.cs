@@ -18,8 +18,8 @@ public static class Routes
         Description = "Your even nicer description here",
         Contact = new OpenApiContact
         {
-            Name = "Group XX",
-            Email = "info@group-XX.adria"
+            Name = "Group 03",
+            Email = "info@group-03.adria"
         }
     };
 
