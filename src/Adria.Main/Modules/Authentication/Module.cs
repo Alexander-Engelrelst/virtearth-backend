@@ -35,7 +35,7 @@ public static class Module
                     ValidIssuer = JwtConfiguration.Issuer,
                     ValidAudience = JwtConfiguration.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtConfiguration.Secret)),
-                    RequireExpirationTime = true,
+                    RequireExpirationTime = true
                 };
             });
     }

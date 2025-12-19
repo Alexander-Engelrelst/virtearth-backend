@@ -23,7 +23,7 @@ public sealed class JwtProvider : IJwtProvider
             issuer: JwtConfiguration.Issuer,
             audience: JwtConfiguration.Audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddDays(JwtConfiguration.ExpireDays),
+            expires: DateTime.UtcNow.AddDays(2),
             signingCredentials: creds
         );
 
@@ -40,7 +40,9 @@ public static class JwtConfiguration
 
     private const string ISSUER = "VirtEarth server";
     private const string AUDIENCE = "VirtEarth player";
-    private const int EXPIRE_DAYS = 7;
+    
+    // I know normally I shouldn't have a jwt token that lasts this lone but I did not have time to implement a refresh token
+    private const int EXPIRE_DAYS = 2;
 
     public static string Secret => SECRET;
     public static string Issuer => ISSUER;

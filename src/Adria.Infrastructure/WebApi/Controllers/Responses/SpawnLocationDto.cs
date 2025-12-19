@@ -1,13 +1,7 @@
 ﻿namespace Adria.Infrastructure.WebApi.Controllers.Responses;
 
-public sealed class SpawnLocationDto
+public sealed class SpawnLocationDto(int xCord, int yCord)
 {
-    public float X { get; set; }
-    public float Y { get; set; }
-    
-    public SpawnLocationDto(int xCord, int yCord)
-    {
-        X = xCord + 0.5f;
-        Y = yCord + 0.5f;
-    }
+    public float X { get; set; } = xCord;
+    public float Y { get; set; } = yCord;
 }

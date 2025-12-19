@@ -41,8 +41,8 @@ public class GameDtoTests
                         break;
                     case MazeGameSpawn:
                         Assert.Equal(0, dtoMaze[i][j]);
-                        Assert.Equal(i + 0.5f, dto.SpawnLocation.X);
-                        Assert.Equal(j + 0.5f, dto.SpawnLocation.Y);
+                        Assert.Equal(i, dto.SpawnLocation.X);
+                        Assert.Equal(j, dto.SpawnLocation.Y);
                         break;
                     case MazeGameExit:
                         Assert.Equal(2, dtoMaze[i][j]);
