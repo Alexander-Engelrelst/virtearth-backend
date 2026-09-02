@@ -31,6 +31,8 @@ public sealed class JwtProvider : IJwtProvider
     }
 }
 
+// This isn't ideal but this app is small and only gets run locally anyway.
+// I guess this is just more pragmatic
 public static class JwtConfiguration
 {
     // Thanks Sonar

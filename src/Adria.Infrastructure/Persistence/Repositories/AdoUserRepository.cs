@@ -95,6 +95,7 @@ public sealed class AdoUserRepository : AbstractAdoRepository, IUserRepository
 
             return null;
         }
+        
         catch (DbException ex)
         {
             _logger.LogError(ex, "Failed to read user with ID {UserId} from database.", userId);

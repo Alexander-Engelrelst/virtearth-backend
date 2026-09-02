@@ -2,7 +2,9 @@
 
 namespace Adria.Domain.games;
 #pragma warning disable S2245
-// yes using pseudorandom is safe here sonar ¯\_(ツ)_/¯
+/* yes using pseudorandom is safe here sonar ¯\_(ツ)_/¯
+ * DESIGN ASSUMPTION: This entire class is written assuming all game mazes are squares
+ */
 public static class MazeGenerator
 {
     private const int MINIMUM_CELLS_BETWEEN_ARTIFACTS = 5;
@@ -78,9 +80,8 @@ public static class MazeGenerator
     {
         bool[,] visitedNodes = new bool[size, size];
         
-        Random random = new Random();
-        int startingX = random.Next(0, size);
-        int startingY = random.Next(0, size);
+        int startingX = Random.Shared.Next(0, size);
+        int startingY = Random.Shared.Next(0, size);
         
         Stack<(int x, int y)> stack = new Stack<(int x, int y)>();
         
@@ -99,7 +100,7 @@ public static class MazeGenerator
 
             if (unvisitedNeighbours.Count > 0)
             { 
-                (int x, int y) neighbour = unvisitedNeighbours[random.Next(unvisitedNeighbours.Count)];
+                (int x, int y) neighbour = unvisitedNeighbours[Random.Shared.Next(unvisitedNeighbours.Count)];
                 stack.Push((neighbour.x, neighbour.y));
                 visitedNodes[neighbour.x, neighbour.y] = true;
 
@@ -136,7 +137,6 @@ public static class MazeGenerator
     private static bool AddArtifacts(IMazeElement?[,] maze, IReadOnlySet<MazeArtifact> artifacts)
     {
         bool[,] availableSpaces = GetBaseAvailableSpaces(maze);
-        Random random = new Random();
         int size = availableSpaces.GetLength(0);
         IDictionary<MazeArtifact, (int xCord, int yCord)> artifactsCoordinates 
             = new Dictionary<MazeArtifact, (int xCord, int yCord)>();
@@ -152,7 +152,7 @@ public static class MazeGenerator
 
             do
             {
-                coordinates = (random.Next(1, size - 1), random.Next(1, size - 1));
+                coordinates = (Random.Shared.Next(1, size - 1), Random.Shared.Next(1, size - 1));
             } while (!availableSpaces[coordinates.x , coordinates.y]);
             
             artifactsCoordinates[artifact] = coordinates;
@@ -229,12 +229,11 @@ public static class MazeGenerator
     // (ง ͠° ͟ل͜ ͡°)ง  I will use a multidimensional array wherever I want >:(
     public static void GenerateMazeExit(IMazeElement?[,] maze)
     {
-        Random random = new();
         int mazeWidth = maze.GetLength(0);
         // most of the maze consists of walls so if this somehow runs more than a few times it is just unfortunate
-        while (true)
+        for (int i = 0; i < 100; i++)
         {
-            (int x, int y) coordinates = (random.Next(mazeWidth - 1), random.Next(mazeWidth - 1));
+            (int x, int y) coordinates = (Random.Shared.Next(mazeWidth), Random.Shared.Next(mazeWidth));
             if (maze[coordinates.x, coordinates.y] is MazeWall)
             {
                 maze[coordinates.x, coordinates.y] = new MazeGameExit();

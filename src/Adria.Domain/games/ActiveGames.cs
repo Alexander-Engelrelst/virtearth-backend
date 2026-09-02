@@ -4,6 +4,8 @@ using Adria.Domain.Shared;
 
 namespace Adria.Domain.games;
 
+/* NOTE: In strict Hexagonal Architecture, this class would have belonged in the Infrastructure layer.
+ * This was retained in the Domain layer to avoid needless overhead given the scope and rapid-prototyping of this project */
 public static class ActiveGames
 {
     private static readonly ConcurrentDictionary<Guid, Game> _games = new();
